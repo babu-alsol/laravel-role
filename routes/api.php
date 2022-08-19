@@ -25,3 +25,5 @@ Route::post('/login', [App\Http\Controllers\Auth\UserController::class, 'login']
 Route::post('/logout', [App\Http\Controllers\Auth\UserController::class, 'logout'])->middleware('auth:api');
 
 Route::apiResource('post', PostController::class)->middleware('auth:api');
+
+Route::get('/send-otp', [App\Http\Controllers\Auth\OtpController::class, 'sendOtp']);
