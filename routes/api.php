@@ -1,6 +1,12 @@
 <?php
 
+use App\Http\Controllers\BankDetailsController;
+use App\Http\Controllers\BusinessController;
+use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\TransactionController;
+use App\Models\BankDetails;
+use App\Models\BusinessBank;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Spatie\FlareClient\Api;
@@ -20,10 +26,20 @@ use Spatie\FlareClient\Api;
 //     return $request->user();
 // });
 
-Route::post('/register', [App\Http\Controllers\Auth\UserController::class, 'register']);
-Route::post('/login', [App\Http\Controllers\Auth\UserController::class, 'login']);
-Route::post('/logout', [App\Http\Controllers\Auth\UserController::class, 'logout'])->middleware('auth:api');
+Route::post('register', [App\Http\Controllers\Auth\UserController::class, 'register']);
+Route::post('login', [App\Http\Controllers\Auth\UserController::class, 'login']);
 
-Route::apiResource('post', PostController::class)->middleware('auth:api');
+//Route::apiResource('post', PostController::class)->middleware('auth:api');
+
+Route::group(['prefix' => 'auth', 'middleware' => 'auth:api'], function(){
+    Route::apiResource('post', PostController::class);
+    Route::apiResource('customer', CustomerController::class);
+    Route::apiResource('business', BusinessController::class);
+    Route::apiResource('customer-bank', BankDetailsController::class);
+    Route::apiResource('business-bank', BusinessBank::class);
+    Route::apiResource('transaction', TransactionController::class);
+
+    Route::post('/logout', [App\Http\Controllers\Auth\UserController::class, 'logout'])->middleware('auth:api');
+});
 
 Route::get('/send-otp', [App\Http\Controllers\Auth\OtpController::class, 'sendOtp']);
