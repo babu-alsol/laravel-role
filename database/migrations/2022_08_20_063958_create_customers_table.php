@@ -13,11 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('otps', function (Blueprint $table) {
+        Schema::create('customers', function (Blueprint $table) {
             $table->id();
-            $table->double('mobile');
-            $table->integer('otp');
+            $table->string('cus_name');
+            $table->string('cus_address');
+            $table->double('cus_mobile');
+            $table->enum('customer_type', ['customer', 'supplier']);
+            $table->string('image')->nullable();
             $table->timestamps();
+
         });
     }
 
@@ -28,6 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('otps');
+        Schema::dropIfExists('customers');
     }
 };

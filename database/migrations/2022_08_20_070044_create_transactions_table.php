@@ -13,11 +13,16 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('otps', function (Blueprint $table) {
+        Schema::create('transactions', function (Blueprint $table) {
             $table->id();
-            $table->double('mobile');
-            $table->integer('otp');
+            $table->unsignedBigInteger("customer_id");
+            $table->double("amount");
+            $table->enum('tns_type', ['give', 'got']);
+            $table->string('attachment')->nullable();
+            $table->string('bill_no');
             $table->timestamps();
+
+            $table->foreign('customer_id')->references('id')->on('customers')->onDelete('cascade');
         });
     }
 
@@ -28,6 +33,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('otps');
+        Schema::dropIfExists('transactions');
     }
 };

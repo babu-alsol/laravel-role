@@ -13,11 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('otps', function (Blueprint $table) {
-            $table->id();
-            $table->double('mobile');
-            $table->integer('otp');
-            $table->timestamps();
+        Schema::table('transactions', function (Blueprint $table) {
+            $table->string('tns_gateway_id');
         });
     }
 
@@ -28,6 +25,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('otps');
+        Schema::table('transactions', function (Blueprint $table) {
+            Schema::dropIfExists('transactions');
+        });
     }
 };

@@ -2,6 +2,9 @@
 
 namespace App;
 
+use App\Models\Business;
+use App\Models\Customer;
+use App\Models\Transaction;
 use Illuminate\Support\Facades\DB;
 use Laravel\Passport\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
@@ -68,5 +71,17 @@ class User extends Authenticatable
             }
         }
         return $hasPermission;
+    }
+
+    public function customers(){
+        return $this->belongsToMany(Customer::class, 'customer_user');
+    }
+
+    public function businesses(){
+        return $this->hasMany(Business::class, 'user_id');
+    }
+
+    public function transactions(){
+        return $this->hasMany(Transaction::class, 'user_id');
     }
 }

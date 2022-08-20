@@ -13,11 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('otps', function (Blueprint $table) {
-            $table->id();
-            $table->double('mobile');
-            $table->integer('otp');
-            $table->timestamps();
+        Schema::table('business_banks', function (Blueprint $table) {
+            $table->string('bank_name');
         });
     }
 
@@ -28,6 +25,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('otps');
+        Schema::table('business_banks', function (Blueprint $table) {
+            schema::dropIfExists('business_banks');
+        });
     }
 };

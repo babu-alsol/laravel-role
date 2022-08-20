@@ -13,10 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('otps', function (Blueprint $table) {
+        Schema::create('customer_user', function (Blueprint $table) {
             $table->id();
-            $table->double('mobile');
-            $table->integer('otp');
+            $table->integer('customer_id');
+            $table->integer('user_id');
             $table->timestamps();
         });
     }
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('otps');
+        Schema::dropIfExists('customer_user');
     }
 };
