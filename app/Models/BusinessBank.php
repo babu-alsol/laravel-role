@@ -11,4 +11,8 @@ class BusinessBank extends Model
     
     protected $guarded = [];
 
+    public function business(){
+        return $this->belongsTo(Business::class, 'bns_id');
+    }
+
 }

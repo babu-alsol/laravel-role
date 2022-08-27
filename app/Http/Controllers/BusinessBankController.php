@@ -41,7 +41,7 @@ class BusinessBankController extends Controller
         ]);
 
         $data = $request->all();
-        $data['customer_id'] = Auth::user()->id;
+        $data['bns_id'] = Auth::user()->id;
 
         BusinessBank::create($data);
 
@@ -84,7 +84,7 @@ class BusinessBankController extends Controller
         ]);
 
         $data = $request->all();
-        $data['customer_id'] = Auth::user()->id;
+        $data['bns_id'] = Auth::user()->id;
 
         $businessBank->fill($data);
         $businessBank->save();
