@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\BankDetailsController;
+use App\Http\Controllers\BusinessBankController;
 use App\Http\Controllers\BusinessController;
+use App\Http\Controllers\CashbookController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\TransactionController;
@@ -36,8 +38,10 @@ Route::group(['prefix' => 'auth', 'middleware' => 'auth:api'], function(){
     Route::apiResource('customer', CustomerController::class);
     Route::apiResource('business', BusinessController::class);
     Route::apiResource('customer-bank', BankDetailsController::class);
-    Route::apiResource('business-bank', BusinessBank::class);
+    Route::apiResource('business-bank', BusinessBankController::class);
     Route::apiResource('transaction', TransactionController::class);
+    Route::apiResource('cashbook', CashbookController::class);
+    Route::get('/today-cashbook', [App\Http\Controllers\CashbookController::class, 'todayCashbook']);
 
     Route::post('/logout', [App\Http\Controllers\Auth\UserController::class, 'logout'])->middleware('auth:api');
 });

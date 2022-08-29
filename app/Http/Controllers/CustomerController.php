@@ -36,10 +36,12 @@ class CustomerController extends Controller
         $request->validate([
             'cus_name' => 'required',
             'cus_address' => 'required',
-            'cus_mobile' => 'required|unique:customers',
+            'cus_mobile' => 'required|min:8|max:11|regex:/^([0-9\s\-\+\(\)]*)$/|unique:customers',
             
             'customer_type' => 'required'
         ]);
+
+        //return $request->all();
 
         $customer = new Customer();
 
@@ -53,7 +55,7 @@ class CustomerController extends Controller
         $customer->users()->attach(Auth::user()->id);
 
         return response()->json([
-            'status' => 'okay',
+            'status' => 200,
             'message' => 'Customer Created Succesffuly',
             'data' => $customer
         ]);
@@ -90,6 +92,8 @@ class CustomerController extends Controller
             
             'customer_type' => 'required'
         ]);
+
+       // return $request->all();
 
         $customer->cus_name = $request->cus_name;
         $customer->cus_address = $request->cus_address;

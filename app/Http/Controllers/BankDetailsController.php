@@ -42,7 +42,7 @@ class BankDetailsController extends Controller
         ]);
 
         $data = $request->all();
-        $data['customer_id'] = Auth::user()->id;
+        $data['bns_id'] = Auth::user()->id;
 
         BankDetails::create($data);
 
