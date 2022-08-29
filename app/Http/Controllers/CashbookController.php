@@ -6,6 +6,7 @@ use App\Models\Cashbook;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use PDF;
 
 class CashbookController extends Controller
 {
@@ -16,7 +17,7 @@ class CashbookController extends Controller
      */
     public function index()
     {
-        $cashbooks = Cashbook::where('user_id', Auth::user()->id);
+        $cashbooks = Cashbook::where('user_id', Auth::user()->id)->get();
 
         if ($cashbooks->count() > 0){
             return response()->json([
@@ -34,13 +35,13 @@ class CashbookController extends Controller
   
     public function store(Request $request)
     {
-        // $request->validate([
-        //     'amount' => 'required',
-        //     'cb_tns_type' => 'required',
-        //     'payment_type' => 'required',
-        //     'attachments' => 'mimes:doc,docx,pdf,txt,csv|max:2048',
+        $request->validate([
+            'amount' => 'required',
+            'cb_tns_type' => 'required',
+            'payment_type' => 'required',
+            'attachments' => 'mimes:doc,docx,pdf,txt,csv,jpg,png|max:2048',
             
-        // ]);
+        ]);
 
         $data = $request->all();
 
@@ -49,18 +50,18 @@ class CashbookController extends Controller
         $data['amount'] = $request->amount;
         
 
-        
-        $file = $request->file('attachments');
-        return $data;
-            $name = $file->getClientOriginalName();
-            $path = $file->store('public/cashbook/attachments', $name);
+        if($request->file()) {
+            $fileName = time().'_'.$request->file('attachments')->getClientOriginalName();
+            $filePath = $request->file('attachments')->storeAs('uploads', $fileName, 'public');
+            //$data['attachments']->name = time().'_'.$request->file->getClientOriginalName();
+            $data['attachments'] = '/storage/' . $filePath;
             
-  
+        }
             //store your file into directory and db
         
-        $data['atachments'] = $path;
+       
 
-        return $data;
+        //return $data;
 
 
         Cashbook::create($data);
@@ -124,11 +125,43 @@ class CashbookController extends Controller
 
     public function todayCashbook(){
         $today = Carbon::today();
-        $todays_cashbooks = Cashbook::where('created_at', $today)->get();
+        //return $today;
+        $todays_cashbooks = Cashbook::whereDate('created_at', $today)->get();
 
         return response()->json([
             'status' => 200,
             'data' => $todays_cashbooks
         ]);
+    }
+
+    public function todayCashbookIn(){
+        $today = Carbon::today();
+        //return $today;
+        $todays_cashbooks = Cashbook::whereDate('created_at', $today)->where('cb_tns_type', 'in')->get();
+
+        return response()->json([
+            'status' => 200,
+            'data' => $todays_cashbooks
+        ]);
+    }
+
+    public function todayCashbookOut(){
+        $today = Carbon::today();
+        //return $today;
+        $todays_cashbooks = Cashbook::whereDate('created_at', $today)->where('cb_tns_type', 'out')->get();
+
+        return response()->json([
+            'status' => 200,
+            'data' => $todays_cashbooks
+        ]);
+    }
+
+    public function createPdf(){
+        $data = Cashbook::all();
+        $data = (array) $data;
+        view()->share('cashbook',$data);
+        $pdf = PDF::loadView('pdf_view', $data);
+        // download PDF file with download method
+        return $pdf->download('pdf_file.pdf');
     }
 }
