@@ -134,6 +134,28 @@ class CashbookController extends Controller
         ]);
     }
 
+    public function weekCashbook(){
+        $week = Carbon::today()->subDays(7);
+        //return $today;
+        $weeks_cashbooks = Cashbook::whereDate('created_at', $week)->get();
+
+        return response()->json([
+            'status' => 200,
+            'data' => $weeks_cashbooks
+        ]);
+    }
+
+    public function monthCashbook(){
+        $month = Carbon::today()->subDays(30);
+        //return $today;
+        $months_cashbooks = Cashbook::whereDate('created_at', $month)->get();
+
+        return response()->json([
+            'status' => 200,
+            'data' => $months_cashbooks
+        ]);
+    }
+
     public function todayCashbookIn(){
         $today = Carbon::today();
         //return $today;
@@ -155,6 +177,7 @@ class CashbookController extends Controller
             'data' => $todays_cashbooks
         ]);
     }
+    
 
     public function createPdf(){
         $data = Cashbook::all();

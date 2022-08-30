@@ -42,6 +42,8 @@ Route::group(['prefix' => 'auth', 'middleware' => 'auth:api'], function(){
     Route::apiResource('transaction', TransactionController::class);
     Route::apiResource('cashbook', CashbookController::class);
     Route::get('/today-cashbook', [App\Http\Controllers\CashbookController::class, 'todayCashbook']);
+    Route::get('/week-cashbook', [App\Http\Controllers\CashbookController::class, 'weekCashbook']);
+    Route::get('/month-cashbook', [App\Http\Controllers\CashbookController::class, 'monthCashbook']);
     Route::get('/today-cashbook-in', [App\Http\Controllers\CashbookController::class, 'todayCashbookIn']);
     Route::get('/today-cashbook-out', [App\Http\Controllers\CashbookController::class, 'todayCashbookOut']);
     Route::get('/create-cashbook-pdf', [App\Http\Controllers\CashbookController::class, 'createPdf']);
