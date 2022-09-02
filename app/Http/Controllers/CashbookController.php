@@ -179,12 +179,38 @@ class CashbookController extends Controller
     }
     
 
-    public function createPdf(){
-        $data = Cashbook::all();
-        $data = (array) $data;
-        view()->share('cashbook',$data);
-        $pdf = PDF::loadView('pdf_view', $data);
+    public function createPdf($day){
+
+        //$today = Carbon::today();
+        //return $today;
+        $cashbooks = Cashbook::whereDate('created_at', '>', now()->subDays($day)->endOfDay())->get();
+
+        // $week = Carbon::today()->subDays(7);
+        // //return $today;
+        // $weeks_cashbooks = Cashbook::whereDate('created_at', $week)->get();
+
+        // $month = Carbon::today()->subDays(30);
+        // //return $today;
+        // $months_cashbooks = Cashbook::where('created_at', '>', now()->subDays(30)->endOfDay())->get();
+
+        //return $months_cashbooks;
+
+        $pdf = PDF::loadView('cashbook', compact('cashbooks'));
+
+        $filename='cashbook'.'-'.time().'.pdf';
+
+        $path = str_replace('\\', '/', public_path("assets/cashbook/report/".$filename));
+       
+
+        //return $pdf;
+        //return $pdf->download('pdf_file.pdf');
+        $pdf->save($path);
+
+        return response()->json([
+            'message' => 'Pdf generated'
+        ]);
+      
         // download PDF file with download method
-        return $pdf->download('pdf_file.pdf');
+        //return $pdf->download('pdf_file.pdf');
     }
 }

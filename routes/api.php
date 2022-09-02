@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\UserController;
 use App\Http\Controllers\BankDetailsController;
 use App\Http\Controllers\BusinessBankController;
 use App\Http\Controllers\BusinessController;
@@ -46,10 +47,13 @@ Route::group(['prefix' => 'auth', 'middleware' => 'auth:api'], function(){
     Route::get('/month-cashbook', [App\Http\Controllers\CashbookController::class, 'monthCashbook']);
     Route::get('/today-cashbook-in', [App\Http\Controllers\CashbookController::class, 'todayCashbookIn']);
     Route::get('/today-cashbook-out', [App\Http\Controllers\CashbookController::class, 'todayCashbookOut']);
-    Route::get('/create-cashbook-pdf', [App\Http\Controllers\CashbookController::class, 'createPdf']);
+    Route::get('/create-cashbook-pdf/{day}', [App\Http\Controllers\CashbookController::class, 'createPdf']);
+
+    
 
 
     Route::post('/logout', [App\Http\Controllers\Auth\UserController::class, 'logout'])->middleware('auth:api');
 });
 
-Route::get('/send-otp', [App\Http\Controllers\Auth\OtpController::class, 'sendOtp']);
+Route::post('/send-otp', [App\Http\Controllers\Auth\UserController::class, 'sendOtp']);
+Route::post('/check-otp', [App\Http\Controllers\Auth\UserController::class, 'checkOtp']);
