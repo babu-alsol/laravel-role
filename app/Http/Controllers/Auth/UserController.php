@@ -40,14 +40,15 @@ class UserController extends Controller
                 $otp->otp = rand(1000,9999);
                 $otp->save();
     
-                $token = $user->createToken('API Token')->accessToken;
+               // $token = $user->createToken('API Token')->accessToken;
     
                 return response()->json([
                     'message' => 'Otp send to your mobile number',
                     'status' => '200',
                     'user' => $user,
-                    'token' => $token,
-                    'otp' => $otp
+                    'otp' => $otp,
+                    //'token' => $token,
+                   
                 ]);
             }
     
@@ -55,12 +56,12 @@ class UserController extends Controller
             $otp->mobile = $user->mobile;
             $otp->otp = rand(1000,9999);
             $otp->save();
-            $token = $user->createToken('API Token')->accessToken;
+           // $token = $user->createToken('API Token')->accessToken;
             return response()->json([
                 ['user' => $user],
                 'message' => 'ph number already exist, Otp send to your mobile number ',
                 'status' => '200',
-                'token' => $token,
+               // 'token' => $token,
                 'otp' => $otp
             ]);
         }
@@ -102,13 +103,13 @@ class UserController extends Controller
             $otp->otp = rand(1000,9999);
             $otp->save();
 
-            $token = $user->createToken('API Token')->accessToken;
+           // $token = $user->createToken('API Token')->accessToken;
 
             return response()->json([
                 'message' => 'mobile number is not resgistered, new user created with the mobile number and Otp send to your mobile number',
                 'status' => '200',
                 'user' => auth()->user(),
-                'token' => $token,
+              //  'token' => $token,
                 'otp' => $otp
             ]);
         }
@@ -117,12 +118,12 @@ class UserController extends Controller
         $otp->mobile = $user->mobile;
         $otp->otp = rand(1000,9999);
         $otp->save();
-        $token = $user->createToken('API Token')->accessToken;
+       // $token = $user->createToken('API Token')->accessToken;
         return response()->json([
             ['user' => $user],
             'message' => 'otp send to your mobile number',
             'status' => '200',
-            'token' => $token,
+           // 'token' => $token,
             'otp' => $otp
         ]);
         
@@ -137,5 +138,82 @@ class UserController extends Controller
         return response()->json([
             'message' => 'Successfully logged out'
         ],200);
+    }
+
+    public function sendOtp(Request $request){
+
+        $request->validate([
+            'mobile' => 'required'
+        ]);
+
+        $otp = new Otp();
+        $otp->mobile = $request->mobile;
+        $otp->otp = rand(1000,9999);
+        $otp->save();
+
+        return response()->json([
+            'message' => 'otp send to your mobile number',
+            'status' => '200',
+           // 'token' => $token,
+            //'otp' => $otp
+        ]);
+
+    }
+
+    public function checkOtp(Request $request){
+
+
+        $otp = Otp::where('mobile', $request->mobile)->orderBy('created_at','desc')->first();
+
+        $request->validate([
+            'otp' => 'required',
+            'mobile' => 'required'
+        ]);
+
+        // return response()->json([
+        //     'otp' => $otp->otp,
+        //     'request' => $request->otp
+          
+            
+        // ]);
+
+        if ($otp->otp == $request->otp){
+            $user =  $user = User::where('mobile', $request->mobile)->first();
+
+            if (!$user){
+                $user = new User;
+                $user->mobile = $request->mobile;
+                //$user->name = $request->mobile;
+                $user->save();
+    
+                $token = $user->createToken('API Token')->accessToken;
+                return response()->json([
+                    'message' => 'mobile number is not resgistered, new user created with the mobile number and Otp verification succesfully completed',
+                    'status' => '200',
+                    'user' => auth()->user(),
+                    'token' => $token,
+                    
+                ]);
+            }
+            //return $user->createToken('API Token')->accessToken;
+           
+            $token = $user->createToken('API Token')->accessToken;
+            return response()->json([
+                ['user' => $user],
+                'message' => 'Otp verification succesfully completed',
+                'status' => '200',
+                'token' => $token,
+                //'otp' => $otp
+            ]);
+            
+            
+        }else{
+            return response()->json([
+                'message' => 'otp verification failed',
+                'status' => 401,
+               // 'token' => $token,
+                //'otp' => $otp
+            ]);
+        }
     }
 }
