@@ -6,6 +6,7 @@ use App\Models\Cashbook;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use PDF;
 
 class CashbookController extends Controller
@@ -39,7 +40,7 @@ class CashbookController extends Controller
             'amount' => 'required',
             'cb_tns_type' => 'required',
             'payment_type' => 'required',
-            'attachments' => 'mimes:doc,docx,pdf,txt,csv,jpg,png|max:2048',
+            'attachments' => 'mimes:doc,docx,pdf,txt,csv,jpg,png,xlsx|max:2048',
             
         ]);
 
@@ -52,7 +53,7 @@ class CashbookController extends Controller
 
         if($request->file()) {
             $fileName = time().'_'.$request->file('attachments')->getClientOriginalName();
-            $filePath = $request->file('attachments')->storeAs('uploads', $fileName, 'public');
+            $filePath = $request->file('attachments')->storeAs('uploads/cashbook/attachments', $fileName, 'public');
             //$data['attachments']->name = time().'_'.$request->file->getClientOriginalName();
             $data['attachments'] = '/storage/' . $filePath;
             
@@ -86,14 +87,27 @@ class CashbookController extends Controller
     public function update(Request $request, Cashbook $cashbook)
     {
         $request->validate([
+            'amount' => 'required',
             'cb_tns_type' => 'required',
             'payment_type' => 'required',
+            'attachments' => 'mimes:doc,docx,pdf,txt,csv,jpg,png|max:2048',
             
         ]);
 
         $data = $request->all();
 
         $data['user_id'] = Auth::user()->id;
+
+       
+
+        if($request->file() && $cashbook->attachments !=null) {
+            $filePath = Storage::path();
+            $fileName = time().'_'.$request->file('attachments')->getClientOriginalName();
+           // $filePath = $request->file('attachments')->storeAs('uploads/cashbook/attachments', $fileName, 'public');
+            //$data['attachments']->name = time().'_'.$request->file->getClientOriginalName();
+            $data['attachments'] = '/storage/' . $filePath;
+            
+        }
 
         $cashbook->fill($data);
 

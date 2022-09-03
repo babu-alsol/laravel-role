@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Customer;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -15,7 +16,8 @@ class TransactionController extends Controller
      */
     public function index()
     {
-        $transanctions = Transaction::where('customer_id', Auth::user()->id);
+        $transanctions = Transaction::where('user_id', Auth::user()->id)->get();
+        //return $transanctions;
 
         if ($transanctions->count() > 0){
             return response()->json([
@@ -37,13 +39,22 @@ class TransactionController extends Controller
         $request->validate([
             'amount' => 'required|numeric',
             'tns_type' => 'required',
-            'customer_id' => 'required'
+            'customer_id' => 'required',
+            'attachment' => 'mimes:doc,docx,pdf,txt,csv,jpg,png,xlsx|max:10800',
         ]);
 
         $data = $request->all();
         $data['user_id'] = Auth::user()->id;
         $data['bill_no'] = 'Bill'.rand(10000000,99999999);
         $data['tns_gateway_id'] = 'TNSGET'.rand(10000000,99999999);
+
+        if($request->file()) {
+            $fileName = time().'_'.$request->file('attachment')->getClientOriginalName();
+            $filePath = $request->file('attachment')->storeAs('uploads/transaction/attachments', $fileName, 'public');
+            //$data['attachments']->name = time().'_'.$request->file->getClientOriginalName();
+            $data['attachment'] = '/storage/' . $filePath;
+            
+        }
 
         Transaction::create($data);
 
@@ -123,5 +134,9 @@ class TransactionController extends Controller
             'message' => 'not found'
         ]);
        
+    }
+
+    public function tnsCustomer(Customer $customer){
+        return Transaction::where('user_id', Auth::user()->id)->where('customer_id', $customer->id)->get();
     }
 }
