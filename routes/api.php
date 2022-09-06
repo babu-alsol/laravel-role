@@ -50,7 +50,9 @@ Route::group(['prefix' => 'auth', 'middleware' => 'auth:api'], function(){
     Route::get('/today-cashbook-out', [App\Http\Controllers\CashbookController::class, 'todayCashbookOut']);
     Route::get('/create-cashbook-pdf/{day}', [App\Http\Controllers\CashbookController::class, 'createPdf']);
 
-    
+    // serch api for customer and supplier
+    Route::get('/search-customer/{name}', [App\Http\Controllers\CustomerController::class, 'searchCustomer']);
+    Route::get('/search-supplier/{name}', [App\Http\Controllers\CustomerController::class, 'searchSupplier']);
 
 
     Route::post('/logout', [App\Http\Controllers\Auth\UserController::class, 'logout'])->middleware('auth:api');

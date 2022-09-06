@@ -17,12 +17,12 @@ class CustomerController extends Controller
     {
         $customers = Auth::user()->customers()->get();
 
-        if ($customers->count() > 0){
+        if ($customers->count() > 0) {
             return response()->json([
                 'status' => 'Ok',
                 'data' => $customers
             ]);
-        }else{
+        } else {
             return response()->json([
                 'status' => 'No Customers to show',
                 //'data' => $students
@@ -30,14 +30,14 @@ class CustomerController extends Controller
         }
     }
 
-   
+
     public function store(Request $request)
     {
         $request->validate([
             'cus_name' => 'required',
             'cus_address' => 'required',
             'cus_mobile' => 'required|min:8|max:11|regex:/^([0-9\s\-\+\(\)]*)$/|unique:customers',
-            
+
             'customer_type' => 'required'
         ]);
 
@@ -71,7 +71,7 @@ class CustomerController extends Controller
     {
         return response()->json([
             'status' => 'okay',
-            
+
             'data' => $customer
         ]);
     }
@@ -89,11 +89,11 @@ class CustomerController extends Controller
             'cus_name' => 'required',
             'cus_address' => 'required',
             'cus_mobile' => 'required',
-            
+
             'customer_type' => 'required'
         ]);
 
-       // return $request->all();
+        // return $request->all();
 
         $customer->cus_name = $request->cus_name;
         $customer->cus_address = $request->cus_address;
@@ -126,6 +126,44 @@ class CustomerController extends Controller
             'status' => 'okay',
             'message' => 'Customer deleted Succesffuly',
             'data' => $customer
+        ]);
+    }
+
+    public function searchCustomer($name)
+    {
+        $customers = Customer::where('cus_name', 'like', '%' . $name . '%')->where('customer_type', 'customer')
+            ->orWhere('cus_mobile', 'like', '%' . $name . '%')->get();
+           
+
+        if ($customers->count() > 0) {
+
+            return response()->json([
+                'status' => 200,
+                'data' => $customers
+            ]);
+        }
+
+        return response()->json([
+            'status' => 404,
+            'data' => 'No Record Avialable'
+        ]);
+    }
+
+    public function searchSupplier($name)
+    {
+        $suppliers = Customer::where('cus_name', 'like', '%' . $name . '%')->where('customer_type', 'supplier')->orWhere('cus_mobile', 'like', '%' . $name . '%')->get();
+
+        if ($suppliers->count() > 0) {
+
+            return response()->json([
+                'status' => 200,
+                'data' => $suppliers
+            ]);
+        }
+
+        return response()->json([
+            'status' => 404,
+            'data' => 'No Record Avialable'
         ]);
     }
 }
