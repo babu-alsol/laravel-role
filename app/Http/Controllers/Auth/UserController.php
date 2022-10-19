@@ -143,25 +143,26 @@ class UserController extends Controller
     public function sendOtp(Request $request){
 
         $request->validate([
-            'mobile' => 'required'
+            'mobile' => 'required',
+            'name' => 'required'
         ]);
 
         $otp = new Otp();
         $otp->mobile = $request->mobile;
-        $otp->otp = rand(1000,9999);
+        $otp->name = $request->name;
+        $otp->otp = 1000;
         $otp->save();
 
         return response()->json([
             'message' => 'otp send to your mobile number',
             'status' => '200',
-           // 'token' => $token,
+            'name' => $request->name,
             //'otp' => $otp
         ]);
 
     }
 
     public function checkOtp(Request $request){
-
 
         $otp = Otp::where('mobile', $request->mobile)->orderBy('created_at','desc')->first();
 
@@ -183,14 +184,14 @@ class UserController extends Controller
             if (!$user){
                 $user = new User;
                 $user->mobile = $request->mobile;
-                //$user->name = $request->mobile;
+                $user->name = $otp->name;
                 $user->save();
     
                 $token = $user->createToken('API Token')->accessToken;
                 return response()->json([
                     'message' => 'mobile number is not resgistered, new user created with the mobile number and Otp verification succesfully completed',
                     'status' => '200',
-                    'user' => auth()->user(),
+                    'user' => Auth::user(),
                     'token' => $token,
                     
                 ]);
