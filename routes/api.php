@@ -50,7 +50,14 @@ Route::group(['prefix' => 'auth', 'middleware' => 'auth:api'], function(){
     Route::get('/today-cashbook-out', [App\Http\Controllers\CashbookController::class, 'todayCashbookOut']);
     Route::get('/create-cashbook-pdf/{day}', [App\Http\Controllers\CashbookController::class, 'createPdf']);
 
-    
+    // serch api for customer and supplier
+    Route::get('/search-customer/{name}', [App\Http\Controllers\CustomerController::class, 'searchCustomer']);
+    Route::get('/search-supplier/{name}', [App\Http\Controllers\CustomerController::class, 'searchSupplier']);
+
+    // user update
+    Route::put('/user/{user}', [App\Http\Controllers\Auth\UserController::class, 'update'])->name('user.update');
+   
+    Route::get('/view_reports', [App\Http\Controllers\CashbookController::class, 'viewReports']);
 
 
     Route::post('/logout', [App\Http\Controllers\Auth\UserController::class, 'logout'])->middleware('auth:api');
@@ -58,3 +65,6 @@ Route::group(['prefix' => 'auth', 'middleware' => 'auth:api'], function(){
 
 Route::post('/send-otp', [App\Http\Controllers\Auth\UserController::class, 'sendOtp']);
 Route::post('/check-otp', [App\Http\Controllers\Auth\UserController::class, 'checkOtp']);
+Route::get('test', function(){
+    return 'test-api';
+});

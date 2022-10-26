@@ -35,7 +35,7 @@ class CustomerController extends Controller
     {
         $request->validate([
             'cus_name' => 'required',
-            'cus_address' => 'required',
+           // 'cus_address' => 'required',
             'cus_mobile' => 'required|min:8|max:11|regex:/^([0-9\s\-\+\(\)]*)$/|unique:customers',
             
             'customer_type' => 'required'
