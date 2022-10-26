@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cashbook;
+use App\Models\Transaction;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -226,5 +227,36 @@ class CashbookController extends Controller
       
         // download PDF file with download method
         //return $pdf->download('pdf_file.pdf');
+    }
+
+    public function viewReports(){
+        //return Auth::user()->id;
+
+        $today = Carbon::today();
+
+        $cash_in_hands_in = Cashbook::where('cb_tns_type', 'in')->
+        where('user_id', Auth::user()->id)->where('payment_type', 'cash')->sum('amount');
+
+        $cash_in_hands_out = Cashbook::where('cb_tns_type', 'out')->
+        where('user_id', Auth::user()->id)->where('payment_type', 'cash')->sum('amount');
+
+        $today_income_in = Cashbook::where('user_id', Auth::user()->id)->whereDate('created_at', $today)->
+        where('cb_tns_type', 'in')->sum('amount');
+
+        $today_income_out = Cashbook::where('user_id', Auth::user()->id)->whereDate('created_at', $today)->
+        where('cb_tns_type', 'out')->sum('amount');
+
+        $to_collect = Transaction::where('user_id', Auth::user()->id)->where('tns_type','give')->sum('amount');
+
+        $to_pay = Transaction::where('user_id', Auth::user()->id)->where('tns_type','got')->sum('amount');
+
+
+
+        return response()->json([
+            'cash_in_hands' => $cash_in_hands_in - $cash_in_hands_out,
+            'todays_income' => $today_income_in - $today_income_out,
+            'to_collect' => $to_collect,
+            'to_pay' => $to_pay
+        ]);
     }
 }

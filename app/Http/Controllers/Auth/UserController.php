@@ -9,6 +9,7 @@ use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
 use App\Models\Otp;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 
 class UserController extends Controller
 {
@@ -147,18 +148,18 @@ class UserController extends Controller
             'name' => 'required'
         ]);
 
-        $otp = new Otp();
-        $otp->mobile = $request->mobile;
-        $otp->name = $request->name;
-        $otp->otp = 1000;
-        $otp->save();
-
-        return response()->json([
-            'message' => 'otp send to your mobile number',
-            'status' => '200',
-            'name' => $request->name,
-            //'otp' => $otp
-        ]);
+            $otp = new Otp();
+            $otp->mobile = $request->mobile;
+            $otp->name = $request->name;
+            $otp->otp = 1000;
+            $otp->save();
+    
+            return response()->json([
+                'message' => 'otp send to your mobile number',
+                'status' => '200',
+                'name' => $request->name,
+                //'otp' => $otp
+            ]);
 
     }
 
@@ -217,4 +218,47 @@ class UserController extends Controller
             ]);
         }
     }
+
+    public function update(Request $request, User $user){
+        // $request->validate([
+
+        // ]);
+
+        // $user->username = $request->username;
+
+        //$data = $request->all();
+        $user->username = $request->username;
+
+        if ($request->file() && $user->profile_image != null) {
+            $path =  $user->profile_image;
+
+            if ($path) {
+                // return true;
+                File::delete($path);
+                $fileName = time() . '_' . $request->file('profile_image')->getClientOriginalName();
+                $filePath = str_replace('\\', '/', public_path("assets/user/profile_image"));
+                $request->file('profile_image')->move($filePath, $fileName);
+                // $data['attachments']->name = time().'_'.$request->file->getClientOriginalName();
+                $user->profile_image =  $filePath;
+            }
+
+            $fileName = time() . '_' . $request->file('profile_image')->getClientOriginalName();
+            $filePath = str_replace('\\', '/', public_path("assets/user/profile_image"));
+            $request->file('profile_image')->move($filePath, $fileName);
+            // $data['attachments']->name = time().'_'.$request->file->getClientOriginalName();
+            $user->profile_image =  $filePath;
+        }
+
+        
+        $user->save();
+
+        return response([
+             'message' => 'user updated successfully',
+            'user' => $user,
+             'status' => 200
+        ]);
+        
+    }
+
+
 }
