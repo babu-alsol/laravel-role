@@ -41,6 +41,7 @@ class TransactionController extends Controller
             'tns_type' => 'required',
             'customer_id' => 'required',
             'attachment' => 'mimes:doc,docx,pdf,txt,csv,jpg,png,xlsx|max:10800',
+            'date_time' => 'required'
         ]);
 
         $data = $request->all();
@@ -93,7 +94,10 @@ class TransactionController extends Controller
            
         $request->validate([
             'amount' => 'required|numeric',
-            'customer_id' => 'required'
+            'tns_type' => 'required',
+            'customer_id' => 'required',
+            'attachment' => 'mimes:doc,docx,pdf,txt,csv,jpg,png,xlsx|max:10800',
+            'date_time' => 'required'
         ]);
 
         $data = $request->all();
