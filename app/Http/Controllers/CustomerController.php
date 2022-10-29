@@ -128,4 +128,43 @@ class CustomerController extends Controller
             'data' => $customer
         ]);
     }
+
+    public function searchCustomer($name)
+    {
+         
+        $customers = Customer::where('cus_name', 'like', '%' . $name . '%')->where('customer_type', 'customer')
+            ->orWhere('cus_mobile', 'like', '%' . $name . '%')->get();
+           
+
+        if ($customers->count() > 0) {
+
+            return response()->json([
+                'status' => 200,
+                'data' => $customers
+            ]);
+        }
+
+        return response()->json([
+            'status' => 404,
+            'data' => 'No Record Avialable'
+        ]);
+    }
+
+    public function searchSupplier($name)
+    {
+        $suppliers = Customer::where('cus_name', 'like', '%' . $name . '%')->where('customer_type', 'supplier')->orWhere('cus_mobile', 'like', '%' . $name . '%')->get();
+
+        if ($suppliers->count() > 0) {
+
+            return response()->json([
+                'status' => 200,
+                'data' => $suppliers
+            ]);
+        }
+
+        return response()->json([
+            'status' => 404,
+            'data' => 'No Record Avialable'
+        ]);
+    }
 }

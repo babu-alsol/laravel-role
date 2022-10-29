@@ -14,9 +14,10 @@ class TransactionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($type)
     {
-        $transanctions = Transaction::where('user_id', Auth::user()->id)->get();
+       
+        $transanctions = Transaction::where('user_id', Auth::user()->id)->where('cus_type', $type)->get();
         //return $transanctions;
 
         if ($transanctions->count() > 0){
@@ -41,10 +42,17 @@ class TransactionController extends Controller
             'tns_type' => 'required',
             'customer_id' => 'required',
             'attachment' => 'mimes:doc,docx,pdf,txt,csv,jpg,png,xlsx|max:10800',
-            'date_time' => 'required'
+            'date_time' => 'required',
+            
         ]);
 
+        $customer = Customer::where('id', $request->customer_id)->first();
+        
+
+      
+
         $data = $request->all();
+        $data['cus_type'] = $customer->customer_type;
         $data['user_id'] = Auth::user()->id;
         $data['bill_no'] = 'Bill'.rand(10000000,99999999);
         $data['tns_gateway_id'] = 'TNSGET'.rand(10000000,99999999);
