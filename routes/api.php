@@ -40,7 +40,8 @@ Route::group(['prefix' => 'auth', 'middleware' => 'auth:api'], function(){
     Route::apiResource('business', BusinessController::class);
     Route::apiResource('customer-bank', BankDetailsController::class);
     Route::apiResource('business-bank', BusinessBankController::class);
-    Route::apiResource('transaction', TransactionController::class);
+    Route::apiResource('transaction', TransactionController::class)->except('index');
+    Route::get('/get-transaction/{type}', [App\Http\Controllers\TransactionController::class, 'index']);
     Route::get('/transactions-by-customer/{customer}', [\App\Http\Controllers\TransactionController::class, 'tnsCustomer']);
     Route::apiResource('cashbook', CashbookController::class);
     Route::get('/today-cashbook', [App\Http\Controllers\CashbookController::class, 'todayCashbook']);
