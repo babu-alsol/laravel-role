@@ -42,6 +42,8 @@ class CashbookController extends Controller
             'cb_tns_type' => 'required',
             'payment_type' => 'required',
             'attachments' => 'mimes:doc,docx,pdf,txt,csv,jpg,png,xlsx|max:2048',
+            'payment_details' => 'required',
+            'date_time' => 'required'
             
         ]);
 
@@ -92,6 +94,8 @@ class CashbookController extends Controller
             'cb_tns_type' => 'required',
             'payment_type' => 'required',
             'attachments' => 'mimes:doc,docx,pdf,txt,csv,jpg,png|max:2048',
+            'payment_details' => 'required',
+            'date_time' => 'required'
             
         ]);
 
@@ -255,6 +259,8 @@ class CashbookController extends Controller
         return response()->json([
             'cash_in_hands' => $cash_in_hands_in - $cash_in_hands_out,
             'todays_income' => $today_income_in - $today_income_out,
+            'cash_in' => $today_income_in,
+            'cash_out' => $today_income_out,
             'to_collect' => $to_collect,
             'to_pay' => $to_pay
         ]);
