@@ -54,6 +54,7 @@ class TransactionController extends Controller
 
         $data = $request->all();
         $data['cus_type'] = $customer->customer_type;
+        $data['cus_name'] = $customer->cus_name;
         $data['user_id'] = Auth::user()->id;
         $data['bill_no'] = 'Bill'.rand(10000000,99999999);
         $data['tns_gateway_id'] = 'TNSGET'.rand(10000000,99999999);

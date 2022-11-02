@@ -66,11 +66,13 @@ class BankDetailsController extends Controller
                 'status' => 200,
                 'data' => $bankDetails
             ]); 
+        }else{
+            return response()->json([
+                'status' => 404,
+                'message' => 'not found'
+            ]); 
         }
-        return response()->json([
-            'status' => 404,
-            'message' => 'not found'
-        ]); 
+       
     }
 
   
