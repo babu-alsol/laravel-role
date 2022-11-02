@@ -60,11 +60,21 @@ class BusinessController extends Controller
      */
     public function show(Business $business)
     {
-        return response()->json([
-            'status' => 200,
-            
-            'data' => $business
-        ]);
+        if ($business){
+            return response()->json([
+                'status' => 200,
+                
+                'data' => $business
+            ]);
+           
+        }else{
+            return response()->json([
+                'status' => 404,
+                
+                'message' => 'not found'
+            ]);
+        }
+      
     }
 
   
