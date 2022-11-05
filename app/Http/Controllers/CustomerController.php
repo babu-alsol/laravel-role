@@ -48,7 +48,7 @@ class CustomerController extends Controller
 
         $user = User::where('id', $id)->first();
 
-        $cust = Customer::where('cus_mobile', $request->cus_mobile)->first();
+        $cust = Customer::where('cus_mobile', $request->cus_mobile)->where('user_id', Auth::user()->id)->first();
 
        // $test = $user->customers()->where('id', $cust->id)->exists();
 
@@ -120,7 +120,7 @@ class CustomerController extends Controller
             'customer_type' => 'required'
         ]);
 
-        $cust = Customer::where('cus_mobile', $request->cus_mobile)->first();
+        $cust = Customer::where('cus_mobile', $request->cus_mobile)->where('user_id', Auth::user()->id)->first();
 
         // return $cust;
          
