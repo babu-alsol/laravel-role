@@ -43,6 +43,7 @@ Route::group(['prefix' => 'auth', 'middleware' => 'auth:api'], function(){
     Route::apiResource('transaction', TransactionController::class)->except('index');
     Route::get('/get-transaction/{type}', [App\Http\Controllers\TransactionController::class, 'index']);
     Route::get('/transactions-by-customer/{customer}', [\App\Http\Controllers\TransactionController::class, 'tnsCustomer']);
+    Route::get('/transactions-by-customer/{supplier}', [\App\Http\Controllers\TransactionController::class, 'tnsSupplier']);
     Route::apiResource('cashbook', CashbookController::class);
     Route::get('/today-cashbook', [App\Http\Controllers\CashbookController::class, 'todayCashbook']);
     Route::get('/week-cashbook', [App\Http\Controllers\CashbookController::class, 'weekCashbook']);
@@ -50,6 +51,10 @@ Route::group(['prefix' => 'auth', 'middleware' => 'auth:api'], function(){
     Route::get('/today-cashbook-in', [App\Http\Controllers\CashbookController::class, 'todayCashbookIn']);
     Route::get('/today-cashbook-out', [App\Http\Controllers\CashbookController::class, 'todayCashbookOut']);
     Route::get('/create-cashbook-pdf/{day}', [App\Http\Controllers\CashbookController::class, 'createPdf']);
+
+    // all transactions for a customer/ supplier
+     Route::get('/user-all-customers-transactions', [App\Http\Controllers\TransactionController::class, 'customerTransactions']);
+     Route::get('/user-all-supllier-transactions', [App\Http\Controllers\TransactionController::class, 'supplierTransactions']);
 
     // serch api for customer and supplier
     Route::get('/search-customer/{name}', [App\Http\Controllers\CustomerController::class, 'searchCustomer']);
@@ -59,6 +64,8 @@ Route::group(['prefix' => 'auth', 'middleware' => 'auth:api'], function(){
     Route::put('/user/{user}', [App\Http\Controllers\Auth\UserController::class, 'update'])->name('user.update');
    
     Route::get('/view_reports', [App\Http\Controllers\CashbookController::class, 'viewReports']);
+    Route::get('/view_reports/{type}', [App\Http\Controllers\CashbookController::class, 'viewReportsType']);
+
 
 
     Route::post('/logout', [App\Http\Controllers\Auth\UserController::class, 'logout'])->middleware('auth:api');
