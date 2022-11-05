@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Customer;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -43,15 +44,24 @@ class CustomerController extends Controller
 
         //return $request->all();
 
-        $cust = Customer::where('cus_mobile', $request->cus_mobile)->first();
+        $id = Auth::user()->id;
 
-       // return $cust;
+        $user = User::where('id', $id)->first();
+
+        $cust = Customer::where('cus_mobile', $request->cus_mobile)->where('user_id', Auth::user()->id)->first();
+
+       // $test = $user->customers()->where('id', $cust->id)->exists();
+
+       // return $test;
+
+        //return $user->customers;
         
 
         if ($cust){
             return response()->json([
                 'message' => 'mobile number exist',
-                'data' => $cust
+                'data' => $cust,
+                'transactions' => $cust->transactions
             ]);
         }else{
             $customer = new Customer();
@@ -60,6 +70,7 @@ class CustomerController extends Controller
             $customer->cus_address = $request->cus_address;
             $customer->cus_mobile = $request->cus_mobile;
             $customer->customer_type = $request->customer_type;
+            $customer->user_id = Auth::user()->id;
             
     
             $customer->save();
@@ -109,7 +120,7 @@ class CustomerController extends Controller
             'customer_type' => 'required'
         ]);
 
-        $cust = Customer::where('cus_mobile', $request->cus_mobile)->first();
+        $cust = Customer::where('cus_mobile', $request->cus_mobile)->where('user_id', Auth::user()->id)->first();
 
         // return $cust;
          
@@ -124,6 +135,7 @@ class CustomerController extends Controller
             $customer->cus_address = $request->cus_address;
             $customer->cus_mobile = $request->cus_mobile;
             $customer->customer_type = $request->customer_type;
+            $customer->user_id = Auth::user()->id;
     
             $customer->save();
     

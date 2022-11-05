@@ -16,7 +16,12 @@ class Customer extends Model
         return $this->belongsToMany(User::class, 'customer_user');
     }
 
-    public function transcations(){
+    public function transactions(){
         return $this->hasMany(Transaction::class, 'customer_id');
     }
+
+    // public function effective(){
+    //     // $transaction_give = Transaction::where('tns_type', 'give')->sum('amount');
+    //     // return $transaction_give;
+    // }
 }
