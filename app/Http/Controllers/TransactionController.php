@@ -154,13 +154,14 @@ class TransactionController extends Controller
 
     public function tnsCustomer(Customer $customer)
     {
-
+       // return $customer;
         $transactions_give = Transaction::where('user_id', Auth::user()->id)->where('customer_id', $customer->id)->where('tns_type', 'give')->sum('amount');
 
         $transactions_got = Transaction::where('user_id', Auth::user()->id)->where('customer_id', $customer->id)->where('tns_type', 'got')->sum('amount');
 
         return response()->json([
             'customer' => $customer,
+            'transactions' => $customer->transactions,
             'effective_transactions' => $transactions_got - $transactions_give
         ]);
     }
@@ -176,6 +177,7 @@ class TransactionController extends Controller
 
         return response()->json([
             'supplier' => $customer,
+            'transactions' => $customer->transactions,
             'effective_transactions' => $transactions_got - $transactions_give
         ]);
     }
@@ -237,7 +239,7 @@ class TransactionController extends Controller
       //  return $customer;
 
         $customers = Customer::with('transactions')->where('user_id', Auth::user()->id)
-        ->where('customer_type', 'supllier')->get();
+        ->where('customer_type', 'supplier')->get();
 
        // return $customers;
        $customers = (array) $customers;

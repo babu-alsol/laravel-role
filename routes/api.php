@@ -54,7 +54,7 @@ Route::group(['prefix' => 'auth', 'middleware' => 'auth:api'], function(){
 
     // all transactions for a customer/ supplier
      Route::get('/user-all-customers-transactions', [App\Http\Controllers\TransactionController::class, 'customerTransactions']);
-     Route::get('/user-all-supllier-transactions', [App\Http\Controllers\TransactionController::class, 'supplierTransactions']);
+     Route::get('/user-all-suppliers-transactions', [App\Http\Controllers\TransactionController::class, 'supplierTransactions']);
 
     // serch api for customer and supplier
     Route::get('/search-customer/{name}', [App\Http\Controllers\CustomerController::class, 'searchCustomer']);
