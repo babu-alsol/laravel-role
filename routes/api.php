@@ -6,6 +6,7 @@ use App\Http\Controllers\BusinessBankController;
 use App\Http\Controllers\BusinessController;
 use App\Http\Controllers\CashbookController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\FaqController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\TransactionController;
 use App\Models\BankDetails;
@@ -71,8 +72,13 @@ Route::group(['prefix' => 'auth', 'middleware' => 'auth:api'], function(){
     Route::post('/logout', [App\Http\Controllers\Auth\UserController::class, 'logout'])->middleware('auth:api');
 });
 
+
+
 Route::post('/send-otp', [App\Http\Controllers\Auth\UserController::class, 'sendOtp']);
 Route::post('/check-otp', [App\Http\Controllers\Auth\UserController::class, 'checkOtp']);
 Route::get('test', function(){
     return 'test-api';
 });
+
+// faq api
+Route::resource('faq', FaqController::class)->only(['index', 'show']);
