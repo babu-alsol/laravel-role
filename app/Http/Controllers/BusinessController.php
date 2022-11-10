@@ -38,10 +38,18 @@ class BusinessController extends Controller
             'bns_type' => 'required',
             'gstin_no' => 'required',
             'bns_address' => 'required',
+            //'bns_mobile' => 'required',
         ]);
 
         $data = $request->all();
         $data['user_id'] = Auth::user()->id;
+
+       
+        if ($request->bns_mobile){
+            $data['bns_mobile'] = $request->bns_mobile;
+        }else{
+            $data['bns_mobile'] = Auth::user()->mobile;
+        }
 
         Business::create($data);
 

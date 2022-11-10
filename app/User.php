@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Models\Business;
+use App\Models\Cashbook;
 use App\Models\Customer;
 use App\Models\Transaction;
 use Illuminate\Support\Facades\DB;
@@ -75,6 +76,10 @@ class User extends Authenticatable
 
     public function customers(){
         return $this->belongsToMany(Customer::class, 'customer_user');
+    }
+
+    public function cashbooks(){
+        return $this->hasMany(Cashbook::class, 'user_id');
     }
 
     public function businesses(){

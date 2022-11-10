@@ -120,33 +120,28 @@ class CustomerController extends Controller
             'customer_type' => 'required'
         ]);
 
-        $cust = Customer::where('cus_mobile', $request->cus_mobile)->where('user_id', Auth::user()->id)->first();
+      //  $cust = Customer::where('cus_mobile', $request->cus_mobile)->where('user_id', Auth::user()->id)->first();
 
         // return $cust;
          
  
-         if ($cust){
-             return response()->json([
-                 'message' => 'mobile number exist',
-                 'data' => $cust
-             ]);
-         }else{
-            $customer->cus_name = $request->cus_name;
-            $customer->cus_address = $request->cus_address;
-            $customer->cus_mobile = $request->cus_mobile;
-            $customer->customer_type = $request->customer_type;
-            $customer->user_id = Auth::user()->id;
-    
-            $customer->save();
-    
-            $customer->users()->sync(Auth::user()->id);
-    
-            return response()->json([
-                'status' => 'okay',
-                'message' => 'Customer updated Succesffuly',
-                'data' => $customer
-            ]);
-         }
+      
+        $customer->cus_name = $request->cus_name;
+        $customer->cus_address = $request->cus_address;
+        $customer->cus_mobile = $request->cus_mobile;
+        $customer->customer_type = $request->customer_type;
+        $customer->user_id = Auth::user()->id;
+
+        $customer->save();
+
+        $customer->users()->sync(Auth::user()->id);
+
+        return response()->json([
+            'status' => 'okay',
+            'message' => 'Customer updated Succesffuly',
+            'data' => $customer
+        ]);
+         
 
        // return $request->all();
 

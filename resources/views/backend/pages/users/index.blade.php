@@ -51,19 +51,19 @@ Users - Admin Panel
                         <table id="dataTable" class="text-center">
                             <thead class="bg-light text-capitalize">
                                 <tr>
-                                    <th width="5%">Sl</th>
-                                    <th width="10%">Name</th>
-                                    <th width="10%">Email</th>
-                                    <th width="40%">Roles</th>
-                                    <th width="15%">Action</th>
+                                    <th>Sl</th>
+                                    <th>Name</th>
+                                    <th>Mobile</th>
+                                    <th>Roles</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
                                @foreach ($users as $user)
                                <tr>
                                     <td>{{ $loop->index+1 }}</td>
-                                    <td>{{ $user->name }}</td>
-                                    <td>{{ $user->email }}</td>
+                                    <td>{{ ucwords($user->name) }}</td>
+                                    <td>{{ $user->mobile }}</td>
                                     <td>
                                         @foreach ($user->roles as $role)
                                             <span class="badge badge-info mr-1">

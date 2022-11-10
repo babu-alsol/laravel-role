@@ -192,14 +192,32 @@ class TransactionController extends Controller
         ->where('customer_type', 'customer')->get();
 
        // return $customers;
-       $customers = (array) $customers;
+      // $customers = (array) $customers;
 
-       // return $customers;
+        return $customers;
 
         foreach ($customers as $customer){
             $customer = (object) $customer;
+            return response()->json([
+                'customers' => $customer,
+                //'transactions' => $customer->effectivePrice
+            ]);
 
-            return $customer;
+            
+            // foreach ($customer as $tns) {
+
+            //    // $tns_give = $tns->transactions->where('tns_type', 'give')->get();
+
+            //     //return $tns_give;
+            //     return response()->json([
+            //         'customers' => $customer,
+            //         'transactions' => $tns->transactions
+            //     ]);
+
+
+            // }
+
+           
             
             //return $customer;
         }
