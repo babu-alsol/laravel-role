@@ -59,6 +59,105 @@
                     </li>
                     @endif
 
+                    @if ($usr->can('admin.create') || $usr->can('admin.view') ||  $usr->can('admin.edit') ||  $usr->can('admin.delete'))
+                    <li>
+                        <a href="javascript:void(0)" aria-expanded="true"><i class="fa fa-user"></i><span>
+                            Users
+                        </span></a>
+                        <ul class="collapse {{ Route::is('admin.admins.create') || Route::is('admin.admins.index') || Route::is('admin.admins.edit') || Route::is('admin.admins.show') ? 'in' : '' }}">
+                            
+                            @if ($usr->can('admin.view'))
+                                <li class="{{ Route::is('admin.user.index')  || Route::is('admin.admins.edit') ? 'active' : '' }}"><a href="{{ route('admin.users.index') }}">All Users</a></li>
+                            @endif
+
+                         
+                        </ul>
+                    </li>
+                    @endif
+
+                    @if ($usr->can('admin.create') || $usr->can('admin.view') ||  $usr->can('admin.edit') ||  $usr->can('admin.delete'))
+                    <li>
+                        <a href="javascript:void(0)" aria-expanded="true"><i class="fa fa-user"></i><span>
+                            Customers
+                        </span></a>
+                        <ul class="collapse {{ Route::is('admin.admins.create') || Route::is('admin.admins.index') || Route::is('admin.admins.edit') || Route::is('admin.admins.show') ? 'in' : '' }}">
+                            
+                            @if ($usr->can('admin.view'))
+                                <li class="{{ Route::is('admin.customers.index')  || Route::is('admin.admins.edit') ? 'active' : '' }}"><a href="{{ route('admin.customers.index') }}">All Customers</a></li>
+                            @endif
+
+                         
+                        </ul>
+                    </li>
+                    @endif
+
+                    @if ($usr->can('admin.create') || $usr->can('admin.view') ||  $usr->can('admin.edit') ||  $usr->can('admin.delete'))
+                    <li>
+                        <a href="javascript:void(0)" aria-expanded="true"><i class="fa fa-user"></i><span>
+                            Cashbooks
+                        </span></a>
+                        <ul class="collapse {{ Route::is('admin.admins.create') || Route::is('admin.admins.index') || Route::is('admin.admins.edit') || Route::is('admin.admins.show') ? 'in' : '' }}">
+                            
+                            @if ($usr->can('admin.view'))
+                                <li class="{{ Route::is('admin.customers.index')  || Route::is('admin.admins.edit') ? 'active' : '' }}"><a href="{{ route('admin.cashbooks.index') }}">All Cashbooks</a></li>
+                            @endif
+
+                         
+                        </ul>
+                    </li>
+                    @endif
+
+                    @if ($usr->can('admin.create') || $usr->can('admin.view') ||  $usr->can('admin.edit') ||  $usr->can('admin.delete'))
+                    <li>
+                        <a href="javascript:void(0)" aria-expanded="true"><i class="fa fa-user"></i><span>
+                            Transactions
+                        </span></a>
+                        <ul class="collapse {{ Route::is('admin.admins.create') || Route::is('admin.admins.index') || Route::is('admin.admins.edit') || Route::is('admin.admins.show') ? 'in' : '' }}">
+                            
+                            @if ($usr->can('admin.view'))
+                                <li class="{{ Route::is('admin.customers.index')  || Route::is('admin.admins.edit') ? 'active' : '' }}"><a href="{{ route('admin.transactions.index') }}">All Transactions</a></li>
+                            @endif
+
+                         
+                        </ul>
+                    </li>
+                    @endif
+
+                    @if ($usr->can('admin.create') || $usr->can('admin.view') ||  $usr->can('admin.edit') ||  $usr->can('admin.delete'))
+                    <li>
+                        <a href="javascript:void(0)" aria-expanded="true"><i class="fa fa-user"></i><span>
+                            Businesses
+                        </span></a>
+                        <ul class="collapse {{ Route::is('admin.admins.create') || Route::is('admin.admins.index') || Route::is('admin.admins.edit') || Route::is('admin.admins.show') ? 'in' : '' }}">
+                            
+                            @if ($usr->can('admin.view'))
+                                <li class="{{ Route::is('admin.customers.index')  || Route::is('admin.admins.edit') ? 'active' : '' }}"><a href="{{ route('admin.business.index') }}">All Businesses</a></li>
+                            @endif
+
+                         
+                        </ul>
+                    </li>
+                    @endif
+
+                    @if ($usr->can('admin.create') || $usr->can('admin.view') ||  $usr->can('admin.edit') ||  $usr->can('admin.delete'))
+                    <li>
+                        <a href="javascript:void(0)" aria-expanded="true"><i class="fa fa-user"></i><span>
+                            Faqs
+                        </span></a>
+                        <ul class="collapse {{ Route::is('admin.admins.create') || Route::is('admin.admins.index') || Route::is('admin.admins.edit') || Route::is('admin.admins.show') ? 'in' : '' }}">
+                            
+                            @if ($usr->can('admin.view'))
+                                <li class="{{ Route::is('admin.customers.index')  || Route::is('admin.admins.edit') ? 'active' : '' }}"><a href="{{ route('admin.faqs.index') }}">All Faqs</a></li>
+                            @endif
+
+                            @if ($usr->can('admin.create'))
+                                <li class="{{ Route::is('admin.admins.create')  ? 'active' : '' }}"><a href="{{ route('admin.faqs.create') }}">Create Faq</a></li>
+                            @endif
+                         
+                        </ul>
+                    </li>
+                    @endif
+
                 </ul>
             </nav>
         </div>

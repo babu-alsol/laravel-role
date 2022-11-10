@@ -5,6 +5,7 @@ namespace App\Models;
 use App\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class Customer extends Model
 {
@@ -24,4 +25,16 @@ class Customer extends Model
     //     // $transaction_give = Transaction::where('tns_type', 'give')->sum('amount');
     //     // return $transaction_give;
     // }
+
+    public function effectivePrice(){
+        // return $customer;
+        $transactions_give = Transaction::where('user_id', Auth::user()->id)->where('tns_type', 'give')->sum('amount');
+
+        $transactions_got = Transaction::where('user_id', Auth::user()->id)->where('tns_type', 'got')->sum('amount');
+
+        return response()->json([
+            
+            'effective_transactions' => $transactions_got - $transactions_give
+        ]);
+   }
 }

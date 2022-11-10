@@ -1,5 +1,10 @@
 <?php
 
+use App\Http\Controllers\Backend\BusinessController;
+use App\Http\Controllers\Backend\CashbookController;
+use App\Http\Controllers\Backend\CustomerController;
+use App\Http\Controllers\Backend\FaqController;
+use App\Http\Controllers\Backend\TransactionController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -32,6 +37,12 @@ Route::group(['prefix' => 'admin'], function () {
     Route::resource('roles', 'Backend\RolesController', ['names' => 'admin.roles']);
     Route::resource('users', 'Backend\UsersController', ['names' => 'admin.users']);
     Route::resource('admins', 'Backend\AdminsController', ['names' => 'admin.admins']);
+    Route::resource('customers', CustomerController::class, ['names' => 'admin.customers']);
+    Route::resource('cashbooks', CashbookController::class, ['names' => 'admin.cashbooks']);
+    Route::resource('transactions', TransactionController::class, ['names' => 'admin.transactions']);
+    Route::resource('business', BusinessController::class, ['names' => 'admin.business']);
+    Route::resource('faqs', FaqController::class, ['names' => 'admin.faqs']);
+   
 
 
     // Login Routes

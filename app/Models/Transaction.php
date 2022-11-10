@@ -5,6 +5,7 @@ namespace App\Models;
 use App\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class Transaction extends Model
 {
@@ -19,5 +20,7 @@ class Transaction extends Model
     public function customer(){
         return $this->belongsTo(Customer::class, 'customer_id');
     }
+
+   
 
 }
