@@ -19,7 +19,10 @@ class CashbookController extends Controller
      */
     public function index()
     {
-        $cashbooks = Cashbook::where('user_id', Auth::user()->id)->get();
+
+        $today = Carbon::today();
+       // return $today;
+        $cashbooks = Cashbook::where('user_id', Auth::user()->id)->orderBy('date_time', 'desc')->whereDate('date_time', $today)->get();
 
         if ($cashbooks->count() > 0){
             return response()->json([
@@ -43,11 +46,18 @@ class CashbookController extends Controller
             'payment_type' => 'required',
             'attachments' => 'mimes:doc,docx,pdf,txt,csv,jpg,png,xlsx|max:2048',
             'payment_details' => 'required',
-            'date_time' => 'required'
+           // 'date_time' => 'required'
             
         ]);
 
         $data = $request->all();
+
+       // return $data;
+        if ($request->date_time){
+            $data['date_time'] = $request->date_time;
+        }else{
+            $data['date_time'] = Carbon::now();
+        }
 
         $data['user_id'] = Auth::user()->id;
         $data['created_at'] = Carbon::now();
@@ -95,11 +105,17 @@ class CashbookController extends Controller
             'payment_type' => 'required',
             'attachments' => 'mimes:doc,docx,pdf,txt,csv,jpg,png|max:2048',
             'payment_details' => 'required',
-            'date_time' => 'required'
+            //'date_time' => 'required'
             
         ]);
 
         $data = $request->all();
+
+        if ($request->date_time){
+            $data['date_time'] = $request->date_time;
+        }else{
+            $data['date_time'] = Carbon::now();
+        }
 
         $data['user_id'] = Auth::user()->id;
 
