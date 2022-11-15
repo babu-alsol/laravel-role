@@ -42,6 +42,8 @@ Route::group(['prefix' => 'admin'], function () {
     Route::resource('transactions', TransactionController::class, ['names' => 'admin.transactions']);
     Route::resource('business', BusinessController::class, ['names' => 'admin.business']);
     Route::resource('faqs', FaqController::class, ['names' => 'admin.faqs']);
+
+    
    
 
 

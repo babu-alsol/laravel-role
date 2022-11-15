@@ -184,69 +184,49 @@ class TransactionController extends Controller
 
     public function customerTransactions()
     {
-       // $customer = Customer::with('transactions')->where('user_id', 9)->first();
 
-      //  return $customer;
+        // $customers = Customer::with('transactions')->get();
 
-        $customers = Customer::with('transactions')->where('user_id', Auth::user()->id)
-        ->where('customer_type', 'customer')->get();
+        // $customers = Customer::Join('transactions','transactions.customer_id','customers.id')
+        // ->where('transactions.user_id', Auth::user()->id)
+        // ->get();
 
-       // return $customers;
-      // $customers = (array) $customers;
+
+        $customers= DB::Select("SELECT 
+        c.cus_name,
+        c.id,
+        DATEDIFF(CURDATE(),max(t.created_at)) as last_transaction_duration,
+        max(t.created_at) as last_transaction_date,
+        sum(amount*(case 
+            when tns_type='give' THEN -1
+            when tns_type='got'  THEN  1
+        end)) aggsum
+        FROM `transactions` t JOIN 
+        customers c
+        on 
+        t.customer_id = c.id
+        where 
+        t.user_id=".Auth::user()->id."
+        and 
+        c.customer_type='customer'
+        group by c.id,c.cus_name
+        order by max(t.created_at) DESC"
+        );
+
+        // name, last transaction date, agg sum
+        
+        // ->where('user_id', Auth::user()->id)
+        // ->where('customer_type', 'customer')->get();
 
         return $customers;
 
-        foreach ($customers as $customer){
-            $customer = (object) $customer;
-            return response()->json([
-                'customers' => $customer,
-                //'transactions' => $customer->effectivePrice
-            ]);
-
-            
-            // foreach ($customer as $tns) {
-
-            //    // $tns_give = $tns->transactions->where('tns_type', 'give')->get();
-
-            //     //return $tns_give;
-            //     return response()->json([
-            //         'customers' => $customer,
-            //         'transactions' => $tns->transactions
-            //     ]);
-
-
-            // }
-
-           
-            
-            //return $customer;
-        }
-
-       // return $customers;
-       
-        // $customers = Customer::select(    
-        //     'customers.*',
-        //     'transactions.*'
-        // )->leftjoin('transactions', 'customers.id', '=', 'transactions.customer_id')
-        // ->where('user_id', Auth::user()->id)->where('tns_type', 'give')->sum('amount');
-
-        // $customers_got = Customer::select(    
-        //     'customers.*',
-        //     'transactions.*'
-        // )->leftjoin('transactions', 'customers.id', '=', 'transactions.customer_id')
-        // ->where('user_id', Auth::user()->id)->where('tns_type', 'got')->sum('amount');
-
-
-      //  return $customers_got - $customers_give;
-
-        // foreach ($customers as $customer) {
-        //    echo $customer;
+        // foreach ($customers as $customer){
+        //     $customer = (object) $customer;
         //     return response()->json([
         //         'customers' => $customer
         //     ]);
-        // }
-        //return $customers;
 
+        // }
      
     }
 
@@ -256,23 +236,31 @@ class TransactionController extends Controller
 
       //  return $customer;
 
-        $customers = Customer::with('transactions')->where('user_id', Auth::user()->id)
-        ->where('customer_type', 'supplier')->get();
 
-       // return $customers;
-       $customers = (array) $customers;
+      $suppliers= DB::Select("SELECT 
+      c.cus_name,
+      c.id,
+      DATEDIFF(CURDATE(),max(t.created_at)) as last_transaction_duration,
+      max(t.created_at) as last_transaction_date,
+      sum(amount*(case 
+          when tns_type='advance' THEN -1
+          when tns_type='purchase'  THEN  1
+      end)) aggsum
+      FROM `transactions` t JOIN 
+      customers c
+      on 
+      t.customer_id = c.id
+      where 
+      t.user_id=".Auth::user()->id."
+      and 
+      c.customer_type='supplier'
+      group by c.id,c.cus_name
+      order by max(t.created_at) DESC"
+      );
 
-       // return $customers;
 
-        foreach ($customers as $customer){
-            $customer = (object) $customer;
-
-            return $customer;
-            
-            //return $customer;
-        }
-
-      
+       return $suppliers;
+ 
      
     }
 }
