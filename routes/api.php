@@ -45,13 +45,14 @@ Route::group(['prefix' => 'auth', 'middleware' => 'auth:api'], function(){
     Route::get('/get-transaction/{type}', [App\Http\Controllers\TransactionController::class, 'index']);
     Route::get('/transactions-by-customer/{customer}', [\App\Http\Controllers\TransactionController::class, 'tnsCustomer']);
     Route::get('/transactions-by-customer/{supplier}', [\App\Http\Controllers\TransactionController::class, 'tnsSupplier']);
-    Route::apiResource('cashbook', CashbookController::class);
+    Route::apiResource('cashbook', CashbookController::class)->except('index');
+    Route::get('/cashbook/{start_date?}/{end_date?}', [App\Http\Controllers\CashbookController::class, 'index']);
     Route::get('/today-cashbook', [App\Http\Controllers\CashbookController::class, 'todayCashbook']);
     Route::get('/week-cashbook', [App\Http\Controllers\CashbookController::class, 'weekCashbook']);
     Route::get('/month-cashbook', [App\Http\Controllers\CashbookController::class, 'monthCashbook']);
     Route::get('/today-cashbook-in', [App\Http\Controllers\CashbookController::class, 'todayCashbookIn']);
     Route::get('/today-cashbook-out', [App\Http\Controllers\CashbookController::class, 'todayCashbookOut']);
-    Route::get('/create-cashbook-pdf/{day}', [App\Http\Controllers\CashbookController::class, 'createPdf']);
+    Route::get('/create-cashbook-pdf/{start_date?}/{end_date?}', [App\Http\Controllers\CashbookController::class, 'createPdf']);
 
     // all transactions for a customer/ supplier
      Route::get('/user-all-customers-transactions', [App\Http\Controllers\TransactionController::class, 'customerTransactions']);
@@ -66,6 +67,10 @@ Route::group(['prefix' => 'auth', 'middleware' => 'auth:api'], function(){
    
     Route::get('/view_reports', [App\Http\Controllers\CashbookController::class, 'viewReports']);
     Route::get('/view_reports/{type}', [App\Http\Controllers\CashbookController::class, 'viewReportsType']);
+
+    // get all business for a particular user
+
+   // Route::get('/business-for-a-user', [App\Http\Controllers\BusinessController::class, 'getAllBusiness']);
 
 
 

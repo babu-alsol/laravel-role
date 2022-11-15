@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Customer;
 use App\Models\Transaction;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -43,19 +44,24 @@ class TransactionController extends Controller
             'tns_type' => 'required',
             'customer_id' => 'required',
             'attachment' => 'mimes:doc,docx,pdf,txt,csv,jpg,png,xlsx|max:10800',
-            'date_time' => 'required',
+           // 'date_time' => 'required',
             'payment_details' => 'required'
 
         ]);
 
+        $data = $request->all();
         //return $request->all();
 
         $customer = Customer::where('id', $request->customer_id)->first();
 
+        if ($request->date_time) {
+            $data['date_time'] = $request->date_time;
+        } else {
+            $data['date_time'] = Carbon::now();
+        }
 
 
-
-        $data = $request->all();
+       
         $data['cus_type'] = $customer->customer_type;
         $data['cus_name'] = $customer->cus_name;
         $data['user_id'] = Auth::user()->id;
