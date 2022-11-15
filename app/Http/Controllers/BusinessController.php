@@ -15,7 +15,7 @@ class BusinessController extends Controller
      */
     public function index()
     {
-        $businesses = Business::with('user')->get();
+        $businesses = Business::where('user_id', Auth::user()->id)->get();
 
         if ($businesses->count() > 0){
             return response()->json([

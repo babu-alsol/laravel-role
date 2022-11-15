@@ -190,9 +190,9 @@ class UserController extends Controller
     
                 $token = $user->createToken('API Token')->accessToken;
                 return response()->json([
-                    'message' => 'mobile number is not resgistered, new user created with the mobile number and Otp verification succesfully completed',
+                    'message' => 'New user created with the mobile number and Otp verification succesfully completed',
                     'status' => '200',
-                    'user' => Auth::user(),
+                    'user' => $user,
                     'token' => $token,
                     
                 ]);
@@ -201,7 +201,7 @@ class UserController extends Controller
            
             $token = $user->createToken('API Token')->accessToken;
             return response()->json([
-                ['user' => $user],
+                'user' => $user,
                 'message' => 'Otp verification succesfully completed',
                 'status' => '200',
                 'token' => $token,

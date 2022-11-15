@@ -48,7 +48,9 @@
 
             <tr>
                 <td>Date Collected:</td>
-                <td> {{ \Carbon\Carbon::now()->diffForHumans() }}</td>
+             
+                <td> {{ date('d-m-Y', strtotime(\Carbon\Carbon::now())) }}</td>
+               
             </tr>
 
 
@@ -69,6 +71,8 @@
                     <th>Amount</th>
                     <th>Type</th>
                     <th>Payment Type</th>
+                    <th>Payment Details</th>
+                    <th>Date</th>
                 </tr>
             </thead>
             <tbody>
@@ -85,6 +89,12 @@
                         </td>
                         <td>
                             <center>{{ $item->payment_type }}</center>
+                        </td>
+                        <td>
+                            <center>{{ $item->payment_details }}</center>
+                        </td>
+                        <td>
+                            <center>{{date('d-m-Y', strtotime($item->date_time)) }}</center>
                         </td>
                     </tr>
                 @endforeach
