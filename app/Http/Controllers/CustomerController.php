@@ -37,7 +37,7 @@ class CustomerController extends Controller
         $request->validate([
             'cus_name' => 'required',
            // 'cus_address' => 'required',
-            'cus_mobile' => 'required|min:8|max:11|regex:/^([0-9\s\-\+\(\)]*)$/',
+            'cus_mobile' => 'required|min:8|regex:/^([0-9\s\-\+\(\)]*)$/',
             
             'customer_type' => 'required'
         ]);
@@ -115,7 +115,7 @@ class CustomerController extends Controller
         $request->validate([
             'cus_name' => 'required',
            // 'cus_address' => 'required',
-            'cus_mobile' => 'required',
+           'cus_mobile' => 'required|min:8|regex:/^([0-9\s\-\+\(\)]*)$/',
             
             'customer_type' => 'required'
         ]);

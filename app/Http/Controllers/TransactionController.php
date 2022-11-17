@@ -199,7 +199,7 @@ class TransactionController extends Controller
 
 
         $customers= DB::Select("SELECT 
-        c.cus_name,
+        c.cus_name,```````````````````````````````````````````````````````````````````````````
         c.id,
         DATEDIFF(CURDATE(),max(t.created_at)) as last_transaction_duration,
         max(t.created_at) as last_transaction_date,
