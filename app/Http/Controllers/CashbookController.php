@@ -7,6 +7,7 @@ use App\Models\Transaction;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use PDF;
 
@@ -70,12 +71,21 @@ class CashbookController extends Controller
         $data['amount'] = $request->amount;
 
 
-        if ($request->file()) {
-            $fileName = time() . '_' . $request->file('attachments')->getClientOriginalName();
-            $filePath = $request->file('attachments')->storeAs('uploads/cashbook/attachments', $fileName, 'public');
-            //$data['attachments']->name = time().'_'.$request->file->getClientOriginalName();
-            $data['attachments'] = '/storage/' . $filePath;
-        }
+        if ($request->hasFile('attachments')) {
+            $image = $request->file('attachments');
+            $filename = now()->timestamp . '.' . $image->getClientOriginalExtension();
+        
+            $image->move(public_path('assets/cashbook/attachments/'), $filename);
+            $data['attachments'] = $filename;
+            
+            // the rest of your code
+         }
+        // if ($request->file()) {
+        //     $fileName = time() . '_' . $request->file('attachments')->getClientOriginalName();
+        //     $filePath = $request->file('attachments')->storeAs('uploads/cashbook/attachments', $fileName, 'public');
+        //     //$data['attachments']->name = time().'_'.$request->file->getClientOriginalName();
+        //     $data['attachments'] = '/storage/' . $filePath;
+        // }
         //store your file into directory and db
 
 
@@ -125,14 +135,28 @@ class CashbookController extends Controller
         $data['user_id'] = Auth::user()->id;
 
 
+        if ($request->hasFile('attachments') && $cashbook->attachments != null) {
 
-        if ($request->file() && $cashbook->attachments != null) {
-            $filePath = Storage::path();
-            $fileName = time() . '_' . $request->file('attachments')->getClientOriginalName();
-            // $filePath = $request->file('attachments')->storeAs('uploads/cashbook/attachments', $fileName, 'public');
-            //$data['attachments']->name = time().'_'.$request->file->getClientOriginalName();
-            $data['attachments'] = '/storage/' . $filePath;
-        }
+            $filePath = public_path('assets/cashbook/attachments/').'/'.$cashbook->attachments;
+            if ($filePath){
+                File::delete($filePath);
+            }
+            $image = $request->file('attachments');
+            $filename = now()->timestamp . '.' . $image->getClientOriginalExtension();
+        
+            $image->move(public_path('assets/cashbook/attachments/'), $filename);
+            $data['attachments'] = public_path('assets/cashbook/attachments/').'/'.$filename;
+            
+            // the rest of your code
+         }
+
+        // if ($request->file() && $cashbook->attachments != null) {
+        //     $filePath = Storage::path();
+        //     $fileName = time() . '_' . $request->file('attachments')->getClientOriginalName();
+        //     // $filePath = $request->file('attachments')->storeAs('uploads/cashbook/attachments', $fileName, 'public');
+        //     //$data['attachments']->name = time().'_'.$request->file->getClientOriginalName();
+        //     $data['attachments'] = '/storage/' . $filePath;
+        // }
 
         $cashbook->fill($data);
 
