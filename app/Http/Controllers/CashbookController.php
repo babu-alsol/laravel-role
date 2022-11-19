@@ -277,7 +277,7 @@ class CashbookController extends Controller
 
         return response()->json([
             'message' => 'Pdf generated',
-            'path' => $path
+            'path' => $filename
         ]);
 
         // download PDF file with download method
