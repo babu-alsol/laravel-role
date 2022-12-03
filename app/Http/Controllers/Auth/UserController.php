@@ -10,6 +10,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Otp;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Http;
+
 
 class UserController extends Controller
 {
@@ -142,18 +144,22 @@ class UserController extends Controller
     }
 
     public function sendOtp(Request $request){
-
+       // dd($request);
+       
         $request->validate([
             'mobile' => 'required',
             'name' => 'required'
         ]);
+            $otp_rand = rand(1000, 9999);
 
             $otp = new Otp();
             $otp->mobile = $request->mobile;
             $otp->name = $request->name;
-            $otp->otp = 1000;
+            $otp->otp = $otp_rand;
+
             $otp->save();
-    
+            $response = Http::get('message.neodove.com/sendsms.jsp?user=BOUNDPAR&password=7c51237a44XX&senderid=BPTCPE&mobiles=+91'.$request->mobile.'&sms='.$otp_rand.' is your OnecPe employee portal login . Do not share it with anyone. Boundparivar');
+
             return response()->json([
                 'message' => 'otp send to your mobile number',
                 'status' => '200',
