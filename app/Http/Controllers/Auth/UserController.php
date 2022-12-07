@@ -158,7 +158,7 @@ class UserController extends Controller
             $otp->otp = $otp_rand;
 
             $otp->save();
-            $response = Http::get('message.neodove.com/sendsms.jsp?user=BOUNDPAR&password=7c51237a44XX&senderid=BPTCPE&mobiles=+91'.$request->mobile.'&sms='.$otp_rand.' is your OnecPe employee portal login . Do not share it with anyone. Boundparivar');
+            $response = Http::get('message.neodove.com/sendsms.jsp?user=BOUNDPAR&password=7c51237a44XX&senderid=BPTOPE&mobiles=+91'.$request->mobile.'&sms=Your OTP for OnecPe app login is '.$otp_rand.'. The OTP is valid for one time.BOUNDPARIVAR .Please do not share this code with anyone for security reason.');
 
             return response()->json([
                 'message' => 'otp send to your mobile number',
