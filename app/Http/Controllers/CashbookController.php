@@ -51,8 +51,7 @@ class CashbookController extends Controller
             'amount' => 'required',
             'cb_tns_type' => 'required',
             'payment_type' => 'required',
-            'attachments' => 'mimes:doc,docx,pdf,txt,csv,jpg,png,xlsx|max:2048',
-            'payment_details' => 'required',
+            'attachments' => 'mimes:doc,docx,pdf,txt,csv,jpg,png,xlsx|max:2048'
             // 'date_time' => 'required'
 
         ]);
