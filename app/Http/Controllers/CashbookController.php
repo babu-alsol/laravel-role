@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cashbook;
-use App\Models\Transaction;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -17,25 +16,16 @@ class CashbookController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($start_date = null, $end_date = null)
+    public function index()
     {
+        $cashbooks = Cashbook::where('user_id', Auth::user()->id)->get();
 
-        $today = Carbon::today();
-        // return $today;
-
-        if ($start_date == null && $end_date == null) {
-            $cashbooks = Cashbook::where('user_id', Auth::user()->id)->orderBy('date_time', 'desc')->whereDate('date_time', $today)->get();
-        } else {
-            $cashbooks = Cashbook::where('user_id', Auth::user()->id)->orderBy('date_time', 'desc')->whereBetween('date_time', [$start_date, $end_date])->get();
-        }
-
-
-        if ($cashbooks->count() > 0) {
+        if ($cashbooks->count() > 0){
             return response()->json([
                 'status' => 'Ok',
                 'data' => $cashbooks
             ]);
-        } else {
+        }else{
             return response()->json([
                 'status' => 'No Cahbook entry to show',
                 //'data' => $students
@@ -43,42 +33,36 @@ class CashbookController extends Controller
         }
     }
 
-
+  
     public function store(Request $request)
     {
         $request->validate([
             'amount' => 'required',
             'cb_tns_type' => 'required',
             'payment_type' => 'required',
-            'attachments' => 'mimes:doc,docx,pdf,txt,csv,jpg,png,xlsx|max:2048',
             'payment_details' => 'required',
-            // 'date_time' => 'required'
-
+            'date_time' => 'required',
+            'attachments' => 'mimes:doc,docx,pdf,txt,csv,jpg,png,xlsx|max:2048',
+            
         ]);
 
         $data = $request->all();
 
-        // return $data;
-        if ($request->date_time) {
-            $data['date_time'] = $request->date_time;
-        } else {
-            $data['date_time'] = Carbon::now();
-        }
-
         $data['user_id'] = Auth::user()->id;
-        $data['created_at'] = Carbon::now();
+        $data['created_at'] = Carbon::now(); // why is it needed?? Can't we set default value in table for this?
         $data['amount'] = $request->amount;
+        
 
-
-        if ($request->file()) {
-            $fileName = time() . '_' . $request->file('attachments')->getClientOriginalName();
+        if($request->file()) {
+            $fileName = time().'_'.$request->file('attachments')->getClientOriginalName();
             $filePath = $request->file('attachments')->storeAs('uploads/cashbook/attachments', $fileName, 'public');
             //$data['attachments']->name = time().'_'.$request->file->getClientOriginalName();
             $data['attachments'] = '/storage/' . $filePath;
+            
         }
-        //store your file into directory and db
-
-
+            //store your file into directory and db
+        
+       
 
         //return $data;
 
@@ -92,7 +76,7 @@ class CashbookController extends Controller
         ]);
     }
 
-
+   
     public function show(Cashbook $cashbook)
     {
         return response()->json([
@@ -101,7 +85,7 @@ class CashbookController extends Controller
         ]);
     }
 
-
+   
     public function update(Request $request, Cashbook $cashbook)
     {
         $request->validate([
@@ -109,29 +93,22 @@ class CashbookController extends Controller
             'cb_tns_type' => 'required',
             'payment_type' => 'required',
             'attachments' => 'mimes:doc,docx,pdf,txt,csv,jpg,png|max:2048',
-            'payment_details' => 'required',
-            //'date_time' => 'required'
-
+            
         ]);
 
         $data = $request->all();
 
-        if ($request->date_time) {
-            $data['date_time'] = $request->date_time;
-        } else {
-            $data['date_time'] = Carbon::now();
-        }
-
         $data['user_id'] = Auth::user()->id;
 
+       
 
-
-        if ($request->file() && $cashbook->attachments != null) {
+        if($request->file() && $cashbook->attachments !=null) {
             $filePath = Storage::path();
-            $fileName = time() . '_' . $request->file('attachments')->getClientOriginalName();
-            // $filePath = $request->file('attachments')->storeAs('uploads/cashbook/attachments', $fileName, 'public');
+            $fileName = time().'_'.$request->file('attachments')->getClientOriginalName();
+           // $filePath = $request->file('attachments')->storeAs('uploads/cashbook/attachments', $fileName, 'public');
             //$data['attachments']->name = time().'_'.$request->file->getClientOriginalName();
             $data['attachments'] = '/storage/' . $filePath;
+            
         }
 
         $cashbook->fill($data);
@@ -153,7 +130,7 @@ class CashbookController extends Controller
      */
     public function destroy(Cashbook $cashbook)
     {
-        if ($cashbook) {
+        if ($cashbook){
             $cashbook->delete();
             return response()->json([
                 'status' => 200,
@@ -162,11 +139,10 @@ class CashbookController extends Controller
         }
     }
 
-    public function todayCashbook()
-    {
+    public function todayCashbook(){
         $today = Carbon::today();
         //return $today;
-        $todays_cashbooks = Cashbook::whereDate('created_at', $today)->where('user_id', Auth::user()->id)->get();
+        $todays_cashbooks = Cashbook::whereDate('created_at', $today)->get();
 
         return response()->json([
             'status' => 200,
@@ -174,11 +150,10 @@ class CashbookController extends Controller
         ]);
     }
 
-    public function weekCashbook()
-    {
+    public function weekCashbook(){
         $week = Carbon::today()->subDays(7);
         //return $today;
-        $weeks_cashbooks = Cashbook::whereDate('created_at', $week)->where('user_id', Auth::user()->id)->get();
+        $weeks_cashbooks = Cashbook::whereDate('created_at', $week)->get();
 
         return response()->json([
             'status' => 200,
@@ -186,11 +161,10 @@ class CashbookController extends Controller
         ]);
     }
 
-    public function monthCashbook()
-    {
+    public function monthCashbook(){
         $month = Carbon::today()->subDays(30);
         //return $today;
-        $months_cashbooks = Cashbook::whereDate('created_at', $month)->where('user_id', Auth::user()->id)->get();
+        $months_cashbooks = Cashbook::whereDate('created_at', $month)->get();
 
         return response()->json([
             'status' => 200,
@@ -198,11 +172,10 @@ class CashbookController extends Controller
         ]);
     }
 
-    public function todayCashbookIn()
-    {
+    public function todayCashbookIn(){
         $today = Carbon::today();
         //return $today;
-        $todays_cashbooks = Cashbook::whereDate('created_at', $today)->where('cb_tns_type', 'in')->where('user_id', Auth::user()->id)->get();
+        $todays_cashbooks = Cashbook::whereDate('created_at', $today)->where('cb_tns_type', 'in')->get();
 
         return response()->json([
             'status' => 200,
@@ -210,113 +183,50 @@ class CashbookController extends Controller
         ]);
     }
 
-    public function todayCashbookOut()
-    {
+    public function todayCashbookOut(){
         $today = Carbon::today();
         //return $today;
-        $todays_cashbooks = Cashbook::whereDate('created_at', $today)->where('cb_tns_type', 'out')->where('user_id', Auth::user()->id)->get();
+        $todays_cashbooks = Cashbook::whereDate('created_at', $today)->where('cb_tns_type', 'out')->get();
 
         return response()->json([
             'status' => 200,
             'data' => $todays_cashbooks
         ]);
     }
+    
 
+    public function createPdf($day){
 
-    public function createPdf($start_date = null, $end_date = null,)
-    {
+        //$today = Carbon::today();
+        //return $today;
+        $cashbooks = Cashbook::whereDate('created_at', '>', now()->subDays($day)->endOfDay())->get();
 
+        // $week = Carbon::today()->subDays(7);
+        // //return $today;
+        // $weeks_cashbooks = Cashbook::whereDate('created_at', $week)->get();
 
-       
-        // return $today;
-
-
-        if ($start_date == null && $end_date == null) {
-            $cashbooks = Cashbook::where('user_id', Auth::user()->id)->orderBy('date_time', 'desc')->get();
-        } else {
-            $cashbooks = Cashbook::where('user_id', Auth::user()->id)->orderBy('date_time', 'desc')->whereBetween('date_time', [$start_date, $end_date])->get();
-        }
-       // return $cashbooks;
+        // $month = Carbon::today()->subDays(30);
+        // //return $today;
+        // $months_cashbooks = Cashbook::where('created_at', '>', now()->subDays(30)->endOfDay())->get();
 
         //return $months_cashbooks;
 
         $pdf = PDF::loadView('cashbook', compact('cashbooks'));
 
-        $filename = 'cashbook' . '-' . time() . '.pdf';
+        $filename='cashbook'.'-'.time().'.pdf';
 
-        $path = str_replace('\\', '/', public_path("assets/cashbook/report/" . $filename));
-
+        $path = str_replace('\\', '/', public_path("assets/cashbook/report/".$filename));
+       
 
         //return $pdf;
         //return $pdf->download('pdf_file.pdf');
         $pdf->save($path);
 
         return response()->json([
-            'message' => 'Pdf generated',
-            'path' => $path
+            'message' => 'Pdf generated'
         ]);
-
+      
         // download PDF file with download method
         //return $pdf->download('pdf_file.pdf');
-    }
-
-    public function viewReports()
-    {
-        //return Auth::user()->id;
-
-        $today = Carbon::today();
-
-        $cash_in_hands_in = Cashbook::where('cb_tns_type', 'in')->where('user_id', Auth::user()->id)->where('payment_type', 'cash')->sum('amount');
-
-        $cash_in_hands_out = Cashbook::where('cb_tns_type', 'out')->where('user_id', Auth::user()->id)->where('payment_type', 'cash')->sum('amount');
-
-        $today_income_in = Cashbook::where('user_id', Auth::user()->id)->whereDate('created_at', $today)->where('cb_tns_type', 'in')->sum('amount');
-
-        $today_income_out = Cashbook::where('user_id', Auth::user()->id)->whereDate('created_at', $today)->where('cb_tns_type', 'out')->sum('amount');
-
-        $to_collect = Transaction::where('user_id', Auth::user()->id)->where('tns_type', 'give')->sum('amount');
-
-        $to_pay = Transaction::where('user_id', Auth::user()->id)->where('tns_type', 'got')->sum('amount');
-
-
-
-        return response()->json([
-            'cash_in_hands' => $cash_in_hands_in - $cash_in_hands_out,
-            'todays_income' => $today_income_in - $today_income_out,
-            'cash_in' => $today_income_in,
-            'cash_out' => $today_income_out,
-            'to_collect' => $to_collect,
-            'to_pay' => $to_pay
-        ]);
-    }
-
-    public function viewReportsType($type)
-    {
-        //return Auth::user()->id;
-
-        $today = Carbon::today();
-
-        $cash_in_hands_in = Cashbook::where('cb_tns_type', 'in')->where('user_id', Auth::user()->id)->where('payment_type', 'cash')->sum('amount');
-
-        $cash_in_hands_out = Cashbook::where('cb_tns_type', 'out')->where('user_id', Auth::user()->id)->where('payment_type', 'cash')->sum('amount');
-
-        $today_income_in = Cashbook::where('user_id', Auth::user()->id)->whereDate('created_at', $today)->where('cb_tns_type', 'in')->sum('amount');
-
-        $today_income_out = Cashbook::where('user_id', Auth::user()->id)->whereDate('created_at', $today)->where('cb_tns_type', 'out')->sum('amount');
-
-        $to_collect = Transaction::where('user_id', Auth::user()->id)->where('tns_type', 'give')->where('cus_type', $type)->sum('amount');
-
-        $to_pay = Transaction::where('user_id', Auth::user()->id)->where('tns_type', 'got')->where('cus_type', $type)->sum('amount');
-
-
-
-        return response()->json([
-            'cash_in_hands' => $cash_in_hands_in - $cash_in_hands_out,
-            'todays_income' => $today_income_in - $today_income_out,
-            'cash_in' => $today_income_in,
-            'cash_out' => $today_income_out,
-            'to_collect' => $to_collect,
-            'to_pay' => $to_pay
-        ]);
     }
 }

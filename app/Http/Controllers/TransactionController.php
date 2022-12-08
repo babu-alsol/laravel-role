@@ -45,7 +45,6 @@ class TransactionController extends Controller
             'customer_id' => 'required',
             'attachment' => 'mimes:doc,docx,pdf,txt,csv,jpg,png,xlsx|max:10800',
            // 'date_time' => 'required',
-            'payment_details' => 'required'
 
         ]);
 
@@ -190,14 +189,6 @@ class TransactionController extends Controller
 
     public function customerTransactions()
     {
-
-        // $customers = Customer::with('transactions')->get();
-
-        // $customers = Customer::Join('transactions','transactions.customer_id','customers.id')
-        // ->where('transactions.user_id', Auth::user()->id)
-        // ->get();
-
-
         $customers= DB::Select("SELECT 
         c.cus_name,
         c.id,
@@ -218,31 +209,11 @@ class TransactionController extends Controller
         group by c.id,c.cus_name
         order by max(t.created_at) DESC"
         );
-
-        // name, last transaction date, agg sum
-        
-        // ->where('user_id', Auth::user()->id)
-        // ->where('customer_type', 'customer')->get();
-
-        return $customers;
-
-        // foreach ($customers as $customer){
-        //     $customer = (object) $customer;
-        //     return response()->json([
-        //         'customers' => $customer
-        //     ]);
-
-        // }
-     
+        return $customers;     
     }
 
     public function supplierTransactions()
     {
-       // $customer = Customer::with('transactions')->where('user_id', 9)->first();
-
-      //  return $customer;
-
-
       $suppliers= DB::Select("SELECT 
       c.cus_name,
       c.id,
@@ -263,10 +234,6 @@ class TransactionController extends Controller
       group by c.id,c.cus_name
       order by max(t.created_at) DESC"
       );
-
-
        return $suppliers;
- 
-     
     }
 }
