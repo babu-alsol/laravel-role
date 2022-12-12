@@ -65,7 +65,11 @@
                                     @foreach ($cashbooks as $data)
                                         <tr>
                                             <td>{{ $loop->index + 1 }}</td>
-                                            <td>{{ $data->user->name }}</td>
+                                          
+                                            <td>{{ $data->user->name  }}</td>
+                                         
+                                           
+                                           
                                             <td>{{ $data->cb_tns_type }}</td>
                                             <td>{{ $data->amount }}</td>
                                             <td>{{ $data->payment_type }}</td>
