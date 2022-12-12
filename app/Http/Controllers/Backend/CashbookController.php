@@ -16,6 +16,7 @@ class CashbookController extends Controller
     public function index()
     {
         $cashbooks = Cashbook::orderBy('created_at', 'desc')->get();
+        //return $cashbooks;
         return view('backend.pages.cashbooks.index', compact('cashbooks'));
     }
 

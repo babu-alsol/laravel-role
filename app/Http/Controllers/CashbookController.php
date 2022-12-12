@@ -97,13 +97,15 @@ class CashbookController extends Controller
         return response()->json([
             'status' => 200,
             'message' => 'Cashbook creted Succesffuly',
-            'data' => $data
+            'data' => $data,
+            
         ]);
     }
 
 
     public function show(Cashbook $cashbook)
     {
+       
         return response()->json([
             'status' => 200,
             'data' => $cashbook
@@ -113,12 +115,13 @@ class CashbookController extends Controller
 
     public function update(Request $request, Cashbook $cashbook)
     {
+       
         $request->validate([
             'amount' => 'required',
             'cb_tns_type' => 'required',
             'payment_type' => 'required',
             'attachments' => 'mimes:doc,docx,pdf,txt,csv,jpg,png|max:2048',
-            'payment_details' => 'required',
+           // 'payment_details' => 'required',
             //'date_time' => 'required'
 
         ]);

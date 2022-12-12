@@ -45,7 +45,7 @@ Route::group(['prefix' => 'auth', 'middleware' => 'auth:api'], function(){
     Route::get('/get-transaction/{type}', [App\Http\Controllers\TransactionController::class, 'index']);
     Route::get('/transactions-by-customer/{customer}', [\App\Http\Controllers\TransactionController::class, 'tnsCustomer']);
     Route::get('/transactions-by-customer/{supplier}', [\App\Http\Controllers\TransactionController::class, 'tnsSupplier']);
-    Route::apiResource('cashbook', CashbookController::class)->except('index');
+   Route::apiResource('cashbook', CashbookController::class)->except('index');
     Route::get('/cashbook/{start_date?}/{end_date?}', [App\Http\Controllers\CashbookController::class, 'index']);
     Route::get('/today-cashbook', [App\Http\Controllers\CashbookController::class, 'todayCashbook']);
     Route::get('/week-cashbook', [App\Http\Controllers\CashbookController::class, 'weekCashbook']);

@@ -115,7 +115,7 @@ class TransactionController extends Controller
             'customer_id' => 'required',
             'attachment' => 'mimes:doc,docx,pdf,txt,csv,jpg,png,xlsx|max:10800',
             'date_time' => 'required',
-            'payment_details' => 'required'
+            //'payment_details' => 'required'
         ]);
 
         $data = $request->all();
