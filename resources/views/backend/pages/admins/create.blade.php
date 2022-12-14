@@ -2,7 +2,7 @@
 @extends('backend.layouts.master')
 
 @section('title')
-Admin Create - Admin Panel
+Employee Create - Admin Panel
 @endsection
 
 @section('styles')
@@ -23,11 +23,11 @@ Admin Create - Admin Panel
     <div class="row align-items-center">
         <div class="col-sm-6">
             <div class="breadcrumbs-area clearfix">
-                <h4 class="page-title pull-left">Admin Create</h4>
+                <h4 class="page-title pull-left">Employee Create</h4>
                 <ul class="breadcrumbs pull-left">
                     <li><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-                    <li><a href="{{ route('admin.admins.index') }}">All Admins</a></li>
-                    <li><span>Create Admin</span></li>
+                    <li><a href="{{ route('admin.admins.index') }}">All Employees</a></li>
+                    <li><span>Create Employee</span></li>
                 </ul>
             </div>
         </div>
@@ -44,19 +44,34 @@ Admin Create - Admin Panel
         <div class="col-12 mt-5">
             <div class="card">
                 <div class="card-body">
-                    <h4 class="header-title">Create New Role</h4>
+                    <h4 class="header-title">Create New Employee</h4>
                     @include('backend.layouts.partials.messages')
                     
                     <form action="{{ route('admin.admins.store') }}" method="POST">
                         @csrf
                         <div class="form-row">
                             <div class="form-group col-md-6 col-sm-12">
-                                <label for="name">Admin Name</label>
+                                <label for="name">Employee Name</label>
                                 <input type="text" class="form-control" id="name" name="name" placeholder="Enter Name">
                             </div>
                             <div class="form-group col-md-6 col-sm-12">
-                                <label for="email">Admin Email</label>
+                                <label for="email">Employee Email</label>
                                 <input type="text" class="form-control" id="email" name="email" placeholder="Enter Email">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group col-md-6 col-sm-12">
+                                <label for="name">Employee Mobile</label>
+                                <input type="text" class="form-control" id="name" name="mobile" placeholder="Enter Name">
+                            </div>
+                            <div class="form-group col-md-6 col-sm-12">
+                                <label for="email">Employee Designation</label>
+                                <select name="designation_id" id="roles" class="form-control select2">
+                                    @foreach ($designations as $item)
+                                        <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
 
@@ -80,10 +95,15 @@ Admin Create - Admin Panel
                                     @endforeach
                                 </select>
                             </div>
+
                             <div class="form-group col-md-6 col-sm-6">
-                                <label for="username">Admin Username</label>
-                                <input type="text" class="form-control" id="username" name="username" placeholder="Enter Username" required>
+                                <label for="password">Status</label>
+                                <select name="status" id="roles" class="form-control" >
+                                    <option value="1">Active</option>
+                                    <option value="0">In Active</option>
+                                </select>
                             </div>
+                           
                         </div>
                         
                         <button type="submit" class="btn btn-primary mt-4 pr-4 pl-4">Save Admin</button>

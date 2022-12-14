@@ -3,6 +3,7 @@
 use App\Http\Controllers\Backend\BusinessController;
 use App\Http\Controllers\Backend\CashbookController;
 use App\Http\Controllers\Backend\CustomerController;
+use App\Http\Controllers\Backend\DesignationController;
 use App\Http\Controllers\Backend\FaqController;
 use App\Http\Controllers\Backend\TransactionController;
 use Illuminate\Support\Facades\Route;
@@ -42,6 +43,7 @@ Route::group(['prefix' => 'admin'], function () {
     Route::resource('transactions', TransactionController::class, ['names' => 'admin.transactions']);
     Route::resource('business', BusinessController::class, ['names' => 'admin.business']);
     Route::resource('faqs', FaqController::class, ['names' => 'admin.faqs']);
+    Route::resource('designations', DesignationController::class, ['names' => 'admin.designations']);
 
     
    

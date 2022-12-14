@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
 use App\Models\Admin;
+use App\Models\Designation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -47,8 +48,10 @@ class AdminsController extends Controller
             abort(403, 'Sorry !! You are Unauthorized to create any admin !');
         }
 
+        $designations = Designation::all();
+
         $roles  = Role::all();
-        return view('backend.pages.admins.create', compact('roles'));
+        return view('backend.pages.admins.create', compact('roles', 'designations'));
     }
 
     /**
@@ -67,16 +70,20 @@ class AdminsController extends Controller
         $request->validate([
             'name' => 'required|max:50',
             'email' => 'required|max:100|email|unique:admins',
-            'username' => 'required|max:100|unique:admins',
+            'mobile' => 'required',
+            'designation_id' => 'required',
             'password' => 'required|min:6|confirmed',
         ]);
 
         // Create New Admin
         $admin = new Admin();
         $admin->name = $request->name;
-        $admin->username = $request->username;
+        $admin->mobile = $request->mobile;
+        $admin->designation_id= $request->designation_id;
         $admin->email = $request->email;
         $admin->password = Hash::make($request->password);
+        $admin->employee_id = 'EMP-'.rand(100000,999999);
+        $admin->status = $request->status;
         $admin->save();
 
         if ($request->roles) {
@@ -111,8 +118,9 @@ class AdminsController extends Controller
         }
 
         $admin = Admin::find($id);
+        $designations = Designation::all();
         $roles  = Role::all();
-        return view('backend.pages.admins.edit', compact('admin', 'roles'));
+        return view('backend.pages.admins.edit', compact('admin', 'roles', 'designations'));
     }
 
     /**
@@ -142,14 +150,22 @@ class AdminsController extends Controller
         // Validation Data
         $request->validate([
             'name' => 'required|max:50',
-            'email' => 'required|max:100|email|unique:admins,email,' . $id,
-            'password' => 'nullable|min:6|confirmed',
+           // 'email' => 'required|max:100|email|unique:admins',
+            'mobile' => 'required',
+            'designation_id' => 'required',
+            //'password' => 'required|min:6|confirmed',
         ]);
 
 
+
+       // $admin = new Admin();
         $admin->name = $request->name;
+        $admin->mobile = $request->mobile;
+        $admin->designation_id= $request->designation_id;
         $admin->email = $request->email;
-        $admin->username = $request->username;
+       
+        $admin->employee_id = 'EMP-'.rand(100000,999999);
+        $admin->status = $request->status;
         if ($request->password) {
             $admin->password = Hash::make($request->password);
         }
