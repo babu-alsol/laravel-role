@@ -23,7 +23,7 @@ User Edit - Admin Panel
     <div class="row align-items-center">
         <div class="col-sm-6">
             <div class="breadcrumbs-area clearfix">
-                <h4 class="page-title pull-left">User Create</h4>
+                <h4 class="page-title pull-left">User Edit</h4>
                 <ul class="breadcrumbs pull-left">
                     <li><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
                     <li><a href="{{ route('admin.users.index') }}">All Users</a></li>
@@ -50,6 +50,7 @@ User Edit - Admin Panel
                     <form action="{{ route('admin.users.update', $user->id) }}" method="POST">
                         @method('PUT')
                         @csrf
+                        
                         <div class="form-row">
                             <div class="form-group col-md-6 col-sm-12">
                                 <label for="name">User Name</label>

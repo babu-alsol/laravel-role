@@ -2,7 +2,7 @@
 @extends('backend.layouts.master')
 
 @section('title')
-Admin Edit - Admin Panel
+Employee Edit - Admin Panel
 @endsection
 
 @section('styles')
@@ -22,11 +22,11 @@ Admin Edit - Admin Panel
     <div class="row align-items-center">
         <div class="col-sm-6">
             <div class="breadcrumbs-area clearfix">
-                <h4 class="page-title pull-left">Admin Edit</h4>
+                <h4 class="page-title pull-left">Employee Edit</h4>
                 <ul class="breadcrumbs pull-left">
                     <li><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
                     <li><a href="{{ route('admin.admins.index') }}">All Admins</a></li>
-                    <li><span>Edit Admin - {{ $admin->name }}</span></li>
+                    <li><span>Edit Employee - {{ $admin->name }}</span></li>
                 </ul>
             </div>
         </div>
@@ -43,7 +43,7 @@ Admin Edit - Admin Panel
         <div class="col-12 mt-5">
             <div class="card">
                 <div class="card-body">
-                    <h4 class="header-title">Edit Admin - {{ $admin->name }}</h4>
+                    <h4 class="header-title">Edit Employee - {{ $admin->name }}</h4>
                     @include('backend.layouts.partials.messages')
 
                     <form action="{{ route('admin.admins.update', $admin->id) }}" method="POST">
@@ -51,14 +51,30 @@ Admin Edit - Admin Panel
                         @csrf
                         <div class="form-row">
                             <div class="form-group col-md-6 col-sm-12">
-                                <label for="name">Admin Name</label>
+                                <label for="name">Employee Name</label>
                                 <input type="text" class="form-control" id="name" name="name" placeholder="Enter Name" value="{{ $admin->name }}">
                             </div>
                             <div class="form-group col-md-6 col-sm-12">
-                                <label for="email">Admin Email</label>
+                                <label for="email">Employee Email</label>
                                 <input type="text" class="form-control" id="email" name="email" placeholder="Enter Email" value="{{ $admin->email }}">
                             </div>
                         </div>
+
+                        <div class="form-row">
+                            <div class="form-group col-md-6 col-sm-12">
+                                <label for="name">Employee Mobile</label>
+                                <input value="{{$admin->mobile}}" type="text" class="form-control" id="name" name="mobile" placeholder="Enter Name">
+                            </div>
+                            <div class="form-group col-md-6 col-sm-12">
+                                <label for="email">Employee Designation</label>
+                                <select name="designation_id" id="roles" class="form-control select2">
+                                    @foreach ($designations as $item)
+                                        <option {{$item->id==$admin->designation_id ? 'selected' : ''}} value="{{ $item->id }}">{{ $item->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+
 
                         <div class="form-row">
                             <div class="form-group col-md-6 col-sm-12">
@@ -80,10 +96,15 @@ Admin Edit - Admin Panel
                                     @endforeach
                                 </select>
                             </div>
+
                             <div class="form-group col-md-6 col-sm-6">
-                                <label for="username">Admin Username</label>
-                                <input type="text" class="form-control" id="username" name="username" placeholder="Enter Username" required value="{{ $admin->username }}">
+                                <label for="password">Status</label>
+                                <select name="status" id="roles" class="form-control" >
+                                    <option {{$admin->status == '1' ? 'selected' : ''}} value="1">Active</option>
+                                    <option {{$admin->status == '0' ? 'selected' : ''}} value="0">In Active</option>
+                                </select>
                             </div>
+                          
                         </div>
 
                         <button type="submit" class="btn btn-primary mt-4 pr-4 pl-4">Save Admin</button>
