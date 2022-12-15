@@ -143,31 +143,31 @@ class UserController extends Controller
         ],200);
     }
 
-    public function sendOtp(Request $request){
-       // dd($request);
+    // public function sendOtp(Request $request){
+    //    // dd($request);
        
-        $request->validate([
-            'mobile' => 'required',
-            'name' => 'required'
-        ]);
-            $otp_rand = rand(1000, 9999);
+    //     $request->validate([
+    //         'mobile' => 'required',
+    //         'name' => 'required'
+    //     ]);
+    //         $otp_rand = rand(1000, 9999);
 
-            $otp = new Otp();
-            $otp->mobile = $request->mobile;
-            $otp->name = $request->name;
-            $otp->otp = $otp_rand;
+    //         $otp = new Otp();
+    //         $otp->mobile = $request->mobile;
+    //         $otp->name = $request->name;
+    //         $otp->otp = $otp_rand;
 
-            $otp->save();
-            $response = Http::get('message.neodove.com/sendsms.jsp?user=BOUNDPAR&password=7c51237a44XX&senderid=BPTOPE&mobiles=+91'.$request->mobile.'&sms=Your OTP for OnecPe app login is '.$otp_rand.'. The OTP is valid for one time.BOUNDPARIVAR .Please do not share this code with anyone for security reason.');
+    //         $otp->save();
+    //         $response = Http::get('message.neodove.com/sendsms.jsp?user=BOUNDPAR&password=7c51237a44XX&senderid=BPTOPE&mobiles=+91'.$request->mobile.'&sms=Your OTP for OnecPe app login is '.$otp_rand.'. The OTP is valid for one time.BOUNDPARIVAR .Please do not share this code with anyone for security reason.');
 
-            return response()->json([
-                'message' => 'otp send to your mobile number',
-                'status' => '200',
-                'name' => $request->name,
-                //'otp' => $otp
-            ]);
+    //         return response()->json([
+    //             'message' => 'otp send to your mobile number',
+    //             'status' => '200',
+    //             'name' => $request->name,
+    //             //'otp' => $otp
+    //         ]);
 
-    }
+    // }
 
     public function checkOtp(Request $request){
 
