@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 
 class TransactionController extends Controller
 {
@@ -42,6 +43,7 @@ class TransactionController extends Controller
         $request->validate([
             'amount' => 'required|numeric',
             'tns_type' => 'required',
+            'payment_type' => 'required',
             'customer_id' => 'required',
             'attachment' => 'mimes:doc,docx,pdf,txt,csv,jpg,png,xlsx|max:10800',
            // 'date_time' => 'required',
@@ -67,12 +69,15 @@ class TransactionController extends Controller
         $data['bill_no'] = 'Bill' . rand(10000000, 99999999);
         $data['tns_gateway_id'] = 'TNSGET' . rand(10000000, 99999999);
 
-        if ($request->file()) {
-            $fileName = time() . '_' . $request->file('attachment')->getClientOriginalName();
-            $filePath = $request->file('attachment')->storeAs('uploads/transaction/attachments', $fileName, 'public');
-            //$data['attachments']->name = time().'_'.$request->file->getClientOriginalName();
-            $data['attachment'] = '/storage/' . $filePath;
-        }
+        if ($request->hasFile('attachment')) {
+            $image = $request->file('attachment');
+            $filename = now()->timestamp . '.' . $image->getClientOriginalExtension();
+        
+            $image->move(public_path('assets/transaction/attachments/'), $filename);
+            $data['attachment'] = $filename;
+            
+            // the rest of your code
+         }
 
         Transaction::create($data);
 
@@ -112,6 +117,7 @@ class TransactionController extends Controller
         $request->validate([
             'amount' => 'required|numeric',
             'tns_type' => 'required',
+            'payment_type' => 'required',
             'customer_id' => 'required',
             'attachment' => 'mimes:doc,docx,pdf,txt,csv,jpg,png,xlsx|max:10800',
             'date_time' => 'required',
@@ -123,6 +129,20 @@ class TransactionController extends Controller
         $data['bill_no'] = 'Bill' . rand(10000000, 99999999);
         $data['tns_gateway_id'] = 'TNSGET' . rand(10000000, 99999999);
 
+        if ($request->hasFile('attachment') && $transaction->attachment != null) {
+
+            $filePath = public_path('assets/transaction/attachments/').'/'.$transaction->attachments;
+            if ($filePath){
+                File::delete($filePath);
+            }
+            $image = $request->file('attachment');
+            $filename = now()->timestamp . '.' . $image->getClientOriginalExtension();
+        
+            $image->move(public_path('assets/transaction/attachments/'), $filename);
+            $data['attachment'] = public_path('assets/transaction/attachments/').'/'.$filename;
+            
+            // the rest of your code
+         }
 
         $transaction->fill($data);
         $transaction->save();

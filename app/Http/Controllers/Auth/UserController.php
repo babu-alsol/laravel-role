@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 use App\Http\Controllers\Controller;
+use App\Models\Business;
 use App\Models\Otp;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
@@ -150,15 +151,15 @@ class UserController extends Controller
             'mobile' => 'required',
             'name' => 'required'
         ]);
-            $otp_rand = rand(1000, 9999);
+            // $otp_rand = rand(1000, 9999);
 
             $otp = new Otp();
             $otp->mobile = $request->mobile;
             $otp->name = $request->name;
-            $otp->otp = $otp_rand;
+            $otp->otp = 1000;
 
             $otp->save();
-            $response = Http::get('message.neodove.com/sendsms.jsp?user=BOUNDPAR&password=7c51237a44XX&senderid=BPTOPE&mobiles=+91'.$request->mobile.'&sms=Your OTP for OnecPe app login is '.$otp_rand.'. The OTP is valid for one time.BOUNDPARIVAR .Please do not share this code with anyone for security reason.');
+           // $response = Http::get('message.neodove.com/sendsms.jsp?user=BOUNDPAR&password=7c51237a44XX&senderid=BPTOPE&mobiles=+91'.$request->mobile.'&sms=Your OTP for OnecPe app login is '.$otp_rand.'. The OTP is valid for one time.BOUNDPARIVAR .Please do not share this code with anyone for security reason.');
 
             return response()->json([
                 'message' => 'otp send to your mobile number',
@@ -226,16 +227,44 @@ class UserController extends Controller
     }
 
     public function update(Request $request, User $user){
-        // $request->validate([
-
-        // ]);
+        $request->validate([
+            'email' => 'email',
+            'mobile' => 'min:8'
+        ]);
 
         // $user->username = $request->username;
 
         //$data = $request->all();
-        $user->username = $request->username;
+        $business = Business::where('user_id', Auth::user()->id)->first();
 
-        if ($request->file() && $user->profile_image != null) {
+        if ($business){
+            $business->bns_name = $request->bns_name;
+            $business->user_id = Auth::user()->id;
+            $business->bns_address = $request->bns_address;
+            $business->bns_type = $request->bns_type;
+            $business->gstin_no = $request->gstin_no;
+
+            $business->save();
+        }else{
+            $business = new Business();
+
+            $business->bns_name = $request->bns_name;
+            $business->user_id = Auth::user()->id;
+            $business->bns_address = $request->bns_address;
+            $business->bns_type = $request->bns_type;
+            $business->gstin_no = $request->gstin_no;
+        }
+
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->mobile = $request->mobile;
+        $user->pan_no = $request->pan_no;
+        $user->aadhar_no = $request->aadhar_no;
+        $user->voter_id = $request->voter_id;
+        $user->bank_account_no = $request->bank_account_no;
+        $user->business_name = $request->business_name;
+
+      
             $path =  $user->profile_image;
 
             if ($path) {
@@ -246,14 +275,16 @@ class UserController extends Controller
                 $request->file('profile_image')->move($filePath, $fileName);
                 // $data['attachments']->name = time().'_'.$request->file->getClientOriginalName();
                 $user->profile_image =  $filePath;
+            }else{
+                $fileName = time() . '_' . $request->file('profile_image')->getClientOriginalName();
+                $filePath = str_replace('\\', '/', public_path("assets/user/profile_image"));
+                $request->file('profile_image')->move($filePath, $fileName);
+                // $data['attachments']->name = time().'_'.$request->file->getClientOriginalName();
+                $user->profile_image =  $filePath;
             }
 
-            $fileName = time() . '_' . $request->file('profile_image')->getClientOriginalName();
-            $filePath = str_replace('\\', '/', public_path("assets/user/profile_image"));
-            $request->file('profile_image')->move($filePath, $fileName);
-            // $data['attachments']->name = time().'_'.$request->file->getClientOriginalName();
-            $user->profile_image =  $filePath;
-        }
+           
+     
 
         
         $user->save();

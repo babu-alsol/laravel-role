@@ -69,7 +69,7 @@
                                             <td>{{ $data->customer_type }}</td>
 
                                             <td>
-
+                                                <a class="btn btn-success text-white" href="{{ route('admin.customers.show', $data->id) }}">show</a>
                                                 <a class="btn btn-danger text-white"
                                                     href="{{ route('admin.customers.destroy', $data->id) }}"
                                                     onclick="event.preventDefault(); document.getElementById('delete-form-{{ $data->id }}').submit();">

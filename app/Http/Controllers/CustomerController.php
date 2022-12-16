@@ -38,6 +38,7 @@ class CustomerController extends Controller
             'cus_name' => 'required',
            // 'cus_address' => 'required',
             'cus_mobile' => 'required|min:8',
+           // 'cus_email' => 'email',
             
             'customer_type' => 'required'
         ]);
@@ -70,6 +71,8 @@ class CustomerController extends Controller
             $customer->cus_address = $request->cus_address;
             $customer->cus_mobile = $request->cus_mobile;
             $customer->customer_type = $request->customer_type;
+            // $customer->bank_account_no = $request->bank_account_no;
+            // $customer->cus_email = $request->cus_email;
             $customer->user_id = Auth::user()->id;
             
     
@@ -117,7 +120,8 @@ class CustomerController extends Controller
            // 'cus_address' => 'required',
             'cus_mobile' => 'required',
             
-            'customer_type' => 'required'
+            'customer_type' => 'required',
+            'cus_email' => 'email',
         ]);
 
       //  $cust = Customer::where('cus_mobile', $request->cus_mobile)->where('user_id', Auth::user()->id)->first();
@@ -130,6 +134,8 @@ class CustomerController extends Controller
         $customer->cus_address = $request->cus_address;
         $customer->cus_mobile = $request->cus_mobile;
         $customer->customer_type = $request->customer_type;
+        $customer->bank_account_no = $request->bank_account_no;
+        $customer->cus_email = $request->cus_email;
         $customer->user_id = Auth::user()->id;
 
         $customer->save();

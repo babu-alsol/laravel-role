@@ -49,7 +49,7 @@ class CashbookController extends Controller
      */
     public function show(Cashbook $cashbook)
     {
-        //
+        return view('backend.pages.cashbooks.show', compact('cashbook'));
     }
 
     /**
