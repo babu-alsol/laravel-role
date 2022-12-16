@@ -76,6 +76,8 @@
 
                                             <td>
 
+                                                <a class="btn btn-success text-white" href="{{ route('admin.cashbooks.show', $data->id) }}">show</a>
+
                                                 <a class="btn btn-danger text-white"
                                                     href="{{ route('admin.cashbooks.destroy', $data->id) }}"
                                                     onclick="event.preventDefault(); document.getElementById('delete-form-{{ $data->id }}').submit();">

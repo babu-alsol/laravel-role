@@ -72,6 +72,7 @@
                                             <td>{{ $data->amount }}</td>
                                          
                                             <td>
+                                                <a class="btn btn-success text-white" href="{{ route('admin.transactions.show', $data->id) }}">show</a>
 
                                                 <a class="btn btn-danger text-white"
                                                     href="{{ route('admin.transactions.destroy', $data->id) }}"

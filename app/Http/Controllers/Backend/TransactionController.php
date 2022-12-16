@@ -37,7 +37,7 @@ class TransactionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        return view('backend.pages.transactions.show', compact('transaction'));
     }
 
     /**
