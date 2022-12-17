@@ -38,54 +38,95 @@ User Edit - Admin Panel
 </div>
 <!-- page title area end -->
 
+<div class="main-content-inner card">
+    <div class="card-header">
+        <a class="card-link" data-toggle="collapse" href="#collapseOne">
+            User Details
+
+        </a>
+    </div>
+    <div id="" class="collapse show" data-parent="#accordion">
+        <div class="">
+            <div class="row container">
+                <div class="col-md-2">
+                    <label for="">Name</label>
+                    @if ($user->name)
+                        <p>{{ $user->name }}</p>
+                    @else
+                        <p>Not Provided</p>
+                    @endif
+
+                </div>
+
+                <div class="col-md-2">
+                    <label for="">Email</label>
+                    @if ($user->email)
+                        <p>{{ $user->email }}</p>
+                    @else
+                        <p>Not Provided</p>
+                    @endif
+                </div>
+
+                <div class="col-md-2">
+                    <label for="">Mobile</label>
+                    @if ($user->mobile)
+                        <p>{{ $user->mobile }}</p>
+                    @else
+                        <p>Not Provided</p>
+                    @endif
+                </div>
+                <div class="col-md-2">
+                    <label for="">Bank Account Number</label>
+                    @if ($user->bank_account_no)
+                        <p>{{ $user->bank_account_no }}</p>
+                    @else
+                        <p>Not Provided</p>
+                    @endif
+                </div>
+                <div class="col-md-2">
+                    <label for="">Block Status</label>
+                    @if ($user->block_status)
+                        <p>Block</p>
+                    @else
+                        <p>Unblock</p>
+                    @endif
+                </div>
+                <div class="col-md-2">
+                    <label for="">Address</label>
+                    @if ($user->cus_address)
+                        <p>{{ $user->cus_address }}</p>
+                    @else
+                        <p>Not Provided</p>
+                    @endif
+                </div>
+              
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
 <div class="main-content-inner">
     <div class="row">
         <!-- data table start -->
         <div class="col-12 mt-5">
             <div class="card">
                 <div class="card-body">
-                    <h4 class="header-title">Edit User - {{ $user->name }}</h4>
+                    <h4 class="header-title">Edit User</h4>
                     @include('backend.layouts.partials.messages')
                     
-                    <form action="{{ route('admin.users.update', $user->id) }}" method="POST">
-                        @method('PUT')
-                        @csrf
-                        
-                        <div class="form-row">
-                            <div class="form-group col-md-6 col-sm-12">
-                                <label for="name">User Name</label>
-                                <input type="text" class="form-control" id="name" name="name" placeholder="Enter Name" value="{{ $user->name }}">
-                            </div>
-                            <div class="form-group col-md-6 col-sm-12">
-                                <label for="email">User Email</label>
-                                <input type="text" class="form-control" id="email" name="email" placeholder="Enter Email" value="{{ $user->email }}">
-                            </div>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group col-md-6 col-sm-12">
-                                <label for="password">Password</label>
-                                <input type="password" class="form-control" id="password" name="password" placeholder="Enter Password">
-                            </div>
-                            <div class="form-group col-md-6 col-sm-12">
-                                <label for="password_confirmation">Confirm Password</label>
-                                <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" placeholder="Enter Password">
-                            </div>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group col-md-6 col-sm-12">
-                                <label for="password">Assign Roles</label>
-                                <select name="roles[]" id="roles" class="form-control select2" multiple>
-                                    @foreach ($roles as $role)
-                                        <option value="{{ $role->name }}" {{ $user->hasRole($role->name) ? 'selected' : '' }}>{{ $role->name }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-                        
-                        <button type="submit" class="btn btn-primary mt-4 pr-4 pl-4">Save User</button>
-                    </form>
+                  
+                        <label for="">Block Status</label>
+                        <form action="{{route('user.block', $user->id)}}" method="POST">
+                            @csrf
+                            <select  class="form-group" name="block_status" id="">
+                                <option {{$user->block_status == 1 ? 'selected': ''}}>Block</option>
+                                <option {{$user->block_status == 0 ? 'selected': ''}} class="form-control" value="0">Unblock</option>
+                            </select>
+                            <button type="submit" class="mx-10 btn btn-danger">Save</button>
+                        </form>
+                   
                 </div>
             </div>
         </div>

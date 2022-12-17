@@ -223,8 +223,8 @@ class TransactionController extends Controller
         DATEDIFF(CURDATE(),max(t.created_at)) as last_transaction_duration,
         max(t.created_at) as last_transaction_date,
         sum(amount*(case 
-            when tns_type='give' THEN -1
-            when tns_type='got'  THEN  1
+            when tns_type='give' THEN 1
+            when tns_type='got'  THEN -1
         end)) aggsum
         FROM `transactions` t JOIN 
         customers c
@@ -268,8 +268,8 @@ class TransactionController extends Controller
       DATEDIFF(CURDATE(),max(t.created_at)) as last_transaction_duration,
       max(t.created_at) as last_transaction_date,
       sum(amount*(case 
-          when tns_type='advance' THEN -1
-          when tns_type='purchase'  THEN  1
+          when tns_type='advance' THEN 1
+          when tns_type='purchase'  THEN -1
       end)) aggsum
       FROM `transactions` t JOIN 
       customers c

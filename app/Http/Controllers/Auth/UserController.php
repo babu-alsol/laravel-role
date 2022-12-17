@@ -264,7 +264,8 @@ class UserController extends Controller
         $user->bank_account_no = $request->bank_account_no;
         $user->business_name = $request->business_name;
 
-      
+        if ($request->hasFile('profile_image')){
+            //return true;
             $path =  $user->profile_image;
 
             if ($path) {
@@ -274,18 +275,16 @@ class UserController extends Controller
                 $filePath = str_replace('\\', '/', public_path("assets/user/profile_image"));
                 $request->file('profile_image')->move($filePath, $fileName);
                 // $data['attachments']->name = time().'_'.$request->file->getClientOriginalName();
-                $user->profile_image =  $filePath;
+                $user->profile_image =  $fileName;
             }else{
                 $fileName = time() . '_' . $request->file('profile_image')->getClientOriginalName();
                 $filePath = str_replace('\\', '/', public_path("assets/user/profile_image"));
                 $request->file('profile_image')->move($filePath, $fileName);
                 // $data['attachments']->name = time().'_'.$request->file->getClientOriginalName();
-                $user->profile_image =  $filePath;
+                $user->profile_image =  $fileName;
             }
-
-           
-     
-
+        }
+      
         
         $user->save();
 
@@ -295,6 +294,13 @@ class UserController extends Controller
              'status' => 200
         ]);
         
+    }
+
+    public function userBlock($id){
+        $user = User::where('id', $id)->first();
+        $user->block_status = !$user->block_status;
+        $user->save();
+        return back();
     }
 
 
