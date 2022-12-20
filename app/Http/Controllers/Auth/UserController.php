@@ -282,6 +282,7 @@ class UserController extends Controller
                 $request->file('profile_image')->move($filePath, $fileName);
                 // $data['attachments']->name = time().'_'.$request->file->getClientOriginalName();
                 $user->profile_image =  $fileName;
+
             }
         }
 
@@ -330,6 +331,7 @@ class UserController extends Controller
 
            
      
+
 
         
         $user->save();
