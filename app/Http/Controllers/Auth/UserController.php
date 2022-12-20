@@ -261,10 +261,11 @@ class UserController extends Controller
         $user->pan_no = $request->pan_no;
         $user->aadhar_no = $request->aadhar_no;
         $user->voter_id = $request->voter_id;
-        $user->bank_account_no = $request->bank_account_no;
+    
         $user->business_name = $request->business_name;
 
-      
+        if ($request->hasFile('profile_image')){
+            //return true;
             $path =  $user->profile_image;
 
             if ($path) {
@@ -274,14 +275,58 @@ class UserController extends Controller
                 $filePath = str_replace('\\', '/', public_path("assets/user/profile_image"));
                 $request->file('profile_image')->move($filePath, $fileName);
                 // $data['attachments']->name = time().'_'.$request->file->getClientOriginalName();
-                $user->profile_image =  $filePath;
+                $user->profile_image =  $fileName;
             }else{
                 $fileName = time() . '_' . $request->file('profile_image')->getClientOriginalName();
                 $filePath = str_replace('\\', '/', public_path("assets/user/profile_image"));
                 $request->file('profile_image')->move($filePath, $fileName);
                 // $data['attachments']->name = time().'_'.$request->file->getClientOriginalName();
-                $user->profile_image =  $filePath;
+                $user->profile_image =  $fileName;
             }
+        }
+
+        if ($request->hasFile('aadhar_image')){
+            //return true;
+            $path =  $user->aadhar_image;
+
+            if ($path) {
+                // return true;
+                File::delete($path);
+                $fileName = time() . '_' . $request->file('aadhar_image')->getClientOriginalName();
+                $filePath = str_replace('\\', '/', public_path("assets/user/aadhar_image"));
+                $request->file('aadhar_image')->move($filePath, $fileName);
+                // $data['attachments']->name = time().'_'.$request->file->getClientOriginalName();
+                $user->aadhar_image =  $fileName;
+            }else{
+                $fileName = time() . '_' . $request->file('aadhar_image')->getClientOriginalName();
+                $filePath = str_replace('\\', '/', public_path("assets/user/aadhar_image"));
+                $request->file('aadhar_image')->move($filePath, $fileName);
+                // $data['attachments']->name = time().'_'.$request->file->getClientOriginalName();
+                $user->aadhar_image =  $fileName;
+            }
+        }
+
+        
+        if ($request->hasFile('pan_image')){
+            //return true;
+            $path =  $user->aadhar_image;
+
+            if ($path) {
+                // return true;
+                File::delete($path);
+                $fileName = time() . '_' . $request->file('pan_image')->getClientOriginalName();
+                $filePath = str_replace('\\', '/', public_path("assets/user/pan_image"));
+                $request->file('pan_image')->move($filePath, $fileName);
+                // $data['attachments']->name = time().'_'.$request->file->getClientOriginalName();
+                $user->pan_image =  $fileName;
+            }else{
+                $fileName = time() . '_' . $request->file('pan_image')->getClientOriginalName();
+                $filePath = str_replace('\\', '/', public_path("assets/user/pan_image"));
+                $request->file('pan_image')->move($filePath, $fileName);
+                // $data['attachments']->name = time().'_'.$request->file->getClientOriginalName();
+                $user->pan_image =  $fileName;
+            }
+        }
 
            
      
@@ -297,5 +342,26 @@ class UserController extends Controller
         
     }
 
+    public function show(User $user){
+        if ($user){
+            return response()->json([
+                'status' => 200,
+                'data' => $user
+            ]);
+        }else{
+            return response()->json([
+                'status' => 404,
+                'message' => 'user not found'
+            ]);
+        }
+       
+    }
+
+    public function userBlock($id){
+        $user = User::where('id', $id)->first();
+        $user->block_status = !$user->block_status;
+        $user->save();
+        return back();
+    }
 
 }

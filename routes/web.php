@@ -47,7 +47,8 @@ Route::group(['prefix' => 'admin'], function () {
 
     
    
-
+    // block user 
+    Route::post('/user-block/{id}', [App\Http\Controllers\Auth\UserController::class, 'userBlock'])->name('user.block');
 
     // Login Routes
     Route::get('/login', 'Backend\Auth\LoginController@showLoginForm')->name('admin.login');
