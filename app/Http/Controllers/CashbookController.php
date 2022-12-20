@@ -38,7 +38,7 @@ class CashbookController extends Controller
             ]);
         } else {
             return response()->json([
-                'status' => 'No Cahbook entry to show',
+                'status' => 'No Cashbook entry to show',
                 //'data' => $students
             ]);
         }
