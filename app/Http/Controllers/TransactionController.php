@@ -128,25 +128,18 @@ class TransactionController extends Controller
         $data['user_id'] = Auth::user()->id;
         $data['bill_no'] = 'Bill' . rand(10000000, 99999999);
         $data['tns_gateway_id'] = 'TNSGET' . rand(10000000, 99999999);
-
         if ($request->hasFile('attachment') && $transaction->attachment != null) {
-
             $filePath = public_path('assets/transaction/attachments/').'/'.$transaction->attachments;
             if ($filePath){
                 File::delete($filePath);
             }
             $image = $request->file('attachment');
             $filename = now()->timestamp . '.' . $image->getClientOriginalExtension();
-        
             $image->move(public_path('assets/transaction/attachments/'), $filename);
             $data['attachment'] = public_path('assets/transaction/attachments/').'/'.$filename;
-            
-            // the rest of your code
          }
-
         $transaction->fill($data);
         $transaction->save();
-
         return response()->json([
             'status' => 200,
             'message' => 'Transaction Updated',
@@ -172,7 +165,6 @@ class TransactionController extends Controller
         }
         return response()->json([
             'status' => 404,
-
             'message' => 'not found'
         ]);
     }
