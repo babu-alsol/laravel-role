@@ -43,13 +43,7 @@ class TestController extends Controller
             
             // the rest of your code
          }
-        // if ($request->file()) {
-        //     $fileName = time() . '_' . $request->file('attachments')->getClientOriginalName();
-        //     $filePath = $request->file('attachments')->storeAs('uploads/cashbook/attachments', $fileName, 'public');
-        //     //$data['attachments']->name = time().'_'.$request->file->getClientOriginalName();
-        //     $data['attachments'] = '/storage/' . $filePath;
-        // }
-        //store your file into directory and db
+       
 
 
 

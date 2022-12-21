@@ -54,6 +54,8 @@
                                 <thead class="bg-light text-capitalize">
                                     <tr>
                                         <th>Sl</th>
+                                        <th>Date</th>
+
                                         <th>User</th>
                                         <th>Cashbook Type</th>
                                         <th>Amount</th>
@@ -65,6 +67,8 @@
                                     @foreach ($cashbooks as $data)
                                         <tr>
                                             <td>{{ $loop->index + 1 }}</td>
+                                            <td>{{ date('d-M-Y', strtotime($data->date_time)); }}</td>
+
                                           
                                             <td>{{ $data->user->name  }}</td>
                                          

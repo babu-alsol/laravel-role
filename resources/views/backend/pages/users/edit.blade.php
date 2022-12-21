@@ -12,6 +12,11 @@ User Edit - Admin Panel
     .form-check-label {
         text-transform: capitalize;
     }
+
+    select {
+    height: 40px !important;
+    padding: 6px 25px !important;
+}
 </style>
 @endsection
 
@@ -41,7 +46,8 @@ User Edit - Admin Panel
 <div class="main-content-inner card">
     <div class="card-header">
         <a class="card-link" data-toggle="collapse" href="#collapseOne">
-            User Details
+           
+            Personal Details
 
         </a>
     </div>
@@ -75,14 +81,18 @@ User Edit - Admin Panel
                         <p>Not Provided</p>
                     @endif
                 </div>
+
+               
+
                 <div class="col-md-2">
-                    <label for="">Bank Account Number</label>
-                    @if ($user->bank_account_no)
-                        <p>{{ $user->bank_account_no }}</p>
+                    <label for="">Address</label>
+                    @if ($user->address)
+                   <p>{{$user->address}}</p>
                     @else
                         <p>Not Provided</p>
                     @endif
                 </div>
+               
                 <div class="col-md-2">
                     <label for="">Block Status</label>
                     @if ($user->block_status)
@@ -91,20 +101,125 @@ User Edit - Admin Panel
                         <p>Unblock</p>
                     @endif
                 </div>
+
                 <div class="col-md-2">
-                    <label for="">Address</label>
-                    @if ($user->cus_address)
-                        <p>{{ $user->cus_address }}</p>
+                    <label for="">Profile Image</label>
+                    @if ($user->profile_image)
+                    <div>
+                        <img height="50px" width="80px" src="/assets/user/profile_image/{{$user->profile_image}}" alt="">
+                    </div>
                     @else
-                        <p>Not Provided</p>
+                        <p>Unblock</p>
                     @endif
                 </div>
+               
               
             </div>
         </div>
 
     </div>
 </div>
+
+<div class="main-content-inner card">
+    <div class="card-header">
+        <a class="card-link" data-toggle="collapse" href="#collapseOne">
+            KYC Details
+
+        </a>
+    </div>
+    <div id="" class="collapse show" data-parent="#accordion">
+        <div class="">
+            <div class="mt-2  container">
+                <div class="mt-3 row">
+                    <div class="col-md-6">
+                        <label style="font-weight: 900" for="">Aadhar Number</label>
+                        @if ($user->aadhar_no)
+                            <p>{{ $user->aadhar_no }}</p>
+                            
+                        @else
+                            <p>Not Provided</p>
+                        @endif
+    
+                    </div>
+    
+                    <div class="col-md-6">
+                        <label style="font-weight: 900" for="">Aadhar Image</label>
+                        @if ($user->aadhar_image)
+                        <div>
+                            <img height="50px" width="80px" src="/assets/user/aadhar_image/{{$user->aadhar_image}}" alt="">
+                        </div>
+                      
+                            
+                        @else
+                            <p>Not Provided</p>
+                        @endif
+    
+                    </div>
+                </div>
+               
+
+                <div class="mt-3 row">
+                    <div class="col-md-6">
+                        <label style="font-weight: 900" for="">Pan Card Number</label>
+                        @if ($user->pan_no)
+                            <p>{{ $user->pan_no }}</p>
+                        @else
+                            <p>Not Provided</p>
+                        @endif
+                    </div>
+    
+                    <div class="col-md-6">
+                        <label style="font-weight: 900" for="">Pan Card Image</label>
+                        @if ($user->pan_image)
+                        <div>
+                            <img height="50px" width="80px" src="/assets/user/pan_image/{{$user->pan_image}}" alt="">
+                        </div>
+                       
+                            
+                        @else
+                            <p>Not Provided</p>
+                        @endif
+    
+                    </div>
+                </div>
+
+                <div class="mt-3 row">
+                    <div style="font-weight: 900" class="col-md-6">
+                        <label for="">Voter ID</label>
+                        @if ($user->voter_id)
+                            <p>{{ $user->voter_id }}</p>
+                        @else
+                            <p>Not Provided</p>
+                        @endif
+                    </div>
+    
+                    <div style="font-weight: 900" class="col-md-6">
+                        <label for="">Voter ID Image</label>
+                        @if ($user->voter_id_image)
+                        <div>
+                            <img height="50px" width="80px" src="/assets/user/voter_id_image/{{$user->voter_id_image}}" alt="">
+                        </div>
+                       
+                            
+                        @else
+                            <p>Not Provided</p>
+                        @endif
+    
+                    </div>
+    
+                </div>
+
+               
+               
+               
+              
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
 
 
 <div class="main-content-inner">
@@ -120,11 +235,11 @@ User Edit - Admin Panel
                         <label for="">Block Status</label>
                         <form action="{{route('user.block', $user->id)}}" method="POST">
                             @csrf
-                            <select  class="form-group" name="block_status" id="">
+                            <select  class="form-control" name="block_status" id="">
                                 <option {{$user->block_status == 1 ? 'selected': ''}}>Block</option>
                                 <option {{$user->block_status == 0 ? 'selected': ''}} class="form-control" value="0">Unblock</option>
                             </select>
-                            <button type="submit" class="mx-10 btn btn-danger">Save</button>
+                            <button type="submit" class="mt-2 btn btn-danger w-100">Save</button>
                         </form>
                    
                 </div>
