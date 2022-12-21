@@ -149,14 +149,18 @@ class UserController extends Controller
        
         $request->validate([
             'mobile' => 'required',
-            'name' => 'required'
+            'name' => 'required',
+            //'business_name' => 'required'
         ]);
             // $otp_rand = rand(1000, 9999);
 
             $otp = new Otp();
             $otp->mobile = $request->mobile;
             $otp->name = $request->name;
+           // $otp->business_name = $request->business_name;
             $otp->otp = 1000;
+
+          
 
             $otp->save();
            // $response = Http::get('message.neodove.com/sendsms.jsp?user=BOUNDPAR&password=7c51237a44XX&senderid=BPTOPE&mobiles=+91'.$request->mobile.'&sms=Your OTP for OnecPe app login is '.$otp_rand.'. The OTP is valid for one time.BOUNDPARIVAR .Please do not share this code with anyone for security reason.');
@@ -194,6 +198,10 @@ class UserController extends Controller
                 $user->mobile = $request->mobile;
                 $user->name = $otp->name;
                 $user->save();
+
+                $business = new Business();
+                $business->user_id = $user->id;
+                $business->bns_name = 'My Business';
     
                 $token = $user->createToken('API Token')->accessToken;
                 return response()->json([
@@ -201,17 +209,25 @@ class UserController extends Controller
                     'status' => '200',
                     'user' => $user,
                     'token' => $token,
+                    'business' => $business
                     
                 ]);
             }
             //return $user->createToken('API Token')->accessToken;
            
+            $business = Business::where('user_id', $user->id)->first();
+            if (!$business){     
+                $business = new Business();
+                $business->user_id = $user->id;
+                $business->bns_name = 'My Business';
+            }
             $token = $user->createToken('API Token')->accessToken;
             return response()->json([
                 'user' => $user,
                 'message' => 'Otp verification succesfully completed',
                 'status' => '200',
                 'token' => $token,
+                'business' => $business
                 //'otp' => $otp
             ]);
             
@@ -309,7 +325,7 @@ class UserController extends Controller
         
         if ($request->hasFile('pan_image')){
             //return true;
-            $path =  $user->aadhar_image;
+            $path =  $user->pan_image;
 
             if ($path) {
                 // return true;
@@ -328,8 +344,27 @@ class UserController extends Controller
             }
         }
 
-           
-     
+          
+        if ($request->hasFile('voter_id_image')){
+            //return true;
+            $path =  $user->voter_id_image;
+
+            if ($path) {
+                // return true;
+                File::delete($path);
+                $fileName = time() . '_' . $request->file('voter_id_image')->getClientOriginalName();
+                $filePath = str_replace('\\', '/', public_path("assets/user/voter_id_image"));
+                $request->file('voter_id_image')->move($filePath, $fileName);
+                // $data['attachments']->name = time().'_'.$request->file->getClientOriginalName();
+                $user->voter_id_image =  $fileName;
+            }else{
+                $fileName = time() . '_' . $request->file('voter_id_image')->getClientOriginalName();
+                $filePath = str_replace('\\', '/', public_path("assets/user/voter_id_image"));
+                $request->file('voter_id_image')->move($filePath, $fileName);
+                // $data['attachments']->name = time().'_'.$request->file->getClientOriginalName();
+                $user->voter_id_image =  $fileName;
+            }
+        }
 
         
         $user->save();

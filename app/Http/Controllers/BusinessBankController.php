@@ -36,7 +36,7 @@ class BusinessBankController extends Controller
         $request->validate([
             'bank_name' => 'required',
             'account_holder_name' => 'required',
-            'upi_id' => 'required',
+          //  'upi_id' => 'required',
             'account_no' => 'required',
             'ifsc' => 'required',
         ]);
