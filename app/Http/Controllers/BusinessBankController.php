@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Business;
 use App\Models\BusinessBank;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -35,13 +36,20 @@ class BusinessBankController extends Controller
         $request->validate([
             'bank_name' => 'required',
             'account_holder_name' => 'required',
-            'upi_id' => 'required',
+          //  'upi_id' => 'required',
             'account_no' => 'required',
             'ifsc' => 'required',
         ]);
 
         $data = $request->all();
-        $data['bns_id'] = Auth::user()->id;
+        $business = Business::where('user_id', Auth::user()->id)->first();
+       
+        if ($business){
+            $data['bns_id'] = $business->id;
+        }else{
+            $data['bns_id'] = Auth::user()->id;
+        }
+       
 
         BusinessBank::create($data);
 
@@ -84,7 +92,20 @@ class BusinessBankController extends Controller
         ]);
 
         $data = $request->all();
-        $data['bns_id'] = Auth::user()->id;
+
+        $business = Business::where('user_id', Auth::user()->id)->first();
+       
+        if ($business){
+           
+            $data['bns_id'] = $business->id;
+        }else{
+            $business = new Business();
+            $business->bns_name = 'my business';
+            $business->save();
+            $data['bns_id'] = $business->id;
+
+        }
+       
 
         $businessBank->fill($data);
         $businessBank->save();

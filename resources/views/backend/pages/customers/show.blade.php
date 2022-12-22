@@ -95,6 +95,7 @@
         </div>
     </div>
 
+
     <div class="main-content-inner">
 
         <div class="row">
@@ -108,6 +109,7 @@
                         <a class="btn btn-primary text-white" href="{{route('export-contacts', $user_contact->id)}}">Exports</a>
                     </p> --}}
                         @endif
+
 
                         <div class="clearfix"></div>
                         <div class="data-tables">
@@ -169,4 +171,6 @@
 
        
     </script>
+
 @endsection
+

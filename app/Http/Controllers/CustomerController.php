@@ -115,21 +115,13 @@ class CustomerController extends Controller
 
     public function update(Request $request, Customer $customer)
     {
+    //    dd($request);
         $request->validate([
             'cus_name' => 'required',
-           // 'cus_address' => 'required',
-            'cus_mobile' => 'required',
-            
+            'cus_mobile' => 'required',            
             'customer_type' => 'required',
             'cus_email' => 'email',
         ]);
-
-      //  $cust = Customer::where('cus_mobile', $request->cus_mobile)->where('user_id', Auth::user()->id)->first();
-
-        // return $cust;
-         
- 
-      
         $customer->cus_name = $request->cus_name;
         $customer->cus_address = $request->cus_address;
         $customer->cus_mobile = $request->cus_mobile;
@@ -137,21 +129,14 @@ class CustomerController extends Controller
         $customer->bank_account_no = $request->bank_account_no;
         $customer->cus_email = $request->cus_email;
         $customer->user_id = Auth::user()->id;
-
         $customer->save();
-
         $customer->users()->sync(Auth::user()->id);
 
         return response()->json([
             'status' => 'okay',
-            'message' => 'Customer updated Succesffuly',
+            'message' => 'Customer updated Successfuly',
             'data' => $customer
         ]);
-         
-
-       // return $request->all();
-
-      
     }
 
     /**

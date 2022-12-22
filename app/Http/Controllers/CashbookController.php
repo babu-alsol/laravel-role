@@ -38,7 +38,7 @@ class CashbookController extends Controller
             ]);
         } else {
             return response()->json([
-                'status' => 'No Cahbook entry to show',
+                'status' => 'No Cashbook entry to show',
                 //'data' => $students
             ]);
         }
@@ -96,7 +96,7 @@ class CashbookController extends Controller
 
         return response()->json([
             'status' => 200,
-            'message' => 'Cashbook creted Succesffuly',
+            'message' => 'Cashbook creted Succesfully',
             'data' => $data,
             
         ]);
@@ -152,14 +152,7 @@ class CashbookController extends Controller
             // the rest of your code
          }
 
-        // if ($request->file() && $cashbook->attachments != null) {
-        //     $filePath = Storage::path();
-        //     $fileName = time() . '_' . $request->file('attachments')->getClientOriginalName();
-        //     // $filePath = $request->file('attachments')->storeAs('uploads/cashbook/attachments', $fileName, 'public');
-        //     //$data['attachments']->name = time().'_'.$request->file->getClientOriginalName();
-        //     $data['attachments'] = '/storage/' . $filePath;
-        // }
-
+      
         $cashbook->fill($data);
 
         $cashbook->save();

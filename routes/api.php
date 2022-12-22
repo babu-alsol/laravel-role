@@ -36,6 +36,7 @@ Route::post('login', [App\Http\Controllers\Auth\UserController::class, 'login'])
 //Route::apiResource('post', PostController::class)->middleware('auth:api');
 
 Route::group(['prefix' => 'auth', 'middleware' => 'auth:api'], function(){
+    Route::get('/cashbook/{start_date?}/{end_date?}', [App\Http\Controllers\CashbookController::class, 'index']);
     Route::apiResource('post', PostController::class);
     Route::apiResource('customer', CustomerController::class);
     Route::apiResource('business', BusinessController::class);
@@ -45,8 +46,11 @@ Route::group(['prefix' => 'auth', 'middleware' => 'auth:api'], function(){
     Route::get('/get-transaction/{type}', [App\Http\Controllers\TransactionController::class, 'index']);
     Route::get('/transactions-by-customer/{customer}', [\App\Http\Controllers\TransactionController::class, 'tnsCustomer']);
     Route::get('/transactions-by-customer/{supplier}', [\App\Http\Controllers\TransactionController::class, 'tnsSupplier']);
-   Route::apiResource('cashbook', CashbookController::class)->except('index');
-    Route::get('/cashbook/{start_date?}/{end_date?}', [App\Http\Controllers\CashbookController::class, 'index']);
+    Route::apiResource('cashbook', CashbookController::class)->except('index');
+    // Route::post('/cashbook-store', [App\Http\Controllers\TestController::class, 'store']);
+    // Route::put('/cashbook/{cashbook}', [App\Http\Controllers\CashbookController::class, 'update']);
+    // Route::get('/cashbook/{cashbook}', [App\Http\Controllers\CashbookController::class, 'show']);
+   
     Route::get('/today-cashbook', [App\Http\Controllers\CashbookController::class, 'todayCashbook']);
     Route::get('/week-cashbook', [App\Http\Controllers\CashbookController::class, 'weekCashbook']);
     Route::get('/month-cashbook', [App\Http\Controllers\CashbookController::class, 'monthCashbook']);
@@ -65,6 +69,8 @@ Route::group(['prefix' => 'auth', 'middleware' => 'auth:api'], function(){
     // user update
     Route::put('/user/{user}', [App\Http\Controllers\Auth\UserController::class, 'update'])->name('user.update');
    
+    // show user
+    Route::get('/show-user/{user}',[App\Http\Controllers\Auth\UserController::class, 'show']);
     Route::get('/view_reports', [App\Http\Controllers\CashbookController::class, 'viewReports']);
     Route::get('/view_reports/{type}', [App\Http\Controllers\CashbookController::class, 'viewReportsType']);
 
