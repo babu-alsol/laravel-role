@@ -202,6 +202,8 @@ class UserController extends Controller
                 $business = new Business();
                 $business->user_id = $user->id;
                 $business->bns_name = 'My Business';
+
+                $business->save();
     
                 $token = $user->createToken('API Token')->accessToken;
                 return response()->json([
@@ -209,7 +211,8 @@ class UserController extends Controller
                     'status' => '200',
                     'user' => $user,
                     'token' => $token,
-                    'business' => $business
+                    'business' => $business,
+                    
                     
                 ]);
             }
@@ -220,6 +223,7 @@ class UserController extends Controller
                 $business = new Business();
                 $business->user_id = $user->id;
                 $business->bns_name = 'My Business';
+                $business->save();
             }
             $token = $user->createToken('API Token')->accessToken;
             return response()->json([
@@ -227,7 +231,8 @@ class UserController extends Controller
                 'message' => 'Otp verification succesfully completed',
                 'status' => '200',
                 'token' => $token,
-                'business' => $business
+                'business' => $business,
+               
                 //'otp' => $otp
             ]);
             
