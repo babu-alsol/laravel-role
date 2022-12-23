@@ -8,6 +8,7 @@ use Illuminate\Http\Response;
 
 use App\Http\Controllers\Controller;
 use App\Models\Business;
+use App\Models\BusinessBank;
 use App\Models\Otp;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
@@ -194,6 +195,7 @@ class UserController extends Controller
             $user =  $user = User::where('mobile', $request->mobile)->first();
 
             if (!$user){
+                
                 $user = new User;
                 $user->mobile = $request->mobile;
                 $user->name = $otp->name;
@@ -256,35 +258,35 @@ class UserController extends Controller
         // $user->username = $request->username;
 
         //$data = $request->all();
-        $business = Business::where('user_id', Auth::user()->id)->first();
+        $business = Business::where('user_id', $user->id)->first();
 
-        if ($business){
-            $business->bns_name = $request->bns_name;
-            $business->user_id = Auth::user()->id;
-            $business->bns_address = $request->bns_address;
-            $business->bns_type = $request->bns_type;
-            $business->gstin_no = $request->gstin_no;
+        // if ($business){
+        //     $business->bns_name = $request->bns_name;
+        //     $business->user_id = Auth::user()->id;
+        //     $business->bns_address = $request->bns_address;
+        //     $business->bns_type = $request->bns_type;
+        //     $business->gstin_no = $request->gstin_no;
 
-            $business->save();
-        }else{
-            $business = new Business();
+        //     $business->save();
+        // }else{
+        //     $business = new Business();
 
-            $business->bns_name = $request->bns_name;
-            $business->user_id = Auth::user()->id;
-            $business->bns_address = $request->bns_address;
-            $business->bns_type = $request->bns_type;
-            $business->gstin_no = $request->gstin_no;
+        //     $business->bns_name = $request->bns_name;
+        //     $business->user_id = Auth::user()->id;
+        //     $business->bns_address = $request->bns_address;
+        //     $business->bns_type = $request->bns_type;
+        //     $business->gstin_no = $request->gstin_no;
+        // }
+
+
+        $fields=['name','email','mobile','pan_no','aadhar_no','voter_id'];
+        foreach($fields as $field)
+        {
+            if(isset($request->$field)){
+                $user->$field = $request->$field;
+            }
         }
-
-        $user->name = $request->name;
-        $user->email = $request->email;
-        $user->mobile = $request->mobile;
-        $user->pan_no = $request->pan_no;
-        $user->aadhar_no = $request->aadhar_no;
-        $user->voter_id = $request->voter_id;
-    
-        $user->business_name = $request->business_name;
-
+ 
         if ($request->hasFile('profile_image')){
             //return true;
             $path =  $user->profile_image;
@@ -305,7 +307,11 @@ class UserController extends Controller
                 $user->profile_image =  $fileName;
 
             }
+        }else{
+            $user->profile_image =  $user->profile_image;
         }
+        
+       
 
         if ($request->hasFile('aadhar_image')){
             //return true;
@@ -326,6 +332,8 @@ class UserController extends Controller
                 // $data['attachments']->name = time().'_'.$request->file->getClientOriginalName();
                 $user->aadhar_image =  $fileName;
             }
+        }else{
+            $user->aadhar_image =  $user->aadhar_image;
         }
 
         
@@ -348,6 +356,8 @@ class UserController extends Controller
                 // $data['attachments']->name = time().'_'.$request->file->getClientOriginalName();
                 $user->pan_image =  $fileName;
             }
+        }else{
+            $user->pan_image =  $user->pan_image;
         }
 
           
@@ -370,25 +380,32 @@ class UserController extends Controller
                 // $data['attachments']->name = time().'_'.$request->file->getClientOriginalName();
                 $user->voter_id_image =  $fileName;
             }
+        }else{
+            $user->voter_id_image =  $user->voter_id_image;
         }
 
-
-        
+    
         $user->save();
 
         return response([
              'message' => 'user updated successfully',
             'user' => $user,
-             'status' => 200
+             'status' => 200,
+             'bns_id' => $business->id
         ]);
         
     }
 
     public function show(User $user){
+        $bns_id = $user->businesses[0]->id;
+        $bank = BusinessBank::where('bns_id', $bns_id)->first();
         if ($user){
             return response()->json([
                 'status' => 200,
-                'data' => $user
+                'data' => $user,
+                'business' => $user->businesses,
+                'bank' => $bank
+
             ]);
         }else{
             return response()->json([
