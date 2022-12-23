@@ -72,7 +72,7 @@ Users - Admin Panel
                                         @endforeach
                                     </td>
                                     <td>
-                                        <a class="btn btn-success text-white" href="{{ route('admin.users.edit', $user->id) }}">Edit</a>
+                                        <a class="btn btn-success text-white" href="{{ route('admin.users.edit', $user->id) }}">Show</a>
 
                                         <a class="btn btn-danger text-white" href="{{ route('admin.users.destroy', $user->id) }}"
                                         onclick="event.preventDefault(); document.getElementById('delete-form-{{ $user->id }}').submit();">
