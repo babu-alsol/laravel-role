@@ -34,7 +34,7 @@ Dashboard Page - Admin Panel
 
           
 
-            <div class="col-md-6 mt-5 mb-3">
+            <div class="col-md-4 mt-5 mb-3">
                 <div class="card">
                     <div class="seo-fact sbg1">
                         <a href="{{ route('admin.users.index') }}">
@@ -45,8 +45,19 @@ Dashboard Page - Admin Panel
                         </a>
                     </div>
                 </div>
+            </div> <div class="col-md-4 mt-5 mb-3">
+                <div class="card">
+                    <div class="seo-fact sbg1">
+                        <a href="{{ route('admin.users.index') }}">
+                            <div class="p-4 d-flex justify-content-between align-items-center">
+                                <div class="seofct-icon"><i class="fa fa-users"></i> Last Month Users</div>
+                                <h2>{{ $all_users }}</h2>
+                            </div>
+                        </a>
+                    </div>
+                </div>
             </div>
-            <div class="col-md-6 mt-md-5 mb-3">
+            <div class="col-md-4 mt-md-5 mb-3">
                 <div class="card">
                     <div class="seo-fact sbg2">
                         <a href="{{ route('admin.users.index') }}">
@@ -59,24 +70,42 @@ Dashboard Page - Admin Panel
                 </div>
             </div>
 
-            <div class="col-md-6 mt-5 mb-3">
+            <div class="col-md-4 mt-5 mb-3">
                 <div class="card">
                     <div class="seo-fact sbg1">
                         <a href="{{ route('admin.transactions.index') }}">
                             <div class="p-4 d-flex justify-content-between align-items-center">
-                                <div class="seofct-icon"><i class="fa fa-users"></i> Total Transactions</div>
+                                <div class="seofct-icon">
+                                    {{-- <i class="fa fa-users"></i> --}}
+                                     Total Transactions</div>
                                 <h2>{{ $all_transactions }}</h2>
                             </div>
                         </a>
                     </div>
                 </div>
             </div>
-            <div class="col-md-6 mt-md-5 mb-3">
+            <div class="col-md-4 mt-5 mb-3">
+                <div class="card">
+                    <div class="seo-fact sbg1">
+                        <a href="{{ route('admin.transactions.index') }}">
+                            <div class="p-4 d-flex justify-content-between align-items-center">
+                                <div class="seofct-icon">
+                                    {{-- <i class="fa fa-users"></i>  --}}
+                                    Last Month's Transactions</div>
+                                <h2>{{ $all_transactions }}</h2>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mt-md-5 mb-3">
                 <div class="card">
                     <div class="seo-fact sbg2">
                         <a href="{{ route('admin.transactions.index') }}">
                             <div class="p-4 d-flex justify-content-between align-items-center">
-                                <div class="seofct-icon"><i class="fa fa-user"></i> Today's Transactions</div>
+                                <div class="seofct-icon">
+                                    {{-- <i class="fa fa-user"></i>  --}}
+                                    Today's Transactions</div>
                                 <h2>{{ $new_transactions }}</h2>
                             </div>
                         </a>
@@ -84,24 +113,85 @@ Dashboard Page - Admin Panel
                 </div>
             </div>
 
-            <div class="col-md-6 mt-5 mb-3">
+            <div class="col-md-4 mt-5 mb-3">
                 <div class="card">
                     <div class="seo-fact sbg1">
                         <a href="{{ route('admin.cashbooks.index') }}">
                             <div class="p-4 d-flex justify-content-between align-items-center">
-                                <div class="seofct-icon"><i class="fa fa-users"></i> Total Cashbook Entries</div>
+                                <div class="seofct-icon">
+                                    {{-- <i class="fa fa-users"></i>  --}}
+                                    Total Cashbook Entries</div>
                                 <h2>{{ $all_cashbooks }}</h2>
                             </div>
                         </a>
                     </div>
                 </div>
             </div>
-            <div class="col-md-6 mt-md-5 mb-3">
+            <div class="col-md-4 mt-5 mb-3">
+                <div class="card">
+                    <div class="seo-fact sbg1">
+                        <a href="{{ route('admin.cashbooks.index') }}">
+                            <div class="p-4 d-flex justify-content-between align-items-center">
+                                <div class="seofct-icon">
+                                    {{-- <i class="fa fa-users"></i>  --}}
+                                    Last Month's Cashbook Entries</div>
+                                <h2>{{ $all_cashbooks }}</h2>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mt-md-5 mb-3">
                 <div class="card">
                     <div class="seo-fact sbg2">
                         <a href="{{ route('admin.cashbooks.index') }}">
                             <div class="p-4 d-flex justify-content-between align-items-center">
-                                <div class="seofct-icon"><i class="fa fa-user"></i> Today's Cashbook Entries</div>
+                                <div class="seofct-icon">
+                                    {{-- <i class="fa fa-user"></i>  --}}
+                                    Today's Cashbook Entries</div>
+                                <h2>{{ $new_cashbooks }}</h2>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 mt-5 mb-3">
+                <div class="card">
+                    <div class="seo-fact sbg1">
+                        <a href="{{ route('admin.cashbooks.index') }}">
+                            <div class="p-4 d-flex justify-content-between align-items-center">
+                                <div class="seofct-icon">
+                                    {{-- <i class="fa fa-users"></i>  --}}
+                                    Total Transactions Online</div>
+                                <h2>{{ $all_cashbooks }}</h2>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mt-5 mb-3">
+                <div class="card">
+                    <div class="seo-fact sbg1">
+                        <a href="{{ route('admin.cashbooks.index') }}">
+                            <div class="p-4 d-flex justify-content-between align-items-center">
+                                <div class="seofct-icon">
+                                    {{-- <i class="fa fa-users"></i>  --}}
+                                    Last Transactions Online</div>
+                                <h2>{{ $all_cashbooks }}</h2>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mt-md-5 mb-3">
+                <div class="card">
+                    <div class="seo-fact sbg2">
+                        <a href="{{ route('admin.cashbooks.index') }}">
+                            <div class="p-4 d-flex justify-content-between align-items-center">
+                                <div class="seofct-icon">
+                                    {{-- <i class="fa fa-user"></i>  --}}
+                                    Today's Transactions Online</div>
                                 <h2>{{ $new_cashbooks }}</h2>
                             </div>
                         </a>
