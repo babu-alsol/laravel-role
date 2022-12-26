@@ -95,11 +95,17 @@ User Edit - Admin Panel
                
                 <div class="col-md-2">
                     <label for="">Block Status</label>
-                    @if ($user->block_status)
-                        <p>Block</p>
-                    @else
-                        <p>Unblock</p>
-                    @endif
+                    <form action="{{route('user.block', $user->id)}}" method="POST">
+                        @csrf
+                        <div style="display: inline">
+                            <select  class="form-control" name="block_status" id="">
+                                <option {{$user->block_status == 1 ? 'selected': ''}}>Block</option>
+                                <option {{$user->block_status == 0 ? 'selected': ''}} class="form-control" value="0">Unblock</option>
+                            </select>
+                            <button type="submit" class="mt-2 btn btn-danger ">Save</button>
+                        </div>
+                       
+                    </form>
                 </div>
 
                 <div class="col-md-2">
@@ -109,7 +115,7 @@ User Edit - Admin Panel
                         <img height="50px" width="80px" src="/assets/user/profile_image/{{$user->profile_image}}" alt="">
                     </div>
                     @else
-                        <p>Unblock</p>
+                        <p>Not Provided</p>
                     @endif
                 </div>
                
@@ -219,10 +225,162 @@ User Edit - Admin Panel
     </div>
 </div>
 
+<div class="main-content-inner card">
+    <div class="card-header">
+        <a class="card-link" data-toggle="collapse" href="#collapseOne">
+            Bank Details
 
+        </a>
+    </div>
+    <div id="" class="collapse show" data-parent="#accordion">
+        <div class="">
+            <div class="mt-2  container">
+                <div class="mt-3 row">
+                    <div class="col-md-6">
+                        <label style="font-weight: 900" for="">Aadhar Number</label>
+                        @if ($user->aadhar_no)
+                            <p>{{ $user->aadhar_no }}</p>
+                            
+                        @else
+                            <p>Not Provided</p>
+                        @endif
+    
+                    </div>
+    
+                    <div class="col-md-6">
+                        <label style="font-weight: 900" for="">Aadhar Image</label>
+                        @if ($user->aadhar_image)
+                        <div>
+                            <img height="50px" width="80px" src="/assets/user/aadhar_image/{{$user->aadhar_image}}" alt="">
+                        </div>
+                      
+                            
+                        @else
+                            <p>Not Provided</p>
+                        @endif
+    
+                    </div>
+                </div>
+               
+
+                <div class="mt-3 row">
+                    <div class="col-md-6">
+                        <label style="font-weight: 900" for="">Pan Card Number</label>
+                        @if ($user->pan_no)
+                            <p>{{ $user->pan_no }}</p>
+                        @else
+                            <p>Not Provided</p>
+                        @endif
+                    </div>
+    
+                    <div class="col-md-6">
+                        <label style="font-weight: 900" for="">Pan Card Image</label>
+                        @if ($user->pan_image)
+                        <div>
+                            <img height="50px" width="80px" src="/assets/user/pan_image/{{$user->pan_image}}" alt="">
+                        </div>
+                       
+                            
+                        @else
+                            <p>Not Provided</p>
+                        @endif
+    
+                    </div>
+                </div>
+
+                <div class="mt-3 row">
+                    <div style="font-weight: 900" class="col-md-6">
+                        <label for="">Voter ID</label>
+                        @if ($user->voter_id)
+                            <p>{{ $user->voter_id }}</p>
+                        @else
+                            <p>Not Provided</p>
+                        @endif
+                    </div>
+    
+                    <div style="font-weight: 900" class="col-md-6">
+                        <label for="">Voter ID Image</label>
+                        @if ($user->voter_id_image)
+                        <div>
+                            <img height="50px" width="80px" src="/assets/user/voter_id_image/{{$user->voter_id_image}}" alt="">
+                        </div>
+                       
+                            
+                        @else
+                            <p>Not Provided</p>
+                        @endif
+    
+                    </div>
+    
+                </div>
+
+               
+               
+               
+              
+            </div>
+        </div>
+
+    </div>
+</div>
 
 
 <div class="main-content-inner">
+
+    <div class="row">
+        <!-- data table start -->
+        <div class="col-12 mt-5">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="header-title float-left"></h4>
+                    @if ($transactions->count() > 0)
+                        {{-- <p class="float-right mb-2">
+                    <a class="btn btn-primary text-white" href="{{route('export-contacts', $user_contact->id)}}">Exports</a>
+                </p> --}}
+                    @endif
+
+
+                    <div class="clearfix"></div>
+                    <div class="data-tables">
+                        @include('backend.layouts.partials.messages')
+                        <table id="dataTable" class="text-center">
+                            <thead class="bg-light text-capitalize">
+                                <tr>
+                                    <th width="">Sl</th>
+
+                                    <th width="">Amount</th>
+                                    <th width="">Transaction_type</th>
+                                    <th width="">Bill No</th>
+
+                                    <th style="display: none" width="">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($transactions as $data)
+                                    <tr>
+                                        <td>{{ $loop->index + 1 }}</td>
+
+                                        <td>{{ $data->amount }}</td>
+                                        <td>{{ $data->tns_type }}</td>
+                                        <td>{{ $data->bill_no }}</td>
+
+
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- data table end -->
+
+    </div>
+</div>
+
+
+
+{{-- <div class="main-content-inner">
     <div class="row">
         <!-- data table start -->
         <div class="col-12 mt-5">
@@ -248,7 +406,7 @@ User Edit - Admin Panel
         <!-- data table end -->
         
     </div>
-</div>
+</div> --}}
 @endsection
 
 @section('scripts')
