@@ -16,6 +16,7 @@ class BusinessBankController extends Controller
      */
     public function index()
     {
+
         $business_banks = BusinessBank::all();
 
         if ($business_banks->count() > 0){
@@ -41,15 +42,23 @@ class BusinessBankController extends Controller
             'ifsc' => 'required',
         ]);
 
-        $data = $request->all();
-       
+        // $data = $request->all();
+       $business = Business::where('user_id', Auth::user()->id)->first();
 
-        BusinessBank::create($data);
+        // BusinessBank::create($data);
+
+        $bank = new BusinessBank();
+        $bank->bank_name = $request->bank_name;
+        $bank->account_holder_name = $request->account_holder_name;
+        $bank->account_no = $request->account_no;
+        $bank->ifsc = $request->ifsc;
+        $bank->bns_id = $business->id;
+        $bank->save();
 
         return response()->json([
             'status' => 200,
             'message' => 'Bank added Succesffuly',
-            'data' => $data
+            'data' => $bank
         ]);
     }
 
@@ -74,27 +83,46 @@ class BusinessBankController extends Controller
     }
 
    
-    public function update(Request $request, BusinessBank $businessBank)
+    public function update(Request $request, $id)    
     {
-        $request->validate([
-           // 'bank_name' => 'required',
-         //   'account_holder_name' => 'required',
-           // 'upi_id' => 'required',
-         //   'account_no' => 'required',
-          //  'ifsc' => 'required',
-        ]);
+       
+        $businessBank = BusinessBank::find($id);
+       
 
-        $data = $request->all();
+        if (isset($businessBank)){
+            $businessBank->bank_name = $request->bank_name;
+            $businessBank->account_holder_name = $request->account_holder_name;
+            $businessBank->account_no = $request->account_no;
+            $businessBank->ifsc = $request->ifsc;
+            $businessBank->save();
+    
+            return response()->json([
+                'status' => 200,
+                'message' => 'Bank updated Succesffuly',
+                'data' => $businessBank,
+              
+            ]);
+        }else{
+             // $data = $request->all();
+            $business = Business::where('user_id', Auth::user()->id)->first();
 
+            // BusinessBank::create($data);
 
-        $businessBank->fill($data);
-        $businessBank->save();
+            $bank = new BusinessBank();
+            $bank->bank_name = $request->bank_name;
+            $bank->account_holder_name = $request->account_holder_name;
+            $bank->account_no = $request->account_no;
+            $bank->ifsc = $request->ifsc;
+            $bank->bns_id = $business->id;
+            $bank->save();
 
-        return response()->json([
-            'status' => 200,
-            'message' => 'Bank updated Succesffuly',
-            'data' => $data
-        ]);
+            return response()->json([
+                'status' => 200,
+                'message' => 'Bank added Succesffuly',
+                'data' => $bank
+            ]);
+        }
+       
     }
 
     /**

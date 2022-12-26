@@ -105,7 +105,8 @@ class BusinessController extends Controller
         return response()->json([
             'status' => 200,
             'message' => 'Business Updated Succesffuly',
-            'data' => $data
+            'data' => $data,
+            'bns_id' => $business->id
         ]);
     }
 
