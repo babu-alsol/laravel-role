@@ -34,6 +34,7 @@ class AdminsController extends Controller
         }
 
         $admins = Admin::all();
+        //return $admins;
         return view('backend.pages.admins.index', compact('admins'));
     }
 
