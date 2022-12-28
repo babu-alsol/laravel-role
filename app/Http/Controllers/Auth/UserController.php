@@ -199,6 +199,7 @@ class UserController extends Controller
                 $user = new User;
                 $user->mobile = $request->mobile;
                 $user->name = $otp->name;
+                $user->block_status = 0;
                 $user->save();
 
                 $business = new Business();
@@ -416,11 +417,15 @@ class UserController extends Controller
        
     }
 
-    public function userBlock($id){
+    public function userBlock($id, Request $request){
         $user = User::where('id', $id)->first();
-        $user->block_status = !$user->block_status;
+        $user->block_status = $request->block_status;
         $user->save();
-        return back();
+        
+        return response()->json([
+            'user_status' => $user->block_status,
+            'test' => $request->block_status
+        ]);
     }
 
 }

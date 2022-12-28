@@ -42,9 +42,7 @@ Users - Admin Panel
             <div class="card">
                 <div class="card-body">
                     <h4 class="header-title float-left">Users List</h4>
-                    <p class="float-right mb-2">
-                        <a class="btn btn-primary text-white" href="{{ route('admin.users.create') }}">Create New User</a>
-                    </p>
+                    
                     <div class="clearfix"></div>
                     <div class="data-tables">
                         @include('backend.layouts.partials.messages')
@@ -54,7 +52,7 @@ Users - Admin Panel
                                     <th>Sl</th>
                                     <th>Name</th>
                                     <th>Mobile</th>
-                                    <th>Roles</th>
+                                   
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -64,13 +62,7 @@ Users - Admin Panel
                                     <td>{{ $loop->index+1 }}</td>
                                     <td>{{ ucwords($user->name) }}</td>
                                     <td>{{ $user->mobile }}</td>
-                                    <td>
-                                        @foreach ($user->roles as $role)
-                                            <span class="badge badge-info mr-1">
-                                                {{ $role->name }}
-                                            </span>
-                                        @endforeach
-                                    </td>
+                                   
                                     <td>
                                         <a class="btn btn-success text-white" href="{{ route('admin.users.edit', $user->id) }}">Show</a>
 

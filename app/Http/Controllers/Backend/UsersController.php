@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
+use App\Models\Business;
+use App\Models\BusinessBank;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -84,8 +86,14 @@ class UsersController extends Controller
     public function edit($id)
     {
         $user = User::find($id);
+        $transactions = $user->transactions;
+       
+         $bns_id = Business::where('user_id', $user->id)->first();
+        
+         $bank = BusinessBank::where('bns_id', $bns_id)->first();
+      //  return $bank;
         $roles  = Role::all();
-        return view('backend.pages.users.edit', compact('user', 'roles'));
+        return view('backend.pages.users.edit', compact('user', 'roles', 'transactions', 'bank'));
     }
 
     /**

@@ -92,7 +92,7 @@ Dashboard Page - Admin Panel
                                 <div class="seofct-icon">
                                     {{-- <i class="fa fa-users"></i>  --}}
                                     Last Month's Transactions</div>
-                                <h2>{{ $all_transactions }}</h2>
+                                <h2>{{ $month_transactions }}</h2>
                             </div>
                         </a>
                     </div>
@@ -134,8 +134,8 @@ Dashboard Page - Admin Panel
                             <div class="p-4 d-flex justify-content-between align-items-center">
                                 <div class="seofct-icon">
                                     {{-- <i class="fa fa-users"></i>  --}}
-                                    Last Month's Cashbook Entries</div>
-                                <h2>{{ $all_cashbooks }}</h2>
+                                    Last Month Cashbook Entries</div>
+                                <h2>{{ $month_cashbooks}}</h2>
                             </div>
                         </a>
                     </div>
@@ -164,7 +164,7 @@ Dashboard Page - Admin Panel
                                 <div class="seofct-icon">
                                     {{-- <i class="fa fa-users"></i>  --}}
                                     Total Transactions Online</div>
-                                <h2>{{ $all_cashbooks }}</h2>
+                                <h2>{{ $total_online_transactions }}</h2>
                             </div>
                         </a>
                     </div>
@@ -177,8 +177,8 @@ Dashboard Page - Admin Panel
                             <div class="p-4 d-flex justify-content-between align-items-center">
                                 <div class="seofct-icon">
                                     {{-- <i class="fa fa-users"></i>  --}}
-                                    Last Transactions Online</div>
-                                <h2>{{ $all_cashbooks }}</h2>
+                                    Last Month Transactions Online</div>
+                                <h2>{{ $month_online_transactions }}</h2>
                             </div>
                         </a>
                     </div>
@@ -192,7 +192,50 @@ Dashboard Page - Admin Panel
                                 <div class="seofct-icon">
                                     {{-- <i class="fa fa-user"></i>  --}}
                                     Today's Transactions Online</div>
-                                <h2>{{ $new_cashbooks }}</h2>
+                                <h2>{{ $today_online_transactions }}</h2>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 mt-5 mb-3">
+                <div class="card">
+                    <div class="seo-fact sbg1">
+                        <a href="{{ route('admin.cashbooks.index') }}">
+                            <div class="p-4 d-flex justify-content-between align-items-center">
+                                <div class="seofct-icon">
+                                    {{-- <i class="fa fa-users"></i>  --}}
+                                    Total Cashbooks Online</div>
+                                <h2>{{ $total_online_cashbooks }}</h2>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mt-5 mb-3">
+                <div class="card">
+                    <div class="seo-fact sbg1">
+                        <a href="{{ route('admin.cashbooks.index') }}">
+                            <div class="p-4 d-flex justify-content-between align-items-center">
+                                <div class="seofct-icon">
+                                    {{-- <i class="fa fa-users"></i>  --}}
+                                    Last Month Cashbooks Online</div>
+                                <h2>{{ $month_online_cashbooks }}</h2>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mt-md-5 mb-3">
+                <div class="card">
+                    <div class="seo-fact sbg2">
+                        <a href="{{ route('admin.cashbooks.index') }}">
+                            <div class="p-4 d-flex justify-content-between align-items-center">
+                                <div class="seofct-icon">
+                                    {{-- <i class="fa fa-user"></i>  --}}
+                                    Today's Cashbooks Online</div>
+                                <h2>{{ $today_online_cashbooks }}</h2>
                             </div>
                         </a>
                     </div>

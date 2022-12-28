@@ -78,6 +78,7 @@ class DashboardController extends Controller
          'total_roles', 'total_permissions','all_transactions', 'all_cashbooks',
           'all_users', 'new_user', 'new_transactions', 'new_cashbooks', 'online_transactions',
         'total_online_transactions', 'today_online_transactions', 'month_online_transactions',
-        'total_online_cashbooks', 'today_online_cashbooks', 'month_online_cashbooks'));
+        'total_online_cashbooks', 'today_online_cashbooks', 'month_online_cashbooks', 'month_transactions',
+    'month_cashbooks'));
     }
 }
