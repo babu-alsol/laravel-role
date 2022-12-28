@@ -13,6 +13,8 @@ use App\Models\Otp;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Http;
+use DateTime;
+
 
 
 class UserController extends Controller
@@ -64,7 +66,7 @@ class UserController extends Controller
            // $token = $user->createToken('API Token')->accessToken;
             return response()->json([
                 ['user' => $user],
-                'message' => 'ph number already exist, Otp send to your mobile number ',
+                'message' => 'phone number already exist, Otp send to your mobile number ',
                 'status' => '200',
                // 'token' => $token,
                 'otp' => $otp
@@ -153,26 +155,31 @@ class UserController extends Controller
             'name' => 'required',
             //'business_name' => 'required'
         ]);
-            // $otp_rand = rand(1000, 9999);
+            $otp_rand = rand(1000, 9999);
+            $otp_rand = 1000;
 
-            $otp = new Otp();
-            $otp->mobile = $request->mobile;
-            $otp->name = $request->name;
-           // $otp->business_name = $request->business_name;
-            $otp->otp = 1000;
 
-          
-
-            $otp->save();
-           // $response = Http::get('message.neodove.com/sendsms.jsp?user=BOUNDPAR&password=7c51237a44XX&senderid=BPTOPE&mobiles=+91'.$request->mobile.'&sms=Your OTP for OnecPe app login is '.$otp_rand.'. The OTP is valid for one time.BOUNDPARIVAR .Please do not share this code with anyone for security reason.');
-
-            return response()->json([
-                'message' => 'otp send to your mobile number',
-                'status' => '200',
-                'name' => $request->name,
-                //'otp' => $otp
-            ]);
-
+            $last_send_time = Otp::where('mobile', $request->mobile)->orderBy('created_at','desc')->first();
+            // dd($last_send_time->updated_at);
+            $dt = new DateTime();
+            $last_otp_send_time=$last_send_time->created_at->format('Y-m-d H:i:s');
+            $time_now = $dt->format('Y-m-d H:i:s');
+            $duration = strtotime($time_now) - strtotime($last_otp_send_time);
+            
+            
+            if($duration>9){
+                $otp = new Otp();
+                $otp->mobile = $request->mobile;
+                $otp->name = $request->name;
+                $otp->otp = 1000;
+                $otp->save();
+                $response = Http::get('message.neodove.com/sendsms.jsp?user=BOUNDPAR&password=7c51237a44XX&senderid=BPTOPE&mobiles=+91'.$request->mobile.'&sms=Your OTP for OnecPe app login is '.$otp_rand.'. The OTP is valid for one time.BOUNDPARIVAR .Please do not share this code with anyone for security reason.');
+                return response()->json([
+                    'message' => 'otp send to your mobile number',
+                    'status' => '200',
+                    'name' => $request->name
+                ]);
+        }
     }
 
     public function checkOtp(Request $request){

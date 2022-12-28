@@ -12,7 +12,7 @@
                 <form method="POST" action="{{ route('admin.login.submit') }}">
                     @csrf
                     <div class="login-form-head">
-                        <h4>Sign In</h4>
+                        <h4>Sign In OneCPe</h4>
                         <p>Hello there, Sign in and start managing your Admin Panel</p>
                     </div>
                     <div class="login-form-body">
