@@ -116,18 +116,19 @@ class CustomerController extends Controller
     public function update(Request $request, Customer $customer)
     {
     //    dd($request);
-        $request->validate([
-            'cus_name' => 'required',
-            'cus_mobile' => 'required',            
-            'customer_type' => 'required',
-            'cus_email' => 'email',
-        ]);
+        // $request->validate([
+        //     'cus_name' => 'required',
+        //     'cus_mobile' => 'required',            
+        //     'customer_type' => 'required',
+        //     'cus_email' => 'email',
+        // ]);
         $customer->cus_name = $request->cus_name;
         $customer->cus_address = $request->cus_address;
         $customer->cus_mobile = $request->cus_mobile;
         $customer->customer_type = $request->customer_type;
         $customer->bank_account_no = $request->bank_account_no;
         $customer->cus_email = $request->cus_email;
+        $customer->IFSC_code = $request->IFSC_code;
         $customer->user_id = Auth::user()->id;
         $customer->save();
         $customer->users()->sync(Auth::user()->id);
