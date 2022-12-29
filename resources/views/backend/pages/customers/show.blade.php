@@ -102,8 +102,9 @@
             <!-- data table start -->
             <div class="col-12 mt-5">
                 <div class="card">
+
                     <div class="card-body">
-                        <h4 class="header-title float-left"></h4>
+                        <h4 class="header-title float-left">All Transactions</h4>
                         @if ($transactions->count() > 0)
                             {{-- <p class="float-right mb-2">
                         <a class="btn btn-primary text-white" href="{{route('export-contacts', $user_contact->id)}}">Exports</a>

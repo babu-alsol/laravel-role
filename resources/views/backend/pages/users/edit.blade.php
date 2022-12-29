@@ -117,9 +117,10 @@
                             @csrf
                             <div style="display: inline">
                                 <select class="form-control" name="block_status" id="user-block">
-                                    <option value="1" {{ $user->block_status == 1 ? 'selected' : '' }} >Block</option>
-                                    <option value="0" {{ $user->block_status == 0 ? 'selected' : '' }} >Unblock</option>
-                                    <option value="2" {{ $user->block_status == 2 ? 'selected' : '' }} >Hold</option>
+                                    <option value="1" {{ $user->block_status == 1 ? 'selected' : '' }}>Block</option>
+                                    <option value="0" {{ $user->block_status == 0 ? 'selected' : '' }}>Unblock
+                                    </option>
+                                    <option value="2" {{ $user->block_status == 2 ? 'selected' : '' }}>Hold</option>
                                 </select>
                                 {{-- <button type="submit" class="mt-2 btn btn-danger ">Save</button> --}}
                             </div>
@@ -140,7 +141,7 @@
         </div>
     </div>
 
-    
+
     <div class="main-content-inner card">
         <div class="card-header">
             <a class="card-link" data-toggle="collapse" href="#collapseOne">
@@ -153,47 +154,47 @@
                 <div class="mt-2  container">
                     <div class="mt-3 row">
                         @if ($bank)
-                        <div class="col-md-3">
-                            <label style="font-weight: 900" for="">Account Holder Name</label>
-                            @if ($bank->account_holder_name)
-                                <p>{{ $bank->account_holder_name }}</p>
-                            @else
-                                <p>Not Provided</p>
-                            @endif
+                            <div class="col-md-3">
+                                <label style="font-weight: 900" for="">Account Holder Name</label>
+                                @if ($bank->account_holder_name)
+                                    <p>{{ $bank->account_holder_name }}</p>
+                                @else
+                                    <p>Not Provided</p>
+                                @endif
 
-                        </div>
+                            </div>
 
-                        <div class="col-md-3">
-                            <label style="font-weight: 900" for="">Bank Name</label>
-                            @if ($bank->bank_name)
-                                <p>{{ $bank->bank_name }}</p>
-                            @else
-                                <p>Not Provided</p>
-                            @endif
+                            <div class="col-md-3">
+                                <label style="font-weight: 900" for="">Bank Name</label>
+                                @if ($bank->bank_name)
+                                    <p>{{ $bank->bank_name }}</p>
+                                @else
+                                    <p>Not Provided</p>
+                                @endif
 
-                        </div>
+                            </div>
 
-                        <div class="col-md-3">
-                            <label style="font-weight: 900" for="">Bank Name</label>
-                            @if ($bank->account_no)
-                                <p>{{ $bank->account_no }}</p>
-                            @else
-                                <p>Not Provided</p>
-                            @endif
+                            <div class="col-md-3">
+                                <label style="font-weight: 900" for="">Bank Name</label>
+                                @if ($bank->account_no)
+                                    <p>{{ $bank->account_no }}</p>
+                                @else
+                                    <p>Not Provided</p>
+                                @endif
 
-                        </div>
+                            </div>
 
-                        <div class="col-md-3">
-                            <label style="font-weight: 900" for="">Bank Name</label>
-                            @if ($bank->ifsc)
-                                <p>{{ $bank->ifsc }}</p>
-                            @else
-                                <p>Not Provided</p>
-                            @endif
+                            <div class="col-md-3">
+                                <label style="font-weight: 900" for="">Bank Name</label>
+                                @if ($bank->ifsc)
+                                    <p>{{ $bank->ifsc }}</p>
+                                @else
+                                    <p>Not Provided</p>
+                                @endif
 
-                        </div>
+                            </div>
                         @endif
-                      
+
                     </div>
 
 
@@ -299,7 +300,6 @@
     </div>
 
 
-
     <div class="main-content-inner">
 
         <div class="row">
@@ -307,7 +307,7 @@
             <div class="col-12 mt-5">
                 <div class="card">
                     <div class="card-body">
-                        <h4 class="header-title float-left"></h4>
+                        <h4 class="header-title float-left">All Transactions</h4>
                         @if ($transactions->count() > 0)
                             {{-- <p class="float-right mb-2">
                     <a class="btn btn-primary text-white" href="{{route('export-contacts', $user_contact->id)}}">Exports</a>
@@ -318,26 +318,85 @@
                         <div class="clearfix"></div>
                         <div class="data-tables">
                             @include('backend.layouts.partials.messages')
-                            <table id="dataTable" class="text-center">
+                            <table id="dataTable2" class="text-center">
                                 <thead class="bg-light text-capitalize">
-                                    <tr style="width: 100vw !important">
-                                        <th width="20%">Sl</th>
+                                    <tr>
+                                        <th width="">Sl</th>
+                            
 
-                                        <th width="20%">Amount</th>
-                                        <th width="20%">Transaction_type</th>
-                                        <th width="20%">Bill No</th>
+                                        <th width="">Amount</th>
+                                        <th width="">Transaction type</th>
+                                        <th>Payment Type</th>
 
-                                        <th style="display: none" width="20%">Action</th>
+                                      
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach ($transactions as $data)
                                         <tr>
                                             <td>{{ $loop->index + 1 }}</td>
-
+                                        
                                             <td>{{ $data->amount }}</td>
                                             <td>{{ $data->tns_type }}</td>
-                                            <td>{{ $data->bill_no }}</td>
+                                            <td>{{ $data->payment_type }}</td>
+                                           
+
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- data table end -->
+
+        </div>
+    </div>
+
+
+
+    
+    <div class="main-content-inner">
+
+        <div class="row">
+            <!-- data table start -->
+            <div class="col-12 mt-5">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="header-title float-left">Cashbook Entrys</h4>
+                        @if ($cashbooks->count() > 0)
+                            {{-- <p class="float-right mb-2">
+                    <a class="btn btn-primary text-white" href="{{route('export-contacts', $user_contact->id)}}">Exports</a>
+                </p> --}}
+                        @endif
+
+
+                        <div class="clearfix"></div>
+                        <div class="data-tables">
+                            @include('backend.layouts.partials.messages')
+                            <table id="dataTable1" class="text-center">
+                                <thead class="bg-light text-capitalize">
+                                    <tr>
+                                        <th width="">Sl</th>
+                                        <th width="">Date Time</th>
+
+                                        <th width="">Amount</th>
+                                        <th width="">Transaction type</th>
+                                        <th width="">Payment Type</th>
+
+                                     
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($cashbooks as $data)
+                                        <tr>
+                                            <td>{{ $loop->index + 1 }}</td>
+                                            <td>{{ date('d-M-Y', strtotime($data->date_time)); }}</td>
+                                            <td>{{ $data->amount }}</td>
+                                            <td>{{ $data->cb_tns_type }}</td>
+                                            <td>{{ $data->payment_type }}</td>
+                                           
 
 
                                         </tr>
@@ -362,6 +421,19 @@
     <script src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
     <script src="https://cdn.datatables.net/responsive/2.2.3/js/responsive.bootstrap.min.js"></script>
     <script>
+        if ($('#dataTable2').length) {
+            $('#dataTable2').DataTable({
+                responsive: true
+            });
+        }
+
+
+        if ($('#dataTable1').length) {
+            $('#dataTable1').DataTable({
+                responsive: true
+            });
+        }
+
         $(document).ready(function() {
             $('.select2').select2();
         })
@@ -369,15 +441,15 @@
         var userId = $('#user-id').val();
 
         $('#user-block').on('change', function(e) {
-           var block_status = e.target.value
-          
+            var block_status = e.target.value
+
             $.ajax({
                 url: `/admin/user-block/${userId}`,
                 type: "POST",
                 data: {
                     "_token": "{{ csrf_token() }}",
-                    block_status:block_status
-                    
+                    block_status: block_status
+
                 },
                 success: function(response) {
                     console.log(response);
@@ -390,7 +462,7 @@
                         setTimeout(function() {
                             $('#block-message').fadeOut('fast');
                         }, 2000);
-                    } else if(response.user_status == 1){
+                    } else if (response.user_status == 1) {
                         $('#block-message').show()
                         $('#block-message').removeClass('text-success')
                         $('#block-message').removeClass('text-warning')
@@ -399,7 +471,7 @@
                         setTimeout(function() {
                             $('#block-message').fadeOut('fast');
                         }, 2000);
-                    }else{
+                    } else {
                         $('#block-message').show()
                         $('#block-message').removeClass('text-success')
                         $('#block-message').removeClass('text-danger')
