@@ -87,13 +87,14 @@ class UsersController extends Controller
     {
         $user = User::find($id);
         $transactions = $user->transactions;
-       
-         $bns_id = Business::where('user_id', $user->id)->first();
+        $cashbooks = $user->cashbooks;
+   
+        $bns_id = Business::where('user_id', $user->id)->first();
         
          $bank = BusinessBank::where('bns_id', $bns_id)->first();
       //  return $bank;
         $roles  = Role::all();
-        return view('backend.pages.users.edit', compact('user', 'roles', 'transactions', 'bank'));
+        return view('backend.pages.users.edit', compact('user', 'roles', 'transactions', 'bank', 'cashbooks'));
     }
 
     /**
