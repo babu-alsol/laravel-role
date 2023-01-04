@@ -8,6 +8,7 @@ use App\Http\Controllers\CashbookController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\RentController;
 use App\Http\Controllers\TransactionController;
 use App\Models\BankDetails;
 use App\Models\BusinessBank;
@@ -42,6 +43,7 @@ Route::group(['prefix' => 'auth', 'middleware' => 'auth:api'], function(){
     Route::apiResource('business', BusinessController::class);
     Route::apiResource('customer-bank', BankDetailsController::class);
     Route::apiResource('business-bank', BusinessBankController::class);
+    Route::apiResource('rent', RentController::class);
     Route::apiResource('transaction', TransactionController::class)->except('index');
     Route::get('/get-transaction/{type}', [App\Http\Controllers\TransactionController::class, 'index']);
     Route::get('/transactions-by-customer/{customer}', [\App\Http\Controllers\TransactionController::class, 'tnsCustomer']);
