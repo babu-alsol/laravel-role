@@ -5,6 +5,7 @@ namespace App;
 use App\Models\Business;
 use App\Models\Cashbook;
 use App\Models\Customer;
+use App\Models\RentOwner;
 use App\Models\Transaction;
 use Illuminate\Support\Facades\DB;
 use Laravel\Passport\HasApiTokens;
@@ -88,5 +89,9 @@ class User extends Authenticatable
 
     public function transactions(){
         return $this->hasMany(Transaction::class, 'user_id');
+    }
+
+    public function rentOwners(){
+        return $this->hasMany(RentOwner::class, 'user_id');
     }
 }
