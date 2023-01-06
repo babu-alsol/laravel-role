@@ -45,6 +45,7 @@ class RentPaymentController extends Controller
             'rent_amount' => 'required'
         ]);
 
+
         $data = $request->all();
         $data['user_id'] = Auth::user()->id;
 

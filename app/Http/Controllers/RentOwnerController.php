@@ -46,8 +46,29 @@ class RentOwnerController extends Controller
             'mobile' => 'required'
         ]);
 
-        $data = $request->all();
-        $data['user_id'] = Auth::user()->id;
+        $rentOwner = new RentOwner();
+
+        $rentOwner->user_id = Auth::user()->id;
+        $rentOwner->name = $request->name;
+        $rentOwner->address = $request->address;
+        $rentOwner->rent_date = $request->rent_date;
+        $rentOwner->deposit_amount = $request->deposit_amount;
+        $rentOwner->advanced_amount = $request->advanced_amount;
+        $rentOwner->pan_no = $request->pan_no;
+        $rentOwner->mobile = $request->mobile;
+        $rentOwner->rent_since = $request->rent_since;
+        $rentOwner->account_no = $request->account_no;
+        $rentOwner->bank_name = $request->bank_name;
+        $rentOwner->branch_name = $request->branch_name;
+        $rentOwner->ifsc_code = $request->ifsc_code;
+        $rentOwner->account_holder_name = $request->account_holder_name;
+
+        $rentOwner->save();
+      
+        
+
+        // $data = $request->all();
+        // $data['user_id'] = Auth::user()->id;
 
         
         if ($request->hasFile('agreement_image')) {
@@ -55,7 +76,7 @@ class RentOwnerController extends Controller
             $filename = now()->timestamp . '.' . $image->getClientOriginalExtension();
         
             $image->move(public_path('assets/rent/agreement/'), $filename);
-            $data['agreement_image'] = $filename;
+            $rentOwner->agreement_image = $filename;
             
             // the rest of your code
          }
@@ -65,7 +86,7 @@ class RentOwnerController extends Controller
             $filename = now()->timestamp . '.' . $image->getClientOriginalExtension();
         
             $image->move(public_path('assets/rent/pan/'), $filename);
-            $data['pan_image'] = $filename;
+            $rentOwner->pan_image= $filename;
             
             // the rest of your code
          }
@@ -75,17 +96,15 @@ class RentOwnerController extends Controller
             $filename = now()->timestamp . '.' . $image->getClientOriginalExtension();
         
             $image->move(public_path('assets/rent/bill/'), $filename);
-            $data['bill_pdf'] = $filename;
+            $rentOwner->bill_pdf = $filename;
             
             // the rest of your code
          }
 
-         RentOwner::create($data);
-
          return response()->json([
             'message' => 'Rent added succssfully',
             'status' => 200,
-            'data' => $data
+            'data' => $rentOwner
          ]);
          
     }
