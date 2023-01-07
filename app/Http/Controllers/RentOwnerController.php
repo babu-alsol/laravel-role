@@ -61,6 +61,7 @@ class RentOwnerController extends Controller
         $rentOwner->bank_name = $request->bank_name;
         $rentOwner->branch_name = $request->branch_name;
         $rentOwner->ifsc_code = $request->ifsc_code;
+        $rentOwner->rent_type = $request->rent_type;
         $rentOwner->account_holder_name = $request->account_holder_name;
 
         $rentOwner->save();
