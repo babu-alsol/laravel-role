@@ -46,6 +46,8 @@ class RentOwnerController extends Controller
             'mobile' => 'required'
         ]);
 
+       
+
         $rentOwner = new RentOwner();
 
         $rentOwner->user_id = Auth::user()->id;
@@ -65,6 +67,29 @@ class RentOwnerController extends Controller
         $rentOwner->account_holder_name = $request->account_holder_name;
 
         $rentOwner->save();
+       
+       
+           $bifur = $request->month_bifurcation;
+
+           $bifur = json_decode($bifur, true);
+          // return $bifur;
+           
+
+        //    month_bifurcation : [
+        //     {
+        //     amount:100,
+        //     description:test
+        //     },
+        //     {
+        //     amount:200,
+        //     description:test_2
+        //     },
+        //     {
+        //     amount:300,
+        //     description:test_3
+        //     }
+        //     ]
+       
       
         
 

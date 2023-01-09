@@ -146,6 +146,22 @@
 
                     @if ($usr->can('admin.create') || $usr->can('admin.view') ||  $usr->can('admin.edit') ||  $usr->can('admin.delete'))
                     <li>
+                        <a href="javascript:void(0)" aria-expanded="true"><i class="fa-solid fa-business-time"></i><span>
+                            Rentpay
+                        </span></a>
+                        <ul class="collapse {{ Route::is('admin.admins.create') || Route::is('admin.admins.index') || Route::is('admin.admins.edit') || Route::is('admin.admins.show') ? 'in' : '' }}">
+                            
+                            @if ($usr->can('admin.view'))
+                                <li class="{{ Route::is('admin.customers.index')  || Route::is('admin.admins.edit') ? 'active' : '' }}"><a href="{{ route('admin.rent-owners.index') }}">Rent Owners</a></li>
+                            @endif
+
+                         
+                        </ul>
+                    </li>
+                    @endif
+
+                    @if ($usr->can('admin.create') || $usr->can('admin.view') ||  $usr->can('admin.edit') ||  $usr->can('admin.delete'))
+                    <li>
                         <a href="javascript:void(0)" aria-expanded="true"><i class="fa fa-user"></i><span>
                             Faqs
                         </span></a>
