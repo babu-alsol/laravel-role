@@ -16,7 +16,7 @@ class DesignationController extends Controller
     public function index()
     {
         $designations = Designation::orderBy('created_at', 'desc')->get();
-        return view('backend.pages.designations.index', compact('designations'));
+        // return view('backend.pages.designations.index', compact('designations'));
     }
 
     /**
@@ -43,7 +43,7 @@ class DesignationController extends Controller
 
         $data = $request->all();
         Designation::create($data);
-        return redirect()->route('admin.designations.index');
+        // return redirect()->route('admin.designations.index');
     }
 
     /**
@@ -84,7 +84,7 @@ class DesignationController extends Controller
         $data = $request->all();
         $designation->fill($data);
         $designation->save();
-        return redirect()->route('admin.designations.index');
+        // return redirect()->route('admin.designations.index');
     }
 
     /**

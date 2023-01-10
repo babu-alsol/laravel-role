@@ -51,18 +51,13 @@ class TransactionController extends Controller
         ]);
 
         $data = $request->all();
-        //return $request->all();
-
         $customer = Customer::where('id', $request->customer_id)->first();
-
         if ($request->date_time) {
             $data['date_time'] = $request->date_time;
         } else {
             $data['date_time'] = Carbon::now();
         }
-
-
-       
+        
         $data['cus_type'] = $customer->customer_type;
         $data['cus_name'] = $customer->cus_name;
         $data['user_id'] = Auth::user()->id;
@@ -218,7 +213,7 @@ class TransactionController extends Controller
             when tns_type='give' THEN -1
             when tns_type='got'  THEN 1
         end)) aggsum
-        FROM `transactions` t JOIN 
+        FROM `transactions` t RIGHT JOIN 
         customers c
         on 
         t.customer_id = c.id

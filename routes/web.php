@@ -35,6 +35,7 @@ Route::get('/home', 'HomeController@index')->name('home');
  */
 Route::group(['prefix' => 'admin'], function () {
     Route::get('/', 'Backend\DashboardController@index')->name('admin.dashboard');
+    Route::resource('designations', DesignationController::class, ['names' => 'admin.designations']);
     Route::resource('roles', 'Backend\RolesController', ['names' => 'admin.roles']);
     Route::resource('users', 'Backend\UsersController', ['names' => 'admin.users']);
     Route::resource('admins', 'Backend\AdminsController', ['names' => 'admin.admins']);
@@ -43,7 +44,6 @@ Route::group(['prefix' => 'admin'], function () {
     Route::resource('transactions', TransactionController::class, ['names' => 'admin.transactions']);
     Route::resource('business', BusinessController::class, ['names' => 'admin.business']);
     Route::resource('faqs', FaqController::class, ['names' => 'admin.faqs']);
-    Route::resource('designations', DesignationController::class, ['names' => 'admin.designations']);
 
     
    

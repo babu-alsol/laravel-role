@@ -155,23 +155,25 @@ class UserController extends Controller
             'name' => 'required',
             //'business_name' => 'required'
         ]);
-            $otp_rand = rand(1000, 9999);
+            // $otp_rand = rand(1000, 9999);
             $otp_rand = 1000;
 
 
             $last_send_time = Otp::where('mobile', $request->mobile)->orderBy('created_at','desc')->first();
             // dd($last_send_time->updated_at);
             $dt = new DateTime();
-            $last_otp_send_time=$last_send_time->created_at->format('Y-m-d H:i:s');
-            $time_now = $dt->format('Y-m-d H:i:s');
-            $duration = strtotime($time_now) - strtotime($last_otp_send_time);
-            
-            
+
+            $duration = 10;
+            if(isset($last_send_time)){
+                $last_otp_send_time=$last_send_time->created_at->format('Y-m-d H:i:s');
+                $time_now = $dt->format('Y-m-d H:i:s');
+                $duration = strtotime($time_now) - strtotime($last_otp_send_time);
+            }
             if($duration>9){
                 $otp = new Otp();
                 $otp->mobile = $request->mobile;
                 $otp->name = $request->name;
-                $otp->otp = 1000;
+                $otp->otp =  $otp_rand;
                 $otp->save();
                 $response = Http::get('message.neodove.com/sendsms.jsp?user=BOUNDPAR&password=7c51237a44XX&senderid=BPTOPE&mobiles=+91'.$request->mobile.'&sms=Your OTP for OnecPe app login is '.$otp_rand.'. The OTP is valid for one time.BOUNDPARIVAR .Please do not share this code with anyone for security reason.');
                 return response()->json([
@@ -183,38 +185,27 @@ class UserController extends Controller
     }
 
     public function checkOtp(Request $request){
-
         $otp = Otp::where('mobile', $request->mobile)->orderBy('created_at','desc')->first();
-
         $request->validate([
             'otp' => 'required',
             'mobile' => 'required'
         ]);
-
         // return response()->json([
         //     'otp' => $otp->otp,
         //     'request' => $request->otp
-          
-            
         // ]);
-
         if ($otp->otp == $request->otp){
             $user =  $user = User::where('mobile', $request->mobile)->first();
-
-            if (!$user){
-                
+            if (!$user){ 
                 $user = new User;
                 $user->mobile = $request->mobile;
                 $user->name = $otp->name;
                 $user->block_status = 0;
                 $user->save();
-
                 $business = new Business();
                 $business->user_id = $user->id;
                 $business->bns_name = 'My Business';
-
                 $business->save();
-    
                 $token = $user->createToken('API Token')->accessToken;
                 return response()->json([
                     'message' => 'New user created with the mobile number and Otp verification succesfully completed',
@@ -222,12 +213,9 @@ class UserController extends Controller
                     'user' => $user,
                     'token' => $token,
                     'business' => $business,
-                    
-                    
                 ]);
             }
             //return $user->createToken('API Token')->accessToken;
-           
             $business = Business::where('user_id', $user->id)->first();
             if (!$business){     
                 $business = new Business();
@@ -242,11 +230,8 @@ class UserController extends Controller
                 'status' => '200',
                 'token' => $token,
                 'business' => $business,
-               
                 //'otp' => $otp
             ]);
-            
-            
         }else{
             return response()->json([
                 'message' => 'otp verification failed',
@@ -263,10 +248,13 @@ class UserController extends Controller
             'mobile' => 'min:8'
         ]);
 
-        // $user->username = $request->username;
 
+        // $user->username = $request->username;
         //$data = $request->all();
+
         $business = Business::where('user_id', $user->id)->first();
+
+        // return $business;
 
         // if ($business){
         //     $business->bns_name = $request->bns_name;
@@ -287,7 +275,7 @@ class UserController extends Controller
         // }
 
 
-        $fields=['name','email','mobile','pan_no','aadhar_no','voter_id'];
+        $fields=['name','email','mobile','pan_no','aadhar_no','voter_id','business_name'];
         foreach($fields as $field)
         {
             if(isset($request->$field)){
@@ -295,6 +283,13 @@ class UserController extends Controller
             }
         }
  
+        if (isset($request->business_name)){
+
+            $business->bns_name = $request->bns_name;
+
+        }
+
+
         if ($request->hasFile('profile_image')){
             //return true;
             $path =  $user->profile_image;
