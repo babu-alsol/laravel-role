@@ -217,6 +217,12 @@ class UserController extends Controller
             }
             //return $user->createToken('API Token')->accessToken;
             $business = Business::where('user_id', $user->id)->first();
+            $bank = null;
+            if (isset($business)){
+                $bank = BusinessBank::where('bns_id', $business->id)->first();
+            }
+          
+          
             if (!$business){     
                 $business = new Business();
                 $business->user_id = $user->id;
@@ -230,7 +236,8 @@ class UserController extends Controller
                 'status' => '200',
                 'token' => $token,
                 'business' => $business,
-                //'otp' => $otp
+                'bank' => $bank
+               
             ]);
         }else{
             return response()->json([

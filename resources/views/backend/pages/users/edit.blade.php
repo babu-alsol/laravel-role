@@ -304,7 +304,7 @@
 
         <div class="row">
             <!-- data table start -->
-            <div class="col-12 mt-5">
+            <div class="col-12 mt-2">
                 <div class="card">
                     <div class="card-body">
                         <h4 class="header-title float-left">All Transactions</h4>
@@ -353,15 +353,12 @@
 
         </div>
     </div>
-
-
-
     
     <div class="main-content-inner">
 
         <div class="row">
             <!-- data table start -->
-            <div class="col-12 mt-5">
+            <div class="col-12 mt-2">
                 <div class="card">
                     <div class="card-body">
                         <h4 class="header-title float-left">Cashbook Entrys</h4>
@@ -411,6 +408,61 @@
 
         </div>
     </div>
+
+    <div class="main-content-inner">
+
+        <div class="row">
+            <!-- data table start -->
+            <div class="col-12 mt-2">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="header-title float-left">Rent Owners</h4>
+                        @if ($rent_owners->count() > 0)
+                            {{-- <p class="float-right mb-2">
+                    <a class="btn btn-primary text-white" href="{{route('export-contacts', $user_contact->id)}}">Exports</a>
+                </p> --}}
+                        @endif
+
+
+                        <div class="clearfix"></div>
+                        <div class="data-tables">
+                            @include('backend.layouts.partials.messages')
+                            <table id="dataTable3" class="text-center">
+                                <thead class="bg-light text-capitalize">
+                                    <tr>
+                                        <th width="">Sl</th>
+                                        <th width="">Name</th>
+
+                                        <th width="">Mobile</th>
+                                        <th width="">Type</th>
+                                     
+                                      
+                                     
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($rent_owners as $data)
+                                        <tr>
+                                            <td>{{ $loop->index + 1 }}</td>
+                                          
+                                            <td>{{ $data->name }}</td>
+                                            <td>{{ $data->mobile }}</td>
+                                            <td>{{ $data->rent_type }}</td>
+                                           
+
+
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- data table end -->
+
+        </div>
+    </div>
 @endsection
 
 @section('scripts')
@@ -430,6 +482,12 @@
 
         if ($('#dataTable1').length) {
             $('#dataTable1').DataTable({
+                responsive: true
+            });
+        }
+
+        if ($('#dataTable3').length) {
+            $('#dataTable3').DataTable({
                 responsive: true
             });
         }
