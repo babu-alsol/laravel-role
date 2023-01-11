@@ -13,5 +13,5 @@ class RentPayment extends Model
 
     public function rentOwner(){
         return $this->belongsTo(RentOwner::class, 'rent_id');
-    }
+    }  
 }
