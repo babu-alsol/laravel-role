@@ -119,7 +119,8 @@ class RentOwnerController extends Controller
          return response()->json([
             'message' => 'Rent added succssfully',
             'status' => 200,
-            'data' => $rentOwner
+            'data' => $rentOwner,
+            'bifurcations' => $month_bifur
          ]);
          
     }
@@ -135,12 +136,13 @@ class RentOwnerController extends Controller
         if($rentOwner){
             return response()->json([
                 'status' => 200,
-                'data' => $rentOwner
+                'data' => $rentOwner,
+                'bifurcation' => $rentOwner->monthlyPayments
             ]);
         }else{
             return response()->json([
                 'status' => 404,
-                'data' => 'no data to show'
+                'data' => 'no data to show',
             ]);
         }
     }
@@ -213,6 +215,19 @@ class RentOwnerController extends Controller
 
         $rentOwner->fill($data);
         $rentOwner->save();
+
+        if(isset($rentOwner)){
+            // $month_bifur=json_decode($request->month_bifurcation,true);
+            // foreach($month_bifur as $mb){
+    
+            //     $month_pay=new MonthlyPayment();
+            //     $month_pay->amount = $mb["amount"];
+            //     $month_pay->description = $mb["description"];
+            //     $month_pay->rent_id = $rentOwner->id;
+            //     $month_pay->save();
+    
+            //     }
+            // }
 
          return response()->json([
             'message' => 'Rent updated succssfully',
