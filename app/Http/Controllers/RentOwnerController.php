@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\RentOwner;
+use App\Models\MonthlyPayment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
@@ -16,6 +17,7 @@ class RentOwnerController extends Controller
      */
     public function index()
     {
+
         $rents = RentOwner::orderBy('created_at', 'desc')->where('user_id', Auth::user()->id)->get();
 
         if($rents->count() > 0){
@@ -46,10 +48,12 @@ class RentOwnerController extends Controller
             'mobile' => 'required'
         ]);
 
-       
+
+        // dd($request->hasFile('pan_image'));
+        // dd($request->hasFile('pan_image'));
+
 
         $rentOwner = new RentOwner();
-
         $rentOwner->user_id = Auth::user()->id;
         $rentOwner->name = $request->name;
         $rentOwner->address = $request->address;
@@ -66,35 +70,6 @@ class RentOwnerController extends Controller
         $rentOwner->rent_type = $request->rent_type;
         $rentOwner->account_holder_name = $request->account_holder_name;
 
-        $rentOwner->save();
-       
-       
-           $bifur = $request->month_bifurcation;
-
-           $bifur = json_decode($bifur, true);
-          // return $bifur;
-           
-
-        //    month_bifurcation : [
-        //     {
-        //     amount:100,
-        //     description:test
-        //     },
-        //     {
-        //     amount:200,
-        //     description:test_2
-        //     },
-        //     {
-        //     amount:300,
-        //     description:test_3
-        //     }
-        //     ]
-       
-      
-        
-
-        // $data = $request->all();
-        // $data['user_id'] = Auth::user()->id;
 
         
         if ($request->hasFile('agreement_image')) {
@@ -120,12 +95,26 @@ class RentOwnerController extends Controller
          if ($request->hasFile('bill_pdf')) {
             $image = $request->file('bill_pdf');
             $filename = now()->timestamp . '.' . $image->getClientOriginalExtension();
-        
             $image->move(public_path('assets/rent/bill/'), $filename);
             $rentOwner->bill_pdf = $filename;
-            
-            // the rest of your code
          }
+
+         $rentOwner->save();
+
+         if(isset($rentOwner)){
+            $month_bifur=json_decode($request->month_bifurcation,true);
+            foreach($month_bifur as $mb){
+    
+                $month_pay=new MonthlyPayment();
+                $month_pay->amount = $mb["amount"];
+                $month_pay->description = $mb["description"];
+                $month_pay->rent_id = $rentOwner->id;
+                $month_pay->save();
+    
+                }
+            }
+
+            
 
          return response()->json([
             'message' => 'Rent added succssfully',
