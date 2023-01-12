@@ -114,13 +114,13 @@ class RentOwnerController extends Controller
                 }
             }
 
-            
-
+        
          return response()->json([
             'message' => 'Rent added succssfully',
             'status' => 200,
             'data' => $rentOwner,
-            'bifurcations' => $month_bifur
+            'bifurcations' => $month_bifur,
+            'rent_payments' => $rentOwner->rentPayments
          ]);
          
     }
@@ -137,7 +137,8 @@ class RentOwnerController extends Controller
             return response()->json([
                 'status' => 200,
                 'data' => $rentOwner,
-                'bifurcation' => $rentOwner->monthlyPayments
+                'bifurcation' => $rentOwner->monthlyPayments,
+                'rent_payments' => $rentOwner->rentPayments
             ]);
         }else{
             return response()->json([
@@ -157,10 +158,22 @@ class RentOwnerController extends Controller
      */
     public function update(Request $request, RentOwner $rentOwner)
     {
-        $data = $request->all();
+        $rentOwner->user_id = Auth::user()->id;
+        $rentOwner->name = $request->name;
+        $rentOwner->address = $request->address;
+        $rentOwner->rent_date = $request->rent_date;
+        $rentOwner->deposit_amount = $request->deposit_amount;
+        $rentOwner->advanced_amount = $request->advanced_amount;
+        $rentOwner->pan_no = $request->pan_no;
+        $rentOwner->mobile = $request->mobile;
+        $rentOwner->rent_since = $request->rent_since;
+        $rentOwner->account_no = $request->account_no;
+        $rentOwner->bank_name = $request->bank_name;
+        $rentOwner->branch_name = $request->branch_name;
+        $rentOwner->ifsc_code = $request->ifsc_code;
+        $rentOwner->rent_type = $request->rent_type;
+        $rentOwner->account_holder_name = $request->account_holder_name;
         
-        $data['user_id'] = Auth::user()->id;
-
        // return $rentOwner->agreement_image;
         
         if ($request->hasFile('agreement_image')) {
@@ -173,11 +186,11 @@ class RentOwnerController extends Controller
             $filename = now()->timestamp . '.' . $image->getClientOriginalExtension();
         
             $image->move(public_path('assets/rent/agreement/'), $filename);
-            $data['agreement_image'] = $filename;
+            $rentOwner->agreement_image = $filename;
             
             // the rest of your code
          }else{
-            $data['agreement_image'] = $rentOwner->agreement_image;
+            $rentOwner->agreement_image = $rentOwner->agreement_image;
          }
 
          if ($request->hasFile('pan_image')) {
@@ -189,15 +202,15 @@ class RentOwnerController extends Controller
             $filename = now()->timestamp . '.' . $image->getClientOriginalExtension();
         
             $image->move(public_path('assets/rent/pan/'), $filename);
-            $data['pan_image'] = $filename;
+            $rentOwner->pan_image = $filename;
             
             // the rest of your code
          }
          else{
-            $data['pan_image'] = $rentOwner->pan_image;
+            $rentOwner->pan_image = $rentOwner->pan_image;
          }
 
-         if ($request->hasFile('bill_pdf' && $rentOwner->bill_pdf != null)) {
+         if ($request->hasFile('bill_pdf')) {
             $filePath = public_path('assets/rent/bill/').'/'.$rentOwner->bill_pdf;
             if ($filePath){
                 File::delete($filePath);
@@ -206,34 +219,41 @@ class RentOwnerController extends Controller
             $filename = now()->timestamp . '.' . $image->getClientOriginalExtension();
         
             $image->move(public_path('assets/rent/bill/'), $filename);
-            $data['bill_pdf'] = $filename;
+            $rentOwner->bill_pdf = $filename;
             
             // the rest of your code
          }else{
-            $data['bill_pdf'] = $rentOwner->bill_pdf;
+            $rentOwner->bill_pdf = $rentOwner->bill_pdf;
          }
 
-        $rentOwner->fill($data);
         $rentOwner->save();
 
         if(isset($rentOwner)){
-            // $month_bifur=json_decode($request->month_bifurcation,true);
-            // foreach($month_bifur as $mb){
+            if ($rentOwner->monthlyPayments->count() >0){
+                $rentOwner->monthlyPayments()->where('rent_id', $rentOwner->id)->delete();
+            }
+            $month_bifur=json_decode($request->month_bifurcation,true);
+            
+            foreach($month_bifur as $mb){
     
-            //     $month_pay=new MonthlyPayment();
-            //     $month_pay->amount = $mb["amount"];
-            //     $month_pay->description = $mb["description"];
-            //     $month_pay->rent_id = $rentOwner->id;
-            //     $month_pay->save();
+                $month_pay=new MonthlyPayment();
+                $month_pay->amount = $mb["amount"];
+                $month_pay->description = $mb["description"];
+                $month_pay->rent_id = $rentOwner->id;
+                $month_pay->save();
     
-            //     }
-            // }
+                }
+            }
+
 
          return response()->json([
             'message' => 'Rent updated succssfully',
             'status' => 200,
-            'data' => $rentOwner
+            'data' => $rentOwner,
+            'bifurcations' => $month_bifur,
+            'rent_payments' => $rentOwner->rentPayments
          ]);
+    
     }
 
     /**
