@@ -286,7 +286,7 @@ class RentOwnerController extends Controller
         }else{
             return response()->json([
                 'status' => 404,
-                'data' => 'no data to delete'
+                'data' => 'no data to be delete'
             ]);
         }
     }
